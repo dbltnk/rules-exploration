@@ -1,9 +1,13 @@
-﻿namespace ProceduralToolkit.Samples
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace ProceduralToolkit.Samples
 {
-    internal class Cell
+    public class Cell : MonoBehaviour
     {
-        public int X;
-        public int Y;
-        public int counter;
+        public int X = 0;
+        public int Y = 0;
+        public int counter = 0;
     }
 }

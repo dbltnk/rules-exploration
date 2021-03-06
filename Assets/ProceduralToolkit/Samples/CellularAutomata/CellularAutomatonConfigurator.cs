@@ -192,7 +192,7 @@ namespace ProceduralToolkit.Samples
                     if (cellCount < cellsNeeded) {
                         GameObject cell = Instantiate(PrefCell);
                         cell.transform.SetParent(image.transform, false);
-                        Cell c = cell.GetComponent<Cell>();
+                        Cell c = cell.AddComponent<Cell>();
                         c.X = x;
                         c.Y = y;
                         c.counter = y * config.width + x;
@@ -233,9 +233,16 @@ namespace ProceduralToolkit.Samples
         }
 
         public void ActivateCell(int counter) {
-            print(pixels[counter].r);
-            pixels[counter].r = 0f;
-            print(counter);
+            if (pixels[counter] == aliveColor) {
+                pixels[counter] = deadColor;
+                image.transform.GetComponentsInChildren<Image>()[counter].color = deadColor;
+            }
+            else {
+                pixels[counter] = aliveColor;
+                image.transform.GetComponentsInChildren<Image>()[counter].color = aliveColor;
+            }
+            texture.SetPixels(pixels);
+            texture.Apply();
         }
     }
 }
