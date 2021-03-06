@@ -12,6 +12,7 @@ namespace ProceduralToolkit.Samples
     /// </summary>
     public class CellularAutomatonConfigurator : ConfiguratorBase
     {
+        public GameObject PrefCell;
         public RectTransform leftPanel;
         public ToggleGroup toggleGroup;
         public RawImage image;
@@ -186,13 +187,22 @@ namespace ProceduralToolkit.Samples
             {
                 for (int y = 0; y < config.height; y++)
                 {
+                    int cellsNeeded = config.width * config.height;
+                    int cellCount = image.transform.childCount;
+                    if (cellCount < cellsNeeded) {
+                        GameObject cell = Instantiate(PrefCell);
+                        cell.transform.SetParent(image.transform, false);
+                    }
+
                     if (automaton.cells[x, y])
                     {
                         pixels[y*config.width + x] = aliveColor;
+                        if (cellCount >= cellsNeeded) image.transform.GetComponentsInChildren<Image>()[y * config.width + x].color = aliveColor;
                     }
                     else
                     {
                         pixels[y*config.width + x] = deadColor;
+                        if (cellCount >= cellsNeeded) image.transform.GetComponentsInChildren<Image>()[y * config.width + x].color = deadColor;
                     }
                 }
             }
