@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ProceduralToolkit.Samples.UI;
 using UnityEngine;
@@ -35,11 +36,13 @@ namespace ProceduralToolkit.Samples
         private Color deadColor;
         private Color aliveColor;
         private TextControl header;
-        private bool isPlaying = true;
+        private bool isPlaying = false;
         private float stepsPerSecond = 10f;
         private float lastStep = 0f;
-        public int customBirthRule = 0;
-        public int customSurvivalRule = 0;
+        private int customBirthRule = 0;
+        private int customSurvivalRule = 0;
+        private int maxCustomBirthRule = 9;
+        private int maxCustomSurvivalRule = 9;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -61,7 +64,9 @@ namespace ProceduralToolkit.Samples
             header = InstantiateControl<TextControl>(leftPanel);
             header.transform.SetAsFirstSibling();
 
-            var currentRulesetName = RulesetName.Life;
+            //RandomizeRules();
+
+            var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
 
             InstantiateToggle(RulesetName.Life, currentRulesetName);
@@ -73,7 +78,9 @@ namespace ProceduralToolkit.Samples
             InstantiateToggle(RulesetName.Majority, currentRulesetName);
             InstantiateToggle(RulesetName.Custom, currentRulesetName);
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Birth rule", 0, 99, config.seed, value => {
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Randomize rules", RandomizeRules);
+
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Birth rule", 0, maxCustomBirthRule, config.seed, value => {
                 customBirthRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
@@ -82,7 +89,7 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Survive rule", 0, 99, config.seed, value => {
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Survive rule", 0, maxCustomSurvivalRule, config.seed, value => {
                 customSurvivalRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
@@ -117,6 +124,16 @@ namespace ProceduralToolkit.Samples
 
             Generate();
             SetupSkyboxAndPalette();
+        }
+
+        private void RandomizeRules () {
+            // TODO Figure out why this always returns the same values.
+            customBirthRule = UnityEngine.Random.Range(0, maxCustomBirthRule);
+            customSurvivalRule = UnityEngine.Random.Range(0, maxCustomSurvivalRule);
+            SelectRuleset(RulesetName.Custom);
+            if (GameObject.Find("Canvas") != null) GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
+            if (GameObject.Find("Custom") != null) GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
+            Generate();
         }
 
         private void Update()
