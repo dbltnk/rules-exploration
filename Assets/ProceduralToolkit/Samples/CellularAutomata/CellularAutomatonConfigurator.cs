@@ -26,6 +26,7 @@ namespace ProceduralToolkit.Samples
             Coagulations,
             Anneal,
             Majority,
+            Custom
         }
 
         private Color[] pixels;
@@ -37,7 +38,8 @@ namespace ProceduralToolkit.Samples
         private bool isPlaying = true;
         private float stepsPerSecond = 10f;
         private float lastStep = 0f;
-
+        public int customBirthRule = 0;
+        public int customSurvivalRule = 0;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -69,6 +71,25 @@ namespace ProceduralToolkit.Samples
             InstantiateToggle(RulesetName.Coagulations, currentRulesetName);
             InstantiateToggle(RulesetName.Anneal, currentRulesetName);
             InstantiateToggle(RulesetName.Majority, currentRulesetName);
+            InstantiateToggle(RulesetName.Custom, currentRulesetName);
+
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Birth rule", 0, 99, config.seed, value => {
+                customBirthRule = Mathf.FloorToInt(value);
+                currentRulesetName = RulesetName.Custom;
+                SelectRuleset(RulesetName.Custom);
+                GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
+                GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
+                Generate();
+            });
+
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Survive rule", 0, 99, config.seed, value => {
+                customSurvivalRule = Mathf.FloorToInt(value);
+                currentRulesetName = RulesetName.Custom;
+                SelectRuleset(RulesetName.Custom);
+                GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
+                GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
+                Generate();
+            });
 
             InstantiateControl<SliderControl>(leftPanel).Initialize("Seed", 0, 100, config.seed, value => {
                 config.seed = Mathf.FloorToInt(value);
@@ -113,8 +134,12 @@ namespace ProceduralToolkit.Samples
 
         private void SelectRuleset(RulesetName rulesetName)
         {
-            config.ruleset = nameToRuleset[rulesetName];
-
+            if (rulesetName == RulesetName.Custom) {
+                config.ruleset = new CellularAutomaton.Ruleset(customBirthRule.ToString(), customSurvivalRule.ToString());
+            }
+            else {
+                config.ruleset = nameToRuleset[rulesetName];
+            }
             header.Initialize("Rulestring: " + config.ruleset);
         }
 
