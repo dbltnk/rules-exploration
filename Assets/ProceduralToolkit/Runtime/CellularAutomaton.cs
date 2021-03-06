@@ -18,6 +18,7 @@ namespace ProceduralToolkit
             public Ruleset ruleset = Ruleset.life;
             public float startNoise = 0.25f;
             public bool aliveBorders = false;
+            public int seed = 0;
         }
 
         private bool[,] _cells;
@@ -128,6 +129,7 @@ namespace ProceduralToolkit
 
         public void FillWithNoise(float noise)
         {
+            Random.InitState(config.seed);
             for (int x = 0; x < config.width; x++)
             {
                 for (int y = 0; y < config.height; y++)

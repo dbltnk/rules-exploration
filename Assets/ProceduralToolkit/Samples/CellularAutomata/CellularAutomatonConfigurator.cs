@@ -34,7 +34,7 @@ namespace ProceduralToolkit.Samples
         private Color deadColor;
         private Color aliveColor;
         private TextControl header;
-        private bool isPlaying = false;
+        private bool isPlaying = true;
         private float stepsPerSecond = 10f;
         private float lastStep = 0f;
 
@@ -70,6 +70,11 @@ namespace ProceduralToolkit.Samples
             InstantiateToggle(RulesetName.Anneal, currentRulesetName);
             InstantiateToggle(RulesetName.Majority, currentRulesetName);
 
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Seed", 0, 100, config.seed, value => {
+                config.seed = Mathf.FloorToInt(value);
+                Generate();
+            });
+
             InstantiateControl<SliderControl>(leftPanel).Initialize("Start noise", 0, 1, config.startNoise, value =>
             {
                 config.startNoise = value;
@@ -82,7 +87,7 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Generate", Generate);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Generate/Reset", Generate);
             InstantiateControl<SliderControl>(leftPanel).Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
                 stepsPerSecond = value;
             });
@@ -95,6 +100,8 @@ namespace ProceduralToolkit.Samples
 
         private void Update()
         {
+            DrawCells();
+            UpdateSkybox();
             if (isPlaying) {
                 float timeSinceLastStep = Time.time - lastStep;
                 if (timeSinceLastStep >= 1f / stepsPerSecond) {
@@ -129,8 +136,6 @@ namespace ProceduralToolkit.Samples
 
         private void Step () {
             automaton.Simulate();
-            DrawCells();
-            UpdateSkybox();
         }
 
         private void DrawCells()
