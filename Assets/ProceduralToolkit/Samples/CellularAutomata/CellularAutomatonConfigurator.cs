@@ -192,6 +192,10 @@ namespace ProceduralToolkit.Samples
                     if (cellCount < cellsNeeded) {
                         GameObject cell = Instantiate(PrefCell);
                         cell.transform.SetParent(image.transform, false);
+                        Cell c = cell.GetComponent<Cell>();
+                        c.X = x;
+                        c.Y = y;
+                        c.counter = y * config.width + x;
                     }
 
                     if (automaton.cells[x, y])
@@ -226,6 +230,12 @@ namespace ProceduralToolkit.Samples
                     }
                 },
                 toggleGroup: toggleGroup);
+        }
+
+        public void ActivateCell(int counter) {
+            print(pixels[counter].r);
+            pixels[counter].r = 0f;
+            print(counter);
         }
     }
 }
