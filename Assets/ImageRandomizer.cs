@@ -30,22 +30,23 @@ public class ImageRandomizer : MonoBehaviour
     }
 
     private void Update () {
-        if (Random.Range(0f, 1f) <= 0.75f && conf.IsPlaying) {
+        float wiggleChance = 0.33f * Time.deltaTime;
+        if (Random.Range(0f, 1f) <= wiggleChance && conf.IsPlaying) {
 
             float tZ = transform.localScale.z;
             if (Random.Range(0f, 1f) < 0.5f) {
-                tZ *= 1.005f;
+                tZ *= 1.025f;
             } else {
-                tZ *= 0.995f;
+                tZ *= 0.975f;
             }
             tZ = Mathf.Clamp(tZ, 0.9f, 1.1f);
 
             float tX = Mathf.Abs(transform.localScale.x);
             float s = Mathf.Sign(transform.localScale.x);
             if (Random.Range(0f, 1f) < 0.5f) {
-                tX *= 1.005f;
+                tX *= 1.025f;
             } else {
-                tX *= 0.995f;
+                tX *= 0.975f;
             }
             tX = Mathf.Clamp(tX, 0.9f, 1.1f);
 
