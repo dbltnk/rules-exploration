@@ -72,6 +72,8 @@ namespace ProceduralToolkit.Samples
 
         private void Awake()
         {
+            GeneratePalette();
+
             pixels = new Color[config.width*config.height];
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
             image.texture = texture;
@@ -82,7 +84,7 @@ namespace ProceduralToolkit.Samples
 
             var goal = InstantiateControl<TextControl>(leftPanel);
             goal.transform.SetAsFirstSibling();
-            goal.headerText.text = "<b>Dr. Connie Wei:</b> <i>\"Can you find out what rules these little creatures live by?\"</i>";
+            goal.headerText.text = "<b>Dr. Connie Wei:</b> <i>\"Can you find out what rules these miraculous little creatures live by?\"</i>";
 
             var connie = Instantiate(PrefConnieWei);
             connie.transform.SetParent(leftPanel);
@@ -146,6 +148,10 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Play / pause", PlayPause);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Next step", Step);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Reset", Generate);
+
             InstantiateControl<SliderControl>(leftPanel).Initialize("Seed", seedMin, seedMax, config.seed, value => {
                 config.seed = Mathf.FloorToInt(value);
                 Generate();
@@ -157,15 +163,12 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Generate/Reset", Generate);
             InstantiateControl<SliderControl>(leftPanel).Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
                 stepsPerSecond = value;
             });
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Play/Pause", PlayPause);
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Step", Step);
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Unhide rules", UnhideRules);
-            InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide rules", UnhideRules);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", UnhideRules);
+            InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide configuration", UnhideRules);
 
             InstantiateControl<ButtonControl>(leftPanel).Initialize("New game", NewGame);
 
@@ -233,8 +236,6 @@ namespace ProceduralToolkit.Samples
         private void Generate()
         {
             automaton = new CellularAutomaton(config);
-
-            GeneratePalette();
 
             deadColor = GetMainColorHSV().WithSV(0.3f, 0.2f).ToColor();
             aliveColor = GetMainColorHSV().ToColor();
