@@ -23,6 +23,7 @@ namespace ProceduralToolkit.Samples
         public GameObject PrefConnieWei;
         public RectTransform RulesPopup;
         public RectTransform leftPanel;
+        public RectTransform rightPanel;
         public ToggleGroup toggleGroup;
         public RawImage image;
         [Space]
@@ -169,15 +170,30 @@ namespace ProceduralToolkit.Samples
                 stepsPerSecond = value;
             });
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", UnhideRules);
-            InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide configuration", UnhideRules);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", SuggestSolution);
+            InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide configuration", SuggestSolution);
 
             InstantiateControl<ButtonControl>(leftPanel).Initialize("New experiment", NewGame);
 
-            //UnhideRules();
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", SuggestSolution);
+
+            var answer = InstantiateControl<TextControl>(rightPanel).headerText.text = "<b>My answer</b> for Dr. Connie is:";
+            var answerBirth = InstantiateControl<TextBoxControl>(rightPanel);
+            answerBirth.Initialize("<i>Birth rule: (e.g. 123)</i>");
+            var answerSurvival = InstantiateControl<TextBoxControl>(rightPanel);
+            answerSurvival.Initialize("<i>Survival rule: (e.g. 2578)</i>");
+            var answerAliveBorder = InstantiateControl<ToggleControl>(rightPanel);
+            answerAliveBorder.Initialize("Border Is Alive", false, value => {
+                //config.aliveBorders = value;
+            });
+            InstantiateControl<ButtonControl>(rightPanel).Initialize("Submit your theory", Answer);
 
             Generate();
             SetupSkyboxAndPalette();
+        }
+
+        private void Answer () {
+            //throw new System.NotImplementedException();
         }
 
         private void Fill () {
@@ -206,7 +222,7 @@ namespace ProceduralToolkit.Samples
             }
         }
 
-        private void UnhideRules () {
+        private void SuggestSolution () {
             //HideMe[] elements = Resources.FindObjectsOfTypeAll<HideMe>();
             //foreach (HideMe e in elements) {
             //    e.gameObject.SetActive(!e.gameObject.activeSelf);
