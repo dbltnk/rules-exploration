@@ -232,17 +232,9 @@ namespace ProceduralToolkit.Samples
                 toggleGroup: toggleGroup);
         }
 
-        public void ActivateCell(int counter) {
-            if (pixels[counter] == aliveColor) {
-                pixels[counter] = deadColor;
-                image.transform.GetComponentsInChildren<Image>()[counter].color = deadColor;
-            }
-            else {
-                pixels[counter] = aliveColor;
-                image.transform.GetComponentsInChildren<Image>()[counter].color = aliveColor;
-            }
-            texture.SetPixels(pixels);
-            texture.Apply();
+        public void FlipCell (int x, int y) {
+            // no idea why I am flipping these =D 
+            automaton.cells[y, x] = !automaton.cells[y, x];
         }
     }
 }

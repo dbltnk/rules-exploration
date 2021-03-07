@@ -2,7 +2,6 @@
 
 ## TODO
 
-* dead/alive cells via mouse click
 * two-layer visuals
 * graphs/stats
 

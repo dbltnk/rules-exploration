@@ -25,7 +25,7 @@ namespace ProceduralToolkit
         public bool[,] cells
         {
             get => _cells;
-            private set => _cells = value;
+            set => _cells = value;
         }
 
         private Config config;
