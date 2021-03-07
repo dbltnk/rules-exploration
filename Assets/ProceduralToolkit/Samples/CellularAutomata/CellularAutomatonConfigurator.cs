@@ -33,19 +33,21 @@ namespace ProceduralToolkit.Samples
 
         private Color[] pixels;
         private Texture2D texture;
-        private CellularAutomaton automaton;
-        private Color deadColor;
-        private Color aliveColor;
+        public CellularAutomaton automaton;
+        public Color deadColor;
+        public Color aliveColor;
         private TextControl header;
         public bool IsPlaying = true;
         private float stepsPerSecond = 2f;
         private float lastStep = 0f;
+        public int StepCount = 0;
         private int customBirthRule = 0;
         private int customSurvivalRule = 0;
         private int maxCustomBirthRule = 9;
         private int maxCustomSurvivalRule = 9;
         private int seedMin = 0;
         private int seedMax = 100;
+        public bool dirty = false;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -153,6 +155,7 @@ namespace ProceduralToolkit.Samples
             }
         }
 
+
         private void SelectRuleset(RulesetName rulesetName)
         {
             if (rulesetName == RulesetName.Custom) {
@@ -182,6 +185,7 @@ namespace ProceduralToolkit.Samples
 
         private void Step () {
             automaton.Simulate();
+            StepCount++;
         }
 
         private void DrawCells()
@@ -238,6 +242,7 @@ namespace ProceduralToolkit.Samples
         public void FlipCell (int x, int y) {
             // no idea why I am flipping these =D 
             automaton.cells[y, x] = !automaton.cells[y, x];
+            dirty = true;
         }
     }
 }

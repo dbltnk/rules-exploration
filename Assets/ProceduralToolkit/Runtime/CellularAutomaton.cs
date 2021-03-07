@@ -28,7 +28,7 @@ namespace ProceduralToolkit
             set => _cells = value;
         }
 
-        private Config config;
+        public Config config;
         private readonly Action<int, int> visitAliveBorders;
         private readonly Action<int, int> visitDeadBorders;
         private bool[,] copy;
