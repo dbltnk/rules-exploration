@@ -2,6 +2,7 @@ using ProceduralToolkit.Samples.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace ProceduralToolkit.Samples
 {
@@ -19,6 +20,7 @@ namespace ProceduralToolkit.Samples
     public class CellularAutomatonConfigurator : ConfiguratorBase
     {
         public GameObject PrefCell;
+        public GameObject PrefConnieWei;
         public RectTransform leftPanel;
         public ToggleGroup toggleGroup;
         public RawImage image;
@@ -72,11 +74,17 @@ namespace ProceduralToolkit.Samples
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
             image.texture = texture;
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Unhide rules", UnhideRules);
-
             header = InstantiateControl<TextControl>(leftPanel);
             header.transform.SetAsFirstSibling();
             header.gameObject.AddComponent<HideMe>();
+
+            var goal = InstantiateControl<TextControl>(leftPanel);
+            goal.transform.SetAsFirstSibling();
+            goal.headerText.text = "<b>Dr. Connie Wei:</b> <i>\"Can you find out what rules these little creatures live by?\"</i>";
+
+            var connie = Instantiate(PrefConnieWei);
+            connie.transform.SetParent(leftPanel);
+            connie.transform.SetAsFirstSibling();
 
             var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
             var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
@@ -154,10 +162,18 @@ namespace ProceduralToolkit.Samples
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Play/Pause", PlayPause);
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Step", Step);
 
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Unhide rules", UnhideRules);
+
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("New game", NewGame);
+
             UnhideRules();
 
             Generate();
             SetupSkyboxAndPalette();
+        }
+
+        private void NewGame () {
+            Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
         }
 
         private void UnhideRules () {

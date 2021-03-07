@@ -5370,6 +5370,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PrefCell: {fileID: 2594283169984067351, guid: 37fdb59923f109e4c935eba2b85c645b,
     type: 3}
+  PrefConnieWei: {fileID: 8316235345974135777, guid: c9f0554150107a14386e8394d325c5b0,
+    type: 3}
   leftPanel: {fileID: 1785664460}
   toggleGroup: {fileID: 1079176263}
   image: {fileID: 1094236749}
@@ -16268,7 +16270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.5}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:

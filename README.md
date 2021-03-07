@@ -27,3 +27,9 @@
 * support drag & drop movement of tiles
 * support zoom & drag-move of camera
 * support animations, shaders, etc
+
+## Potential goals
+
+* [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent bruteforce solutions)?
+* create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+* identify the [birth / survival] rules for species [X]
