@@ -148,11 +148,13 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Play / pause", PlayPause);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Start / pause", PlayPause);
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Next step", Step);
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Reset", Generate);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Reset experiment", Generate);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Clear dish", Clear);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Fill dish", Fill);
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Seed", seedMin, seedMax, config.seed, value => {
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Seed value", seedMin, seedMax, config.seed, value => {
                 config.seed = Mathf.FloorToInt(value);
                 Generate();
             });
@@ -170,12 +172,28 @@ namespace ProceduralToolkit.Samples
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", UnhideRules);
             InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide configuration", UnhideRules);
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("New game", NewGame);
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("New experiment", NewGame);
 
             //UnhideRules();
 
             Generate();
             SetupSkyboxAndPalette();
+        }
+
+        private void Fill () {
+            for (int x = 0; x < config.width; x++) {
+                for (int y = 0; y < config.height; y++) {
+                    automaton.cells[y, x] = true;
+                }
+            }
+        }
+
+        private void Clear () {
+            for (int x = 0; x < config.width; x++) {
+                for (int y = 0; y < config.height; y++) {
+                    automaton.cells[y, x] = false;
+                }
+            }
         }
 
         private void NewGame () {
@@ -184,7 +202,7 @@ namespace ProceduralToolkit.Samples
             }
             else {
                 confirmNewGame = true;
-                leftPanel.Find("New game").GetComponentInChildren<Text>().text = "Click to confirm!";
+                leftPanel.Find("New experiment").GetComponentInChildren<Text>().text = "Click to confirm!";
             }
         }
 
