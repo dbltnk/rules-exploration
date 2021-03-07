@@ -1,6 +1,5 @@
-using System;
-using System.Collections.Generic;
 using ProceduralToolkit.Samples.UI;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +9,13 @@ namespace ProceduralToolkit.Samples
     /// A demonstration of CellularAutomaton from the main library, draws the automaton simulation on a texture.
     /// Note that some of the rulesets need noise value different from the default setting.
     /// </summary>
+    /// 
+
+    public class HideMe : MonoBehaviour
+    {
+
+    }
+
     public class CellularAutomatonConfigurator : ConfiguratorBase
     {
         public GameObject PrefCell;
@@ -43,8 +49,8 @@ namespace ProceduralToolkit.Samples
         public int StepCount = 0;
         private int customBirthRule = 0;
         private int customSurvivalRule = 0;
-        private int maxCustomBirthRule = 9;
-        private int maxCustomSurvivalRule = 9;
+        private int maxCustomBirthRule = 99999;
+        private int maxCustomSurvivalRule = 99999;
         private int seedMin = 0;
         private int seedMax = 100;
         public bool dirty = false;
@@ -66,27 +72,37 @@ namespace ProceduralToolkit.Samples
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
             image.texture = texture;
 
+            InstantiateControl<ButtonControl>(leftPanel).Initialize("Unhide rules", UnhideRules);
+
             header = InstantiateControl<TextControl>(leftPanel);
             header.transform.SetAsFirstSibling();
+            header.gameObject.AddComponent<HideMe>();
 
-            //RandomizeRules();
+            var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
+            var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
+            RandomizeRules();
+            UnityEngine.Random.InitState(timestamp);
             config.seed = UnityEngine.Random.Range(seedMin, seedMax);
-
-            var currentRulesetName = RulesetName.Custom;
+            int r = UnityEngine.Random.Range(0, 8);
+            var currentRulesetName = (RulesetName)r;
+            //var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
 
-            InstantiateToggle(RulesetName.Life, currentRulesetName);
-            InstantiateToggle(RulesetName.Mazectric, currentRulesetName);
-            InstantiateToggle(RulesetName.Coral, currentRulesetName);
-            InstantiateToggle(RulesetName.WalledCities, currentRulesetName);
-            InstantiateToggle(RulesetName.Coagulations, currentRulesetName);
-            InstantiateToggle(RulesetName.Anneal, currentRulesetName);
-            InstantiateToggle(RulesetName.Majority, currentRulesetName);
-            InstantiateToggle(RulesetName.Custom, currentRulesetName);
+            InstantiateToggle(RulesetName.Life, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Mazectric, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Coral, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.WalledCities, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Coagulations, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Anneal, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Majority, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Custom, currentRulesetName).AddComponent<HideMe>();
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Randomize rules", RandomizeRules);
+            var randomizeRulesControl = InstantiateControl<ButtonControl>(leftPanel);
+            randomizeRulesControl.gameObject.AddComponent<HideMe>();
+            randomizeRulesControl.Initialize("Randomize rules", RandomizeRules);
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Birth rule", 0, maxCustomBirthRule, config.seed, value => {
+            SliderControl birthControl = InstantiateControl<SliderControl>(leftPanel);
+            birthControl.Initialize("Birth rule", 0, maxCustomBirthRule, config.seed, value => {
                 customBirthRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
@@ -94,13 +110,29 @@ namespace ProceduralToolkit.Samples
                 GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
                 Generate();
             });
+            birthControl.gameObject.AddComponent<HideMe>();
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Survive rule", 0, maxCustomSurvivalRule, config.seed, value => {
+            SliderControl survivalControl = InstantiateControl<SliderControl>(leftPanel);
+            survivalControl.Initialize("Survive rule", 0, maxCustomSurvivalRule, config.seed, value => {
                 customSurvivalRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
                 GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
                 GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
+                Generate();
+            });
+            survivalControl.gameObject.AddComponent<HideMe>();
+
+            if (UnityEngine.Random.Range(0f, 1f) < 0.5f) { 
+                config.aliveBorders = true; 
+            }
+            else {
+                config.aliveBorders = false;
+            }
+            var aliveBordersControl = InstantiateControl<ToggleControl>(leftPanel);
+            aliveBordersControl.gameObject.AddComponent<HideMe>();
+            aliveBordersControl.Initialize("Alive borders", config.aliveBorders, value => {
+                config.aliveBorders = value;
                 Generate();
             });
 
@@ -115,12 +147,6 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<ToggleControl>(leftPanel).Initialize("Alive borders", config.aliveBorders, value =>
-            {
-                config.aliveBorders = value;
-                Generate();
-            });
-
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Generate/Reset", Generate);
             InstantiateControl<SliderControl>(leftPanel).Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
                 stepsPerSecond = value;
@@ -128,8 +154,17 @@ namespace ProceduralToolkit.Samples
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Play/Pause", PlayPause);
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Step", Step);
 
+            UnhideRules();
+
             Generate();
             SetupSkyboxAndPalette();
+        }
+
+        private void UnhideRules () {
+            HideMe[] elements = Resources.FindObjectsOfTypeAll<HideMe>();
+            foreach (HideMe e in elements) {
+                e.gameObject.SetActive(!e.gameObject.activeSelf);
+            }
         }
 
         private void RandomizeRules () {
@@ -222,7 +257,7 @@ namespace ProceduralToolkit.Samples
             texture.Apply();
         }
 
-        private void InstantiateToggle(RulesetName rulesetName, RulesetName selectedRulesetName)
+        private GameObject InstantiateToggle (RulesetName rulesetName, RulesetName selectedRulesetName)
         {
             var toggle = InstantiateControl<ToggleControl>(toggleGroup.transform);
             toggle.Initialize(
@@ -237,6 +272,7 @@ namespace ProceduralToolkit.Samples
                     }
                 },
                 toggleGroup: toggleGroup);
+            return toggle.gameObject;
         }
 
         public void FlipCell (int x, int y) {

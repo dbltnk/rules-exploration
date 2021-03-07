@@ -2,8 +2,6 @@
 
 ## TODO
 
-* prettify graph
-
 ## Ideas
 
 * multiple layers 
