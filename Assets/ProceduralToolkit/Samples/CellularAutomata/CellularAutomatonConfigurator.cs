@@ -57,6 +57,7 @@ namespace ProceduralToolkit.Samples
         private int seedMin = 0;
         private int seedMax = 100;
         public bool dirty = false;
+        private bool confirmNewGame = false;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -175,7 +176,13 @@ namespace ProceduralToolkit.Samples
         }
 
         private void NewGame () {
-            Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+            if (confirmNewGame == true) {
+                Scene scene = SceneManager.GetActiveScene(); SceneManager.LoadScene(scene.name);
+            }
+            else {
+                confirmNewGame = true;
+                leftPanel.Find("New game").GetComponentInChildren<Text>().text = "Click to confirm!";
+            }
         }
 
         private void UnhideRules () {
