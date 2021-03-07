@@ -8,8 +8,8 @@
 
 * multiple layers 
 ** independent by default
-** cells above/below effect individuals
-** stats from one layer affect all individuals in another layer
+** option: cells above/below effect individuals
+** option: aggregate stats from one layer affect all individuals in another layer
 * more states & stats per cell than just dead/alive
 * moving creatures
 * Themes
