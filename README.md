@@ -4,8 +4,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
-* slow down the flickering, too stressful
-
 * modes
 ** tutorial / intro
 *** explain birth/survive(death) basics	
