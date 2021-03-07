@@ -13,6 +13,13 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 *** input for "what the rules are" mode (just leave number slots for birth, survive & then border behaviour)
 ** free play
 
+## Potential goals
+
+* [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent bruteforce solutions)?
+* create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+* identify the [birth / survival] rules for species [X]
+* and then just a chill experimentation mode where you set rules and see what you can get to emerge
+
 ## Ideas
 
 * wrapping as an alternative to borders
@@ -49,9 +56,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * support zoom & drag-move of camera
 * support animations, shaders, etc
 
-## Potential goals
+## Games to try
 
-* [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent bruteforce solutions)?
-* create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
-* identify the [birth / survival] rules for species [X]
-* and then just a chill experimentation mode where you set rules and see what you can get to emerge
+* https://games.increpare.com/Gestalt_OS/
+* Zachtronics++
