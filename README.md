@@ -13,6 +13,9 @@
 * Themes
 ** cells in petri dish
 ** life on a foreign planet
+* Sharing for solving a task cooperatively
+** Hash of species (rules config)
+** Hash of state (species + seed + density + cells)
 
 ## Refactoring
 
