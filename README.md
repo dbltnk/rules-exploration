@@ -1,4 +1,6 @@
-# rules-exploration
+# rules-exploration or Dr. Conny's Lab?
+
+Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
