@@ -2,7 +2,6 @@
 
 ## TODO
 
-* two-layer visuals
 * graphs/stats
 
 ## Ideas

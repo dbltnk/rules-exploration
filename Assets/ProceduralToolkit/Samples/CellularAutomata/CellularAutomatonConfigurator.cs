@@ -37,13 +37,15 @@ namespace ProceduralToolkit.Samples
         private Color deadColor;
         private Color aliveColor;
         private TextControl header;
-        private bool isPlaying = false;
-        private float stepsPerSecond = 10f;
+        public bool IsPlaying = true;
+        private float stepsPerSecond = 2f;
         private float lastStep = 0f;
         private int customBirthRule = 0;
         private int customSurvivalRule = 0;
         private int maxCustomBirthRule = 9;
         private int maxCustomSurvivalRule = 9;
+        private int seedMin = 0;
+        private int seedMax = 100;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -66,6 +68,7 @@ namespace ProceduralToolkit.Samples
             header.transform.SetAsFirstSibling();
 
             //RandomizeRules();
+            config.seed = UnityEngine.Random.Range(seedMin, seedMax);
 
             var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
@@ -99,7 +102,7 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Seed", 0, 100, config.seed, value => {
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Seed", seedMin, seedMax, config.seed, value => {
                 config.seed = Mathf.FloorToInt(value);
                 Generate();
             });
@@ -141,7 +144,7 @@ namespace ProceduralToolkit.Samples
         {
             DrawCells();
             UpdateSkybox();
-            if (isPlaying) {
+            if (IsPlaying) {
                 float timeSinceLastStep = Time.time - lastStep;
                 if (timeSinceLastStep >= 1f / stepsPerSecond) {
                     Step();
@@ -174,7 +177,7 @@ namespace ProceduralToolkit.Samples
         }
 
         private void PlayPause () {
-            isPlaying = !isPlaying;
+            IsPlaying = !IsPlaying;
         }
 
         private void Step () {
