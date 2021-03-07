@@ -21,6 +21,7 @@ namespace ProceduralToolkit.Samples
     {
         public GameObject PrefCell;
         public GameObject PrefConnieWei;
+        public RectTransform RulesPopup;
         public RectTransform leftPanel;
         public ToggleGroup toggleGroup;
         public RawImage image;
@@ -74,7 +75,7 @@ namespace ProceduralToolkit.Samples
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
             image.texture = texture;
 
-            header = InstantiateControl<TextControl>(leftPanel);
+            header = InstantiateControl<TextControl>(RulesPopup);
             header.transform.SetAsFirstSibling();
             header.gameObject.AddComponent<HideMe>();
 
@@ -96,20 +97,20 @@ namespace ProceduralToolkit.Samples
             //var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
 
-            InstantiateToggle(RulesetName.Life, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.Mazectric, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.Coral, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.WalledCities, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.Coagulations, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.Anneal, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.Majority, currentRulesetName).AddComponent<HideMe>();
-            InstantiateToggle(RulesetName.Custom, currentRulesetName).AddComponent<HideMe>();
+            InstantiateToggle(RulesetName.Life, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Mazectric, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Coral, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.WalledCities, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Coagulations, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Anneal, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Majority, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Custom, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
 
-            var randomizeRulesControl = InstantiateControl<ButtonControl>(leftPanel);
+            var randomizeRulesControl = InstantiateControl<ButtonControl>(RulesPopup);
             randomizeRulesControl.gameObject.AddComponent<HideMe>();
             randomizeRulesControl.Initialize("Randomize rules", RandomizeRules);
 
-            SliderControl birthControl = InstantiateControl<SliderControl>(leftPanel);
+            SliderControl birthControl = InstantiateControl<SliderControl>(RulesPopup);
             birthControl.Initialize("Birth rule", 0, maxCustomBirthRule, config.seed, value => {
                 customBirthRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
@@ -120,7 +121,7 @@ namespace ProceduralToolkit.Samples
             });
             birthControl.gameObject.AddComponent<HideMe>();
 
-            SliderControl survivalControl = InstantiateControl<SliderControl>(leftPanel);
+            SliderControl survivalControl = InstantiateControl<SliderControl>(RulesPopup);
             survivalControl.Initialize("Survive rule", 0, maxCustomSurvivalRule, config.seed, value => {
                 customSurvivalRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
@@ -137,7 +138,7 @@ namespace ProceduralToolkit.Samples
             else {
                 config.aliveBorders = false;
             }
-            var aliveBordersControl = InstantiateControl<ToggleControl>(leftPanel);
+            var aliveBordersControl = InstantiateControl<ToggleControl>(RulesPopup);
             aliveBordersControl.gameObject.AddComponent<HideMe>();
             aliveBordersControl.Initialize("Alive borders", config.aliveBorders, value => {
                 config.aliveBorders = value;
@@ -163,10 +164,11 @@ namespace ProceduralToolkit.Samples
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Step", Step);
 
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Unhide rules", UnhideRules);
+            InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide rules", UnhideRules);
 
             InstantiateControl<ButtonControl>(leftPanel).Initialize("New game", NewGame);
 
-            UnhideRules();
+            //UnhideRules();
 
             Generate();
             SetupSkyboxAndPalette();
@@ -177,10 +179,13 @@ namespace ProceduralToolkit.Samples
         }
 
         private void UnhideRules () {
-            HideMe[] elements = Resources.FindObjectsOfTypeAll<HideMe>();
-            foreach (HideMe e in elements) {
-                e.gameObject.SetActive(!e.gameObject.activeSelf);
-            }
+            //HideMe[] elements = Resources.FindObjectsOfTypeAll<HideMe>();
+            //foreach (HideMe e in elements) {
+            //    e.gameObject.SetActive(!e.gameObject.activeSelf);
+            //}
+
+            leftPanel.gameObject.SetActive(!leftPanel.gameObject.activeSelf);
+            RulesPopup.gameObject.SetActive(!RulesPopup.gameObject.activeSelf);
         }
 
         private void RandomizeRules () {
