@@ -145,7 +145,7 @@ namespace ProceduralToolkit.Samples
             }
             var aliveBordersControl = InstantiateControl<ToggleControl>(RulesPopup);
             aliveBordersControl.gameObject.AddComponent<HideMe>();
-            aliveBordersControl.Initialize("Alive borders", config.aliveBorders, value => {
+            aliveBordersControl.Initialize("Awake borders", config.aliveBorders, value => {
                 config.aliveBorders = value;
                 Generate();
             });
@@ -182,7 +182,7 @@ namespace ProceduralToolkit.Samples
             var answerSurvival = InstantiateControl<TextBoxControl>(rightPanel);
             answerSurvival.Initialize("<i>Survival rule: (e.g. 2578)</i>");
             answerAliveBorder = InstantiateControl<ToggleControl>(rightPanel);
-            answerAliveBorder.Initialize("Border Is Alive", false, value => {
+            answerAliveBorder.Initialize("Border Is Awake", false, value => {
                 //config.aliveBorders = value;
             });
             InstantiateControl<ButtonControl>(rightPanel).Initialize("Submit your theory", Answer);

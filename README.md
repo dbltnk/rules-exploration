@@ -4,6 +4,10 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
+* species identifiability
+** hashed "scientific names"
+** user-editable nickname (with presets for the known ones)
+
 * modes
 ** tutorial / intro
 *** explain birth/survive(death) basics	
@@ -11,12 +15,16 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 ** challenge: create a state
 ** detective: what are the rules?
 *** input for "what the rules are" mode (just leave number slots for birth, survive & then border behaviour)
+*** Submit paper for peer review
+*** If wrong, peer rewievers (or the doc) reveal one part of the solution
+*** Score = fewer guesses
 ** free play
 
 ## Potential goals
 
 * [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent bruteforce solutions)?
 * create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+* Make [N] mutations to a species to get to a specific result
 * identify the [birth / survival] rules for species [X]
 * and then just a chill experimentation mode where you set rules and see what you can get to emerge
 
@@ -41,6 +49,13 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 ** general stats of my own species (die if more than X others anywhere)
 ** chance-based
 * do we need animations to figure out what has had influence on what?
+* Complexity Progression
+** Fixed GoL, death/alive
+** Modify min/max rules etc
+** Multiple organisms in one layer (food?)
+** Multiple layers
+** Different types of creatures (movement?)
+
 
 ## Refactoring
 
