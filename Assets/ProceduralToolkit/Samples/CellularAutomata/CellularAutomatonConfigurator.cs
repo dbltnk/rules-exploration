@@ -343,5 +343,17 @@ namespace ProceduralToolkit.Samples
             automaton.cells[y, x] = !automaton.cells[y, x];
             dirty = true;
         }
+
+        public void ActivateCell (int x, int y) {
+            // no idea why I am flipping these =D 
+            automaton.cells[y, x] = true;
+            dirty = true;
+        }
+
+        public void DeactivateCell (int x, int y) {
+            // no idea why I am flipping these =D 
+            automaton.cells[y, x] = false;
+            dirty = true;
+        }
     }
 }

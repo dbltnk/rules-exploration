@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2301644728942796105}
   - component: {fileID: 5812847499937972110}
   - component: {fileID: 5195700029934975673}
+  - component: {fileID: 40807695168265651}
   - component: {fileID: 4067425165977272492}
   - component: {fileID: 2141601813329252183}
   - component: {fileID: 7315215481825752465}
@@ -133,6 +134,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &40807695168265651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2594283169984067351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2141601813329252183}
+          m_MethodName: ActivateCellDrag
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!114 &4067425165977272492
 MonoBehaviour:
   m_ObjectHideFlags: 0
