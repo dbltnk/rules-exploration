@@ -175,8 +175,6 @@ namespace ProceduralToolkit.Samples
 
             InstantiateControl<ButtonControl>(leftPanel).Initialize("New experiment", NewGame);
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", SuggestSolution);
-
             var answer = InstantiateControl<TextControl>(rightPanel).headerText.text = "<b>My answer</b> for Dr. Connie is:";
             var answerBirth = InstantiateControl<TextBoxControl>(rightPanel);
             answerBirth.Initialize("<i>Birth rule: (e.g. 123)</i>");
