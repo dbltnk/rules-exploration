@@ -59,6 +59,7 @@ namespace ProceduralToolkit.Samples
         private int seedMax = 100;
         public bool dirty = false;
         private bool confirmNewGame = false;
+        private ToggleControl answerAliveBorder;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -180,7 +181,7 @@ namespace ProceduralToolkit.Samples
             answerBirth.Initialize("<i>Birth rule: (e.g. 123)</i>");
             var answerSurvival = InstantiateControl<TextBoxControl>(rightPanel);
             answerSurvival.Initialize("<i>Survival rule: (e.g. 2578)</i>");
-            var answerAliveBorder = InstantiateControl<ToggleControl>(rightPanel);
+            answerAliveBorder = InstantiateControl<ToggleControl>(rightPanel);
             answerAliveBorder.Initialize("Border Is Alive", false, value => {
                 //config.aliveBorders = value;
             });
@@ -191,7 +192,12 @@ namespace ProceduralToolkit.Samples
         }
 
         private void Answer () {
-            //throw new System.NotImplementedException();
+            if (config.aliveBorders == answerAliveBorder.toggle.isOn) {
+                print("CORRECT!");
+             }
+            else { 
+                print("WRONG!");
+            }
         }
 
         private void Fill () {
