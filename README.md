@@ -42,14 +42,12 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ### Other Ideas
 
-* P3 wrapping as an alternative to borders
+* P1 more states & stats per cell than just dead/alive
 * P2 multiple layers 
     * independent by default
     * option: cells above/below effect individuals
     * option: aggregate stats from one layer affect all individuals in another layer
     * top: mammals/birds/fish, middle: insects/krill, bottom: bacteria/algae/slime/plants
-* P1 more states & stats per cell than just dead/alive
-* P3 moving creatures
 * P2 Sharing for solving a task cooperatively
     * P2 Hash of species (rules config)
     * P3 Hash of state (species + seed + density + cells)
@@ -57,13 +55,15 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     * P2 specific neighbours ("hibernate if near a floop")
     * P2 general stats of my own species (die if more than X others anywhere)
     * P3 chance-based
-* P3 do we need animations to figure out what has had influence on what?
 * P2 Complexity Progression
     * Fixed GoL, death/alive
     * Modify min/max rules etc
     * Multiple organisms in one layer (food?)
     * Multiple layers
     * Different types of creatures (movement?)
+* P3 moving creatures
+* P3 wrapping as an alternative to borders
+* P3 do we need animations to figure out what has had influence on what?
 
 ## Games to try
 
