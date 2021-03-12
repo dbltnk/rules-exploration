@@ -31,16 +31,14 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 * P1 make the ideas above easily possible for a novice coder like me
 * P1 make it start up super fast (became really slow with the addition of the charts)
-* P2 all UI should always visible in edit mode, even when not playing
-
-* P1 ove unnecessary assets/code (-> make shit open quickly, less importing)
+* P1 remove unnecessary assets/code (-> make shit open quickly, less importing)
+* P1 a nicely editable and extendable data format for the species & level setups
 * P2 get rid of sample code (procgen toolkit, chart tool) & their potential copyright issues
-
+* P2 all UI should always visible in edit mode, even when not playing
 * P2 support drag & drop movement of tiles
 * P2 support different grid sizes
 * P2 support zoom & drag-move of camera
-
-* P3support animations, shaders, etc
+* P3 support animations, shaders, etc
 
 ### Other Ideas
 
