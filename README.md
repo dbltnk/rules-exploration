@@ -1,10 +1,28 @@
-# Dr. Conny's Lab?
+# Dr. Conny's Lab
 
 Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
+* CHECK LICENSEs
+
+### Refactoring
+
+* P1 focus on prototyping iteration speed over everything else
+* P1 make the ideas above easily accessible to a novice coder like me
+* P1 make it start up super fast (got slower with the addition of the charts)
+* P1 remove unnecessary assets/code (less importing)
+* P1 a nicely editable and extendable data format for the species & level setups
+* P1 all code accessible from anywhere (cannot access new scripts from procgen toolkit files)
+* P2 get rid of sample code (procgen toolkit, chart tool) & their potential copyright issues
+* P2 all UI should always visible in edit mode, even when not playing
+* P2 support different grid sizes
+* P2 support zoom & drag-move of camera
+* P3 support drag & drop movement of tiles (https://ncase.me/polygons/)
+* P3 support animations, shaders, etc
+
 ### P1 Game Modes
+
 * P1 menu to select the different modes
 * P2 tutorial / intro
     * explain birth/survive(death) basics	
@@ -23,24 +41,14 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P2 free play mode
     * just a chill experimentation mode where you set rules and see what you can get to emerge
 
-### Refactoring
-
-* P1 focus on prototyping iteration speed over everything else
-* P1 make the ideas above easily accessible to a novice coder like me
-* P1 make it start up super fast (got slower with the addition of the charts)
-* P1 remove unnecessary assets/code (less importing)
-* P1 a nicely editable and extendable data format for the species & level setups
-* P1 all code accessible from anywhere (cannot access new scripts from procgen toolkit files)
-* P2 get rid of sample code (procgen toolkit, chart tool) & their potential copyright issues
-* P2 all UI should always visible in edit mode, even when not playing
-* P2 support drag & drop movement of tiles (https://ncase.me/polygons/)
-* P2 support different grid sizes
-* P2 support zoom & drag-move of camera
-* P3 support animations, shaders, etc
-
 ### Other Ideas
 
 * P1 more states & stats per cell than just dead/alive
+* P1 aggregate stats
+* P1 more complex rules?
+    * P2 specific neighbours ("hibernate if near a floop")
+    * P2 general stats of my own species (die if more than X others anywhere)
+    * P3 chance-based
 * P2 multiple layers 
     * independent by default
     * option: cells above/below effect individuals
@@ -49,10 +57,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P2 Sharing for solving a task cooperatively
     * P2 Hash of species (rules config)
     * P3 Hash of state (species + seed + density + cells)
-* P2 more complex rules?
-    * P2 specific neighbours ("hibernate if near a floop")
-    * P2 general stats of my own species (die if more than X others anywhere)
-    * P3 chance-based
 * P2 Complexity Progression
     * Fixed GoL, death/alive
     * Modify min/max rules etc
