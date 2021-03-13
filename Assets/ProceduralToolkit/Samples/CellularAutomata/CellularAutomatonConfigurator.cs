@@ -98,6 +98,11 @@ namespace ProceduralToolkit.Samples
             var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
             var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
             UnityEngine.Random.InitState(timestamp);
+            if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
+                config.aliveBorders = true;
+            } else {
+                config.aliveBorders = false;
+            }
             config.seed = UnityEngine.Random.Range(seedMin, seedMax);
             int r = UnityEngine.Random.Range(0, 8);
             var currentRulesetName = (RulesetName)r;
@@ -143,11 +148,6 @@ namespace ProceduralToolkit.Samples
             });
             survivalControl.gameObject.AddComponent<HideMe>();
 
-            if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
-                config.aliveBorders = true;
-            } else {
-                config.aliveBorders = false;
-            }
             var aliveBordersControl = InstantiateControl<ToggleControl>(RulesPopup);
             aliveBordersControl.gameObject.AddComponent<HideMe>();
             aliveBordersControl.Initialize("Awake borders", config.aliveBorders, value => {
