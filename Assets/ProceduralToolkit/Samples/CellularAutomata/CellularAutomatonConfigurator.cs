@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text;
 
 namespace ProceduralToolkit.Samples
 {
@@ -47,6 +48,7 @@ namespace ProceduralToolkit.Samples
         public Color deadColor;
         public Color aliveColor;
         private TextControl header;
+        private TextControl hash;
         public bool IsPlaying = true;
         private float stepsPerSecond = 2f;
         private float lastStep = 0f;
@@ -72,17 +74,20 @@ namespace ProceduralToolkit.Samples
             {RulesetName.Majority, CellularAutomaton.Ruleset.majority},
         };
 
-        private void Awake()
-        {
-            GeneratePalette();
+        private void Awake() {
+            //GeneratePalette();
 
-            pixels = new Color[config.width*config.height];
+            pixels = new Color[config.width * config.height];
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
             image.texture = texture;
 
             header = InstantiateControl<TextControl>(RulesPopup);
             header.transform.SetAsFirstSibling();
             header.gameObject.AddComponent<HideMe>();
+
+            hash = InstantiateControl<TextControl>(RulesPopup);
+            hash.transform.SetAsFirstSibling();
+            hash.gameObject.AddComponent<HideMe>();
 
             var goal = InstantiateControl<TextControl>(leftPanel);
             goal.transform.SetAsFirstSibling();
@@ -101,6 +106,8 @@ namespace ProceduralToolkit.Samples
             var currentRulesetName = (RulesetName)r;
             //var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
+
+            SetupSkyboxAndPalette();
 
             InstantiateToggle(RulesetName.Life, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
             InstantiateToggle(RulesetName.Mazectric, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
@@ -137,10 +144,9 @@ namespace ProceduralToolkit.Samples
             });
             survivalControl.gameObject.AddComponent<HideMe>();
 
-            if (UnityEngine.Random.Range(0f, 1f) < 0.5f) { 
-                config.aliveBorders = true; 
-            }
-            else {
+            if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
+                config.aliveBorders = true;
+            } else {
                 config.aliveBorders = false;
             }
             var aliveBordersControl = InstantiateControl<ToggleControl>(RulesPopup);
@@ -161,8 +167,7 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Start noise", 0, 1, config.startNoise, value =>
-            {
+            InstantiateControl<SliderControl>(leftPanel).Initialize("Start noise", 0, 1, config.startNoise, value => {
                 config.startNoise = value;
                 Generate();
             });
@@ -186,9 +191,13 @@ namespace ProceduralToolkit.Samples
                 //config.aliveBorders = value;
             });
             InstantiateControl<ButtonControl>(rightPanel).Initialize("Submit your theory", Answer);
+        }
 
-            Generate();
-            SetupSkyboxAndPalette();
+        private string SetSpeciesName () {
+            string configToHash = config.ruleset.ToString() + config.aliveBorders.ToString();
+            hash.headerText.text = "Species " + md5(configToHash).Substring(0, 8);
+            GameObject.Find("SpeciesHash").GetComponent<Text>().text = hash.headerText.text;
+            return configToHash;
         }
 
         private void Answer () {
@@ -274,7 +283,8 @@ namespace ProceduralToolkit.Samples
         private void Generate()
         {
             automaton = new CellularAutomaton(config);
-
+            string n = SetSpeciesName();
+            GeneratePalette(n);
             deadColor = GetMainColorHSV().WithSV(0.3f, 0.2f).ToColor();
             aliveColor = GetMainColorHSV().ToColor();
 
@@ -358,6 +368,12 @@ namespace ProceduralToolkit.Samples
             // no idea why I am flipping these =D 
             automaton.cells[y, x] = false;
             dirty = true;
+        }
+        public static string md5 (string str) {
+            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            byte[] bytes = encoding.GetBytes(str);
+            var sha = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            return System.BitConverter.ToString(sha.ComputeHash(bytes));
         }
     }
 }

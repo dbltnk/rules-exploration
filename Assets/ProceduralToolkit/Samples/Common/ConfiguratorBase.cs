@@ -82,6 +82,16 @@ namespace ProceduralToolkit.Samples
             targetPalette.horizonColor = palette[3];
             targetPalette.groundColor = ColorHSV.Lerp(targetPalette.skyColor, targetPalette.horizonColor, 0.5f);
         }
+        public void GeneratePalette (string species) {
+            int seed = species.GetHashCode();
+            UnityEngine.Random.InitState(seed);
+            List<ColorHSV> palette = RandomE.TetradicPalette(0.25f, 0.7f);
+            targetPalette.mainColor = palette[0].WithSV(0.8f, 0.6f);
+            targetPalette.secondaryColor = palette[1].WithSV(0.8f, 0.6f);
+            targetPalette.skyColor = palette[2];
+            targetPalette.horizonColor = palette[3];
+            targetPalette.groundColor = ColorHSV.Lerp(targetPalette.skyColor, targetPalette.horizonColor, 0.5f);
+        }
 
         protected ColorHSV GetMainColorHSV()
         {
