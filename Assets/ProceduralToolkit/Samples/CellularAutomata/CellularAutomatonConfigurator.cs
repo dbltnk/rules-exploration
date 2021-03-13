@@ -62,6 +62,8 @@ namespace ProceduralToolkit.Samples
         public bool dirty = false;
         private bool confirmNewGame = false;
         private ToggleControl answerAliveBorder;
+        private TextBoxControl answerBirth;
+        private TextBoxControl answerSurvival;
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
         {
@@ -181,9 +183,9 @@ namespace ProceduralToolkit.Samples
             InstantiateControl<ButtonControl>(leftPanel).Initialize("New experiment", NewGame);
 
             var answer = InstantiateControl<TextControl>(rightPanel).headerText.text = "<b>My answer</b> for Dr. Connie is:";
-            var answerBirth = InstantiateControl<TextBoxControl>(rightPanel);
+            answerBirth = InstantiateControl<TextBoxControl>(rightPanel);
             answerBirth.Initialize("<i>Birth rule: (e.g. 123)</i>");
-            var answerSurvival = InstantiateControl<TextBoxControl>(rightPanel);
+            answerSurvival = InstantiateControl<TextBoxControl>(rightPanel);
             answerSurvival.Initialize("<i>Survival rule: (e.g. 2578)</i>");
             answerAliveBorder = InstantiateControl<ToggleControl>(rightPanel);
             answerAliveBorder.Initialize("Border Is Awake", false, value => {
@@ -200,12 +202,28 @@ namespace ProceduralToolkit.Samples
         }
 
         private void Answer () {
-            if (config.aliveBorders == answerAliveBorder.toggle.isOn) {
+            string b = "";
+            foreach (var digit in config.ruleset.birthRule) {
+                b += digit;
+            }
+            string s = "";
+            foreach (var digit in config.ruleset.survivalRule) {
+                s += digit;
+            }
+            bool birthIsCorrect = answerBirth.headerText.text == b;
+            bool survivalIsCorrect = answerSurvival.headerText.text == s;
+            bool bordersArecorrect = config.aliveBorders == answerAliveBorder.toggle.isOn;
+
+            if (birthIsCorrect && survivalIsCorrect && bordersArecorrect) {
                 print("CORRECT!");
              }
             else { 
                 print("WRONG!");
             }
+
+            print(answerBirth.headerText.text + " vs " + b);
+            print(answerSurvival.headerText.text + " vs " + s);
+            print(answerAliveBorder.toggle.isOn + " vs " + config.aliveBorders);
         }
 
         private void Fill () {
