@@ -33,7 +33,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P1 all code accessible from anywhere (cannot access new scripts from procgen toolkit files)
 * P2 get rid of sample code (procgen toolkit, chart tool) & their potential copyright issues
 * P2 all UI should always visible in edit mode, even when not playing
-* P2 support drag & drop movement of tiles
+* P2 support drag & drop movement of tiles (https://ncase.me/polygons/)
 * P2 support different grid sizes
 * P2 support zoom & drag-move of camera
 * P3 support animations, shaders, etc
