@@ -26,10 +26,11 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 ### Refactoring
 
 * P1 focus on prototyping iteration speed over everything else
-* P1 make the ideas above easily possible for a novice coder like me
-* P1 make it start up super fast (became really slow with the addition of the charts)
-* P1 remove unnecessary assets/code (-> make shit open quickly, less importing)
+* P1 make the ideas above easily accessible to a novice coder like me
+* P1 make it start up super fast (got slower with the addition of the charts)
+* P1 remove unnecessary assets/code (less importing)
 * P1 a nicely editable and extendable data format for the species & level setups
+* P1 all code accessible from anywhere (cannot access new scripts from procgen toolkit files)
 * P2 get rid of sample code (procgen toolkit, chart tool) & their potential copyright issues
 * P2 all UI should always visible in edit mode, even when not playing
 * P2 support drag & drop movement of tiles
