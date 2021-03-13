@@ -4,10 +4,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
-### P1 species identifiability
-* P1 hashed "scientific names"
-* P2 user-editable nickname (with presets for the known ones)
-
 ### P1 Game Modes
 * P1 menu to select the different modes
 * P2 tutorial / intro
@@ -29,6 +25,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ### Refactoring
 
+* P1 focus on prototyping iteration speed over everything else
 * P1 make the ideas above easily possible for a novice coder like me
 * P1 make it start up super fast (became really slow with the addition of the charts)
 * P1 remove unnecessary assets/code (-> make shit open quickly, less importing)
@@ -64,6 +61,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P3 moving creatures
 * P3 wrapping as an alternative to borders
 * P3 do we need animations to figure out what has had influence on what?
+* P3 Load nickname presets for the known species
 
 ## Games to try
 

@@ -12162,6 +12162,7 @@ GameObject:
   - component: {fileID: 1345880158}
   - component: {fileID: 1345880157}
   - component: {fileID: 1345880160}
+  - component: {fileID: 1345880161}
   m_Layer: 5
   m_Name: SpeciesNickname
   m_TagString: Untagged
@@ -12242,7 +12243,18 @@ MonoBehaviour:
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1345880161}
+        m_MethodName: UpdateNickname
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12311,6 +12323,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &1345880161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345880155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccfdcb352a298ca409ea7a352f896913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hash: {fileID: 563164913}
+  PlaceholderName: {fileID: 1452501210}
+  NickName: {fileID: 1153822915}
 --- !u!1 &1363807318
 GameObject:
   m_ObjectHideFlags: 0

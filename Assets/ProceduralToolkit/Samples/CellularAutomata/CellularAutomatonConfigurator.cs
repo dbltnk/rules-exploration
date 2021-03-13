@@ -75,8 +75,6 @@ namespace ProceduralToolkit.Samples
         };
 
         private void Awake() {
-            //GeneratePalette();
-
             pixels = new Color[config.width * config.height];
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
             image.texture = texture;
@@ -99,13 +97,14 @@ namespace ProceduralToolkit.Samples
 
             var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
             var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
-            RandomizeRules();
             UnityEngine.Random.InitState(timestamp);
             config.seed = UnityEngine.Random.Range(seedMin, seedMax);
             int r = UnityEngine.Random.Range(0, 8);
             var currentRulesetName = (RulesetName)r;
             //var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
+            if (currentRulesetName == RulesetName.Custom) { RandomizeRules(); };
+            Generate();
 
             SetupSkyboxAndPalette();
 
@@ -246,7 +245,6 @@ namespace ProceduralToolkit.Samples
         }
 
         private void RandomizeRules () {
-            // TODO Figure out why this always returns the same values.
             customBirthRule = UnityEngine.Random.Range(0, maxCustomBirthRule);
             customSurvivalRule = UnityEngine.Random.Range(0, maxCustomSurvivalRule);
             SelectRuleset(RulesetName.Custom);
