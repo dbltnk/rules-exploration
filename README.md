@@ -4,8 +4,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
-* CHECK LICENSEs
-
 ### Refactoring
 
 * P1 focus on prototyping iteration speed over everything else
@@ -24,45 +22,52 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 ### P1 Game Modes
 
 * P1 menu to select the different modes
+    * "knowledge graph" of fixed configurations plus unlocks for detective mode
 * P2 tutorial / intro
     * explain birth/survive(death) basics	
     * start with conway's life, the  introduce alternatives
 * P1 challenge: create a state
     * P1 fixed list of challenges / puzzles to pick from
-    * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent bruteforce solutions)?
+    * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
     * P1 create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
     * P1 Make [N] mutations to a species to get to a specific result
 * P1 detective: what are the rules?
+    * difficulty scaling: increase digits for rules
+    * needs a history of random species, otherwise naming is useless
     * identify the [birth / survival] rules for species [X]
     * input for "what the rules are" mode (just leave number slots for birth, survive & then border behaviour)
     * Submit paper for peer review
-    * If wrong, peer rewievers (or the doc) reveal one part of the solution
+    * If wrong, peer reviewers (or the doc) reveal one part of the solution
     * Score = fewer guesses
 * P2 free play mode
     * just a chill experimentation mode where you set rules and see what you can get to emerge
 
 ### Other Ideas
 
+* P1 Multiple species in one layer
 * P1 more states & stats per cell than just dead/alive
 * P1 aggregate stats
-* P1 more complex rules?
+* P1 more complex rules
     * P2 specific neighbours ("hibernate if near a floop")
     * P2 general stats of my own species (die if more than X others anywhere)
-    * P3 chance-based
+    * P3 chance-based state change
 * P2 multiple layers 
     * independent by default
     * option: cells above/below effect individuals
     * option: aggregate stats from one layer affect all individuals in another layer
     * top: mammals/birds/fish, middle: insects/krill, bottom: bacteria/algae/slime/plants
+
 * P2 Sharing for solving a task cooperatively
     * P2 Hash of species (rules config)
     * P3 Hash of state (species + seed + density + cells)
-* P2 Complexity Progression
+* P2 Complexity Progression / Cell types
     * Fixed GoL, death/alive
     * Modify min/max rules etc
+    * Pattern-matching cells (specific neighbour structure)
     * Multiple organisms in one layer (food?)
     * Multiple layers
     * Different types of creatures (movement?)
+* P3 Nested layers (zoom into a cell to see another layer inside)
 * P3 moving creatures
 * P3 wrapping as an alternative to borders
 * P3 do we need animations to figure out what has had influence on what?
