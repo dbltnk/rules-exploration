@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SpeciesList : MonoBehaviour
 {
@@ -21,9 +22,8 @@ public class SpeciesList : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CloseCollection()
     {
-        
+        SceneManager.UnloadSceneAsync("KnownSpeciesCollection");
     }
 }
