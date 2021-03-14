@@ -105,13 +105,12 @@ namespace ProceduralToolkit.Samples
             UnityEngine.Random.InitState(timestamp);
             RulesetName currentRulesetName = RulesetName.Custom;
             bool pickBordersRandomly = true;
+            config.seed = UnityEngine.Random.Range(seedMin, seedMax);
             if (Mode == gameMode.RandomCustom) {
-                config.seed = UnityEngine.Random.Range(seedMin, seedMax);
                 RandomizeRules();
             } else if (Mode == gameMode.RandomKnown) {
                 int r = UnityEngine.Random.Range(0, 8);
                 currentRulesetName = (RulesetName)r;
-                config.seed = UnityEngine.Random.Range(seedMin, seedMax);
             } else if (Mode == gameMode.Fixed) {
                 currentRulesetName = (RulesetName)0;
                 config.seed = 0;
@@ -119,7 +118,6 @@ namespace ProceduralToolkit.Samples
             } else {
                 Debug.LogError("UNKNOWN GAME MODE");
             }
-            SelectRuleset(currentRulesetName);
             if (pickBordersRandomly) {
                 if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
                     config.aliveBorders = true;
@@ -127,6 +125,7 @@ namespace ProceduralToolkit.Samples
                     config.aliveBorders = false;
                 }
             }
+            SelectRuleset(currentRulesetName);
             Generate();
             SetupSkyboxAndPalette();
             pixels = new Color[config.width * config.height];
