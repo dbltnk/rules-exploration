@@ -15,14 +15,10 @@ namespace ProceduralToolkit.Samples
 
     public class CellularAutomatonConfigurator : ConfiguratorBase
     {
-        public GameObject PrefCell;
-        public GameObject PrefConnieWei;
-        public RectTransform RulesPopup;
-        public RectTransform leftPanel;
-        public RectTransform rightPanel;
-        public ToggleGroup toggleGroup;
-        public RawImage image;
-        [Space]
+        [Header("Game mode setup")]
+        public gameMode Mode = gameMode.RandomCustom;
+
+        [Header("Could maybe be changed in the editor for level setup")]
         public CellularAutomaton.Config config = new CellularAutomaton.Config();
 
         private enum RulesetName
@@ -37,31 +33,8 @@ namespace ProceduralToolkit.Samples
             Custom
         }
 
-        private Color[] pixels;
-        private Texture2D texture;
-        public CellularAutomaton automaton;
-        public Color deadColor;
-        public Color aliveColor;
-        private TextControl header;
-        private TextControl hash;
-        public bool IsPlaying = true;
-        private float stepsPerSecond = 2f;
-        private float lastStep = 0f;
-        public int StepCount = 0;
-        private int customBirthRule = 0;
-        private int customSurvivalRule = 0;
-        private int maxCustomBirthRule = 99999;
-        private int maxCustomSurvivalRule = 99999;
-        private int seedMin = 0;
-        private int seedMax = 100;
-        public bool dirty = false;
-        private bool confirmNewGame = false;
-        private ToggleControl answerAliveBorder;
-        private TextBoxControl answerBirth;
-        private TextBoxControl answerSurvival;
-
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
-        {
+{
             {RulesetName.Life, CellularAutomaton.Ruleset.life},
             {RulesetName.Mazectric, CellularAutomaton.Ruleset.mazectric},
             {RulesetName.Coral, CellularAutomaton.Ruleset.coral},
@@ -70,6 +43,51 @@ namespace ProceduralToolkit.Samples
             {RulesetName.Anneal, CellularAutomaton.Ruleset.anneal},
             {RulesetName.Majority, CellularAutomaton.Ruleset.majority},
         };
+
+        [Header("Asset References For Manual Assignment")]
+        public GameObject PrefCell;
+        public GameObject PrefConnieWei;
+        public RectTransform RulesPopup;
+        public RectTransform LeftPanel;
+        public RectTransform RightPanel;
+        public ToggleGroup ToggleGroup;
+        public RawImage Image;
+
+        private Color[] pixels;
+        private Texture2D texture;
+        private TextControl header;
+        private TextControl hash;
+        private float stepsPerSecond = 2f;
+        private float lastStep = 0f;
+        private int customBirthRule = 0;
+        private int customSurvivalRule = 0;
+        private int maxCustomBirthRule = 9;
+        private int maxCustomSurvivalRule = 9;
+        private int seedMin = 0;
+        private int seedMax = 100;
+        private bool confirmNewGame = false;
+        private ToggleControl answerAliveBorder;
+        private TextBoxControl answerBirth;
+        private TextBoxControl answerSurvival;
+        private SliderControl birthControl;
+        private SliderControl survivalControl;
+        private bool setupDone = false;
+
+        // Only public for code reasons, not to manually override
+        [HideInInspector]
+        public enum gameMode { RandomCustom, RandomKnown, Fixed };
+        [HideInInspector]
+        public CellularAutomaton Automaton;
+        [HideInInspector]
+        public Color DeadColor;
+        [HideInInspector]
+        public Color AliveColor;
+        [HideInInspector]
+        public bool IsPlaying = true;
+        [HideInInspector]
+        public int StepCount = 0;
+        [HideInInspector]
+        public bool Dirty = false;
 
         private void Awake() {
             // FIRST UI SETUP 
@@ -85,32 +103,44 @@ namespace ProceduralToolkit.Samples
             var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
             var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
             UnityEngine.Random.InitState(timestamp);
-            if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
-                config.aliveBorders = true;
+            RulesetName currentRulesetName = RulesetName.Custom;
+            bool pickBordersRandomly = true;
+            if (Mode == gameMode.RandomCustom) {
+                config.seed = UnityEngine.Random.Range(seedMin, seedMax);
+                RandomizeRules();
+            } else if (Mode == gameMode.RandomKnown) {
+                int r = UnityEngine.Random.Range(0, 8);
+                currentRulesetName = (RulesetName)r;
+                config.seed = UnityEngine.Random.Range(seedMin, seedMax);
+            } else if (Mode == gameMode.Fixed) {
+                currentRulesetName = (RulesetName)0;
+                config.seed = 0;
+                pickBordersRandomly = false;
             } else {
-                config.aliveBorders = false;
+                Debug.LogError("UNKNOWN GAME MODE");
             }
-            config.seed = UnityEngine.Random.Range(seedMin, seedMax);
-            int r = UnityEngine.Random.Range(0, 8);
-            var currentRulesetName = (RulesetName)r;
-            //var currentRulesetName = RulesetName.Custom;
             SelectRuleset(currentRulesetName);
-            if (currentRulesetName == RulesetName.Custom) { RandomizeRules(); };
+            if (pickBordersRandomly) {
+                if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
+                    config.aliveBorders = true;
+                } else {
+                    config.aliveBorders = false;
+                }
+            }
             Generate();
-            
             SetupSkyboxAndPalette();
             pixels = new Color[config.width * config.height];
             texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
-            image.texture = texture;
+            Image.texture = texture;
 
             // SECOND UI SETUP
 
-            var goal = InstantiateControl<TextControl>(leftPanel);
+            var goal = InstantiateControl<TextControl>(LeftPanel);
             goal.transform.SetAsFirstSibling();
             goal.headerText.text = "<b>Dr. Connie Wei:</b> <i>\"Can you find out what rules these miraculous little creatures live by?\"</i>";
 
             var connie = Instantiate(PrefConnieWei);
-            connie.transform.SetParent(leftPanel);
+            connie.transform.SetParent(LeftPanel);
             connie.transform.SetAsFirstSibling();
 
             InstantiateToggle(RulesetName.Life, currentRulesetName).transform.SetParent(RulesPopup);
@@ -125,23 +155,23 @@ namespace ProceduralToolkit.Samples
             var randomizeRulesControl = InstantiateControl<ButtonControl>(RulesPopup);
             randomizeRulesControl.Initialize("Randomize rules", RandomizeRules);
 
-            SliderControl birthControl = InstantiateControl<SliderControl>(RulesPopup);
-            birthControl.Initialize("Birth rule", 0, maxCustomBirthRule, config.seed, value => {
+            birthControl = InstantiateControl<SliderControl>(RulesPopup);
+            birthControl.Initialize("Birth rule", 0, maxCustomBirthRule-1, config.seed, value => {
                 customBirthRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
                 GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
-                GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
+                if (GameObject.Find("Custom") != null) GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
                 Generate();
             });
 
-            SliderControl survivalControl = InstantiateControl<SliderControl>(RulesPopup);
-            survivalControl.Initialize("Survive rule", 0, maxCustomSurvivalRule, config.seed, value => {
+            survivalControl = InstantiateControl<SliderControl>(RulesPopup);
+            survivalControl.Initialize("Survive rule", 0, maxCustomSurvivalRule-1, config.seed, value => {
                 customSurvivalRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
                 GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
-                GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
+                if (GameObject.Find("Custom") != null) GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
                 Generate();
             });
 
@@ -151,41 +181,42 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Start / pause", PlayPause);
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Next step", Step);
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Reset experiment", Generate);
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Clear dish", Clear);
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Fill dish", Fill);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Start / pause", PlayPause);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Next step", Step);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Reset experiment", Generate);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Clear dish", Clear);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Fill dish", Fill);
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Seed value", seedMin, seedMax, config.seed, value => {
+            InstantiateControl<SliderControl>(LeftPanel).Initialize("Seed value", seedMin, seedMax, config.seed, value => {
                 config.seed = Mathf.FloorToInt(value);
                 Generate();
             });
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Start noise", 0, 1, config.startNoise, value => {
+            InstantiateControl<SliderControl>(LeftPanel).Initialize("Start noise", 0, 1, config.startNoise, value => {
                 config.startNoise = value;
                 Generate();
             });
 
-            InstantiateControl<SliderControl>(leftPanel).Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
+            InstantiateControl<SliderControl>(LeftPanel).Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
                 stepsPerSecond = value;
             });
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("Peek at solution", SuggestSolution);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Peek at solution", SuggestSolution);
             InstantiateControl<ButtonControl>(RulesPopup).Initialize("Hide configuration", SuggestSolution);
 
-            InstantiateControl<ButtonControl>(leftPanel).Initialize("New experiment", NewGame);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("New experiment", NewGame);
 
-            var answer = InstantiateControl<TextControl>(rightPanel).headerText.text = "<b>My answer</b> for Dr. Connie is:";
-            answerBirth = InstantiateControl<TextBoxControl>(rightPanel);
+            var answer = InstantiateControl<TextControl>(RightPanel).headerText.text = "<b>My answer</b> for Dr. Connie is:";
+            answerBirth = InstantiateControl<TextBoxControl>(RightPanel);
             answerBirth.Initialize("<i>Birth rule: (e.g. 123)</i>");
-            answerSurvival = InstantiateControl<TextBoxControl>(rightPanel);
+            answerSurvival = InstantiateControl<TextBoxControl>(RightPanel);
             answerSurvival.Initialize("<i>Survival rule: (e.g. 2578)</i>");
-            answerAliveBorder = InstantiateControl<ToggleControl>(rightPanel);
+            answerAliveBorder = InstantiateControl<ToggleControl>(RightPanel);
             answerAliveBorder.Initialize("Border Is Awake", false, value => {
                 //config.aliveBorders = value;
             });
-            InstantiateControl<ButtonControl>(rightPanel).Initialize("Submit your theory", Answer);
+            InstantiateControl<ButtonControl>(RightPanel).Initialize("Submit your theory", Answer);
+            setupDone = true;
         }
 
         private string SetSpeciesName () {
@@ -223,7 +254,7 @@ namespace ProceduralToolkit.Samples
         private void Fill () {
             for (int x = 0; x < config.width; x++) {
                 for (int y = 0; y < config.height; y++) {
-                    automaton.cells[y, x] = true;
+                    Automaton.cells[y, x] = true;
                 }
             }
         }
@@ -231,7 +262,7 @@ namespace ProceduralToolkit.Samples
         private void Clear () {
             for (int x = 0; x < config.width; x++) {
                 for (int y = 0; y < config.height; y++) {
-                    automaton.cells[y, x] = false;
+                    Automaton.cells[y, x] = false;
                 }
             }
         }
@@ -242,18 +273,20 @@ namespace ProceduralToolkit.Samples
             }
             else {
                 confirmNewGame = true;
-                leftPanel.Find("New experiment").GetComponentInChildren<Text>().text = "Click to confirm!";
+                LeftPanel.Find("New experiment").GetComponentInChildren<Text>().text = "Click to confirm!";
             }
         }
 
         private void SuggestSolution () {
-            leftPanel.gameObject.SetActive(!leftPanel.gameObject.activeSelf);
+            LeftPanel.gameObject.SetActive(!LeftPanel.gameObject.activeSelf);
             RulesPopup.gameObject.SetActive(!RulesPopup.gameObject.activeSelf);
         }
 
         private void RandomizeRules () {
             customBirthRule = UnityEngine.Random.Range(0, maxCustomBirthRule);
+            if (birthControl != null) birthControl.slider.value = customBirthRule;
             customSurvivalRule = UnityEngine.Random.Range(0, maxCustomSurvivalRule);
+            if (survivalControl != null) survivalControl.slider.value = customSurvivalRule;
             SelectRuleset(RulesetName.Custom);
             if (GameObject.Find("Canvas") != null) GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
             if (GameObject.Find("Custom") != null) GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
@@ -271,6 +304,10 @@ namespace ProceduralToolkit.Samples
                     lastStep = Time.time;
                 }
             }
+
+            // hack to update this after initialization because the order is wrong
+            if (birthControl != null && setupDone) birthControl.slider.value = customBirthRule;
+            if (survivalControl != null && setupDone) survivalControl.slider.value = customSurvivalRule;
         }
 
         private void SelectRuleset(RulesetName rulesetName)
@@ -286,11 +323,11 @@ namespace ProceduralToolkit.Samples
 
         private void Generate()
         {
-            automaton = new CellularAutomaton(config);
+            Automaton = new CellularAutomaton(config);
             string n = SetSpeciesName();
             GeneratePalette(n);
-            deadColor = GetMainColorHSV().WithSV(0.3f, 0.2f).ToColor();
-            aliveColor = GetMainColorHSV().ToColor();
+            DeadColor = GetMainColorHSV().WithSV(0.3f, 0.2f).ToColor();
+            AliveColor = GetMainColorHSV().ToColor();
 
             Step();
         }
@@ -300,7 +337,7 @@ namespace ProceduralToolkit.Samples
         }
 
         private void Step () {
-            automaton.Simulate();
+            Automaton.Simulate();
             StepCount++;
         }
 
@@ -311,25 +348,25 @@ namespace ProceduralToolkit.Samples
                 for (int y = 0; y < config.height; y++)
                 {
                     int cellsNeeded = config.width * config.height;
-                    int cellCount = image.transform.childCount;
+                    int cellCount = Image.transform.childCount;
                     if (cellCount < cellsNeeded) {
                         GameObject cell = Instantiate(PrefCell);
-                        cell.transform.SetParent(image.transform, false);
+                        cell.transform.SetParent(Image.transform, false);
                         Cell c = cell.AddComponent<Cell>();
                         c.X = x;
                         c.Y = y;
                         c.counter = y * config.width + x;
                     }
 
-                    if (automaton.cells[x, y])
+                    if (Automaton.cells[x, y])
                     {
-                        pixels[y*config.width + x] = aliveColor;
-                        if (cellCount >= cellsNeeded) image.transform.GetComponentsInChildren<Image>()[y * config.width + x].color = aliveColor;
+                        pixels[y*config.width + x] = AliveColor;
+                        if (cellCount >= cellsNeeded) Image.transform.GetComponentsInChildren<Image>()[y * config.width + x].color = AliveColor;
                     }
                     else
                     {
-                        pixels[y*config.width + x] = deadColor;
-                        if (cellCount >= cellsNeeded) image.transform.GetComponentsInChildren<Image>()[y * config.width + x].color = deadColor;
+                        pixels[y*config.width + x] = DeadColor;
+                        if (cellCount >= cellsNeeded) Image.transform.GetComponentsInChildren<Image>()[y * config.width + x].color = DeadColor;
                     }
                 }
             }
@@ -340,7 +377,7 @@ namespace ProceduralToolkit.Samples
 
         private GameObject InstantiateToggle (RulesetName rulesetName, RulesetName selectedRulesetName)
         {
-            var toggle = InstantiateControl<ToggleControl>(toggleGroup.transform);
+            var toggle = InstantiateControl<ToggleControl>(ToggleGroup.transform);
             toggle.Initialize(
                 header: rulesetName.ToString(),
                 value: rulesetName == selectedRulesetName,
@@ -352,26 +389,26 @@ namespace ProceduralToolkit.Samples
                         Generate();
                     }
                 },
-                toggleGroup: toggleGroup);
+                toggleGroup: ToggleGroup);
             return toggle.gameObject;
         }
 
         public void FlipCell (int x, int y) {
             // no idea why I am flipping these =D 
-            automaton.cells[y, x] = !automaton.cells[y, x];
-            dirty = true;
+            Automaton.cells[y, x] = !Automaton.cells[y, x];
+            Dirty = true;
         }
 
         public void ActivateCell (int x, int y) {
             // no idea why I am flipping these =D 
-            automaton.cells[y, x] = true;
-            dirty = true;
+            Automaton.cells[y, x] = true;
+            Dirty = true;
         }
 
         public void DeactivateCell (int x, int y) {
             // no idea why I am flipping these =D 
-            automaton.cells[y, x] = false;
-            dirty = true;
+            Automaton.cells[y, x] = false;
+            Dirty = true;
         }
         public static string md5 (string str) {
             System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();

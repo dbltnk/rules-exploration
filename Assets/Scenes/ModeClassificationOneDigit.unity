@@ -5623,15 +5623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67c6d69c265a56449e53801fe0c2895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PrefCell: {fileID: 2594283169984067351, guid: 37fdb59923f109e4c935eba2b85c645b,
-    type: 3}
-  PrefConnieWei: {fileID: 8316235345974135777, guid: c9f0554150107a14386e8394d325c5b0,
-    type: 3}
-  RulesPopup: {fileID: 1680414892}
-  leftPanel: {fileID: 1785664460}
-  rightPanel: {fileID: 1434911622}
-  toggleGroup: {fileID: 1079176263}
-  image: {fileID: 1094236749}
+  Mode: 0
   config:
     width: 12
     height: 12
@@ -5641,11 +5633,20 @@ MonoBehaviour:
     startNoise: 0.25
     aliveBorders: 0
     seed: 0
-  deadColor: {r: 0, g: 0, b: 0, a: 0}
-  aliveColor: {r: 0, g: 0, b: 0, a: 0}
+  PrefCell: {fileID: 2594283169984067351, guid: 37fdb59923f109e4c935eba2b85c645b,
+    type: 3}
+  PrefConnieWei: {fileID: 8316235345974135777, guid: c9f0554150107a14386e8394d325c5b0,
+    type: 3}
+  RulesPopup: {fileID: 1680414892}
+  LeftPanel: {fileID: 1785664460}
+  RightPanel: {fileID: 1434911622}
+  ToggleGroup: {fileID: 514081384}
+  Image: {fileID: 1094236749}
+  DeadColor: {r: 0, g: 0, b: 0, a: 0}
+  AliveColor: {r: 0, g: 0, b: 0, a: 0}
   IsPlaying: 1
   StepCount: 0
-  dirty: 0
+  Dirty: 0
 --- !u!4 &643499691
 Transform:
   m_ObjectHideFlags: 0
@@ -9562,7 +9563,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.1340623
+  m_AspectRatio: 1.1337404
 --- !u!114 &1094236753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21587,7 +21588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.0758681
+  m_AspectRatio: 1.075616
 --- !u!114 &2136439631
 MonoBehaviour:
   m_ObjectHideFlags: 0

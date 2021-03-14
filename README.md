@@ -22,7 +22,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 ### P1 Game Modes
 
 * P1 menu to select the different modes
-    * "knowledge graph" of fixed configurations plus unlocks for detective mode
+    * "knowledge graph" of fixed configurations plus unlocks for CLASSIFICATION mode
 * P2 tutorial / intro
     * explain birth/survive(death) basics	
     * start with conway's life, the  introduce alternatives
@@ -31,7 +31,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
     * P1 create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
     * P1 Make [N] mutations to a species to get to a specific result
-* P1 detective: what are the rules?
+* P1 CLASSIFICATION: what are the rules?
     * difficulty scaling: increase digits for rules
     * needs a history of random species, otherwise naming is useless
     * identify the [birth / survival] rules for species [X]
