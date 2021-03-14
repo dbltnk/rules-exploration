@@ -4,6 +4,8 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
+* P1 List of known species / load configurations
+
 ### Refactoring
 
 * P1 focus on prototyping iteration speed over everything else
