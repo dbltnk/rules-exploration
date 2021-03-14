@@ -13,11 +13,6 @@ namespace ProceduralToolkit.Samples
     /// </summary>
     /// 
 
-    public class HideMe : MonoBehaviour
-    {
-
-    }
-
     public class CellularAutomatonConfigurator : ConfiguratorBase
     {
         public GameObject PrefCell;
@@ -77,25 +72,15 @@ namespace ProceduralToolkit.Samples
         };
 
         private void Awake() {
-            pixels = new Color[config.width * config.height];
-            texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
-            image.texture = texture;
+            // FIRST UI SETUP 
 
             header = InstantiateControl<TextControl>(RulesPopup);
             header.transform.SetAsFirstSibling();
-            header.gameObject.AddComponent<HideMe>();
 
             hash = InstantiateControl<TextControl>(RulesPopup);
             hash.transform.SetAsFirstSibling();
-            hash.gameObject.AddComponent<HideMe>();
 
-            var goal = InstantiateControl<TextControl>(leftPanel);
-            goal.transform.SetAsFirstSibling();
-            goal.headerText.text = "<b>Dr. Connie Wei:</b> <i>\"Can you find out what rules these miraculous little creatures live by?\"</i>";
-
-            var connie = Instantiate(PrefConnieWei);
-            connie.transform.SetParent(leftPanel);
-            connie.transform.SetAsFirstSibling();
+            // RULE SETUP
 
             var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
             var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
@@ -112,20 +97,32 @@ namespace ProceduralToolkit.Samples
             SelectRuleset(currentRulesetName);
             if (currentRulesetName == RulesetName.Custom) { RandomizeRules(); };
             Generate();
-
+            
             SetupSkyboxAndPalette();
+            pixels = new Color[config.width * config.height];
+            texture = PTUtils.CreateTexture(config.width, config.height, Color.clear);
+            image.texture = texture;
 
-            InstantiateToggle(RulesetName.Life, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.Mazectric, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.Coral, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.WalledCities, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.Coagulations, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.Anneal, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.Majority, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
-            InstantiateToggle(RulesetName.Custom, currentRulesetName).AddComponent<HideMe>().transform.SetParent(RulesPopup);
+            // SECOND UI SETUP
+
+            var goal = InstantiateControl<TextControl>(leftPanel);
+            goal.transform.SetAsFirstSibling();
+            goal.headerText.text = "<b>Dr. Connie Wei:</b> <i>\"Can you find out what rules these miraculous little creatures live by?\"</i>";
+
+            var connie = Instantiate(PrefConnieWei);
+            connie.transform.SetParent(leftPanel);
+            connie.transform.SetAsFirstSibling();
+
+            InstantiateToggle(RulesetName.Life, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Mazectric, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Coral, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.WalledCities, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Coagulations, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Anneal, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Majority, currentRulesetName).transform.SetParent(RulesPopup);
+            InstantiateToggle(RulesetName.Custom, currentRulesetName).transform.SetParent(RulesPopup);
 
             var randomizeRulesControl = InstantiateControl<ButtonControl>(RulesPopup);
-            randomizeRulesControl.gameObject.AddComponent<HideMe>();
             randomizeRulesControl.Initialize("Randomize rules", RandomizeRules);
 
             SliderControl birthControl = InstantiateControl<SliderControl>(RulesPopup);
@@ -137,7 +134,6 @@ namespace ProceduralToolkit.Samples
                 GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
                 Generate();
             });
-            birthControl.gameObject.AddComponent<HideMe>();
 
             SliderControl survivalControl = InstantiateControl<SliderControl>(RulesPopup);
             survivalControl.Initialize("Survive rule", 0, maxCustomSurvivalRule, config.seed, value => {
@@ -148,10 +144,8 @@ namespace ProceduralToolkit.Samples
                 GameObject.Find("Custom").GetComponentInChildren<Toggle>().isOn = true;
                 Generate();
             });
-            survivalControl.gameObject.AddComponent<HideMe>();
 
             var aliveBordersControl = InstantiateControl<ToggleControl>(RulesPopup);
-            aliveBordersControl.gameObject.AddComponent<HideMe>();
             aliveBordersControl.Initialize("Awake borders", config.aliveBorders, value => {
                 config.aliveBorders = value;
                 Generate();
@@ -253,11 +247,6 @@ namespace ProceduralToolkit.Samples
         }
 
         private void SuggestSolution () {
-            //HideMe[] elements = Resources.FindObjectsOfTypeAll<HideMe>();
-            //foreach (HideMe e in elements) {
-            //    e.gameObject.SetActive(!e.gameObject.activeSelf);
-            //}
-
             leftPanel.gameObject.SetActive(!leftPanel.gameObject.activeSelf);
             RulesPopup.gameObject.SetActive(!RulesPopup.gameObject.activeSelf);
         }
@@ -283,7 +272,6 @@ namespace ProceduralToolkit.Samples
                 }
             }
         }
-
 
         private void SelectRuleset(RulesetName rulesetName)
         {
