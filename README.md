@@ -4,30 +4,25 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## TODO
 
-* P1 List of known species / load configurations
+* P1 List of known species / load configurations from there
 
 ### Refactoring
 
 * P1 focus on prototyping iteration speed over everything else
 * P1 make the ideas above easily accessible to a novice coder like me
-* P1 make it start up super fast (got slower with the addition of the charts)
+* P1 make it start up super fast (got a bit slower with the addition of the charts)
 * P1 remove unnecessary assets/code (less importing)
 * P1 a nicely editable and extendable data format for the species & level setups
 * P1 all code accessible from anywhere (cannot access new scripts from procgen toolkit files)
-* P2 get rid of sample code (procgen toolkit, chart tool) & their potential copyright issues
-* P2 all UI should always visible in edit mode, even when not playing
+* P1 all UI should always visible in edit mode, even when not playing
 * P2 support different grid sizes
-* P2 support zoom & drag-move of camera
+* P2 support zoom & camera movement (for interaction with larger grids)
 * P3 support drag & drop movement of tiles (https://ncase.me/polygons/)
-* P3 support animations, shaders, etc
 
 ### P1 Game Modes
 
 * P1 menu to select the different modes
     * "knowledge graph" of fixed configurations plus unlocks for CLASSIFICATION mode
-* P2 tutorial / intro
-    * explain birth/survive(death) basics	
-    * start with conway's life, the  introduce alternatives
 * P1 challenge: create a state
     * P1 fixed list of challenges / puzzles to pick from
     * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
@@ -37,10 +32,13 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     * difficulty scaling: increase digits for rules
     * needs a history of random species, otherwise naming is useless
     * identify the [birth / survival] rules for species [X]
-    * input for "what the rules are" mode (just leave number slots for birth, survive & then border behaviour)
+    * input for "what the rules are" mode (just leave number slots for birth, survive & then border behavior)
     * Submit paper for peer review
     * If wrong, peer reviewers (or the doc) reveal one part of the solution
     * Score = fewer guesses
+* P2 tutorial / intro
+    * explain birth/survive(death) basics	
+    * start with Conway's life, the  introduce alternatives
 * P2 free play mode
     * just a chill experimentation mode where you set rules and see what you can get to emerge
 
@@ -50,7 +48,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P1 more states & stats per cell than just dead/alive
 * P1 aggregate stats
 * P1 more complex rules
-    * P2 specific neighbours ("hibernate if near a floop")
+    * P2 specific neighbors ("hibernate if near a floop")
     * P2 general stats of my own species (die if more than X others anywhere)
     * P3 chance-based state change
 * P2 multiple layers 
@@ -65,7 +63,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P2 Complexity Progression / Cell types
     * Fixed GoL, death/alive
     * Modify min/max rules etc
-    * Pattern-matching cells (specific neighbour structure)
+    * Pattern-matching cells (specific neighbor structure)
     * Multiple organisms in one layer (food?)
     * Multiple layers
     * Different types of creatures (movement?)
