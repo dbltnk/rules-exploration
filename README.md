@@ -2,9 +2,11 @@
 
 Build: https://dbltnk.itch.io/connie-weis-lab
 
-## TODO
+## Immediate Next Steps / WiP
 
-* P1 List of known species / load configurations from there
+* P1 List of known species (click them to load a scene with that species configuration, random grid)
+* P2 "knowledge graph" (DAG) of levels that unlock one after another, clicking opens a scene with that species configuration, goal definition (& maybe grid state) 
+  * P2 in addition to the "challenge" levels you also unlock "classification" levels where similar CA rules are being used but with a random config
 
 ### Refactoring
 
@@ -12,17 +14,15 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P1 make the ideas above easily accessible to a novice coder like me
 * P1 make it start up super fast (got a bit slower with the addition of the charts)
 * P1 remove unnecessary assets/code (less importing)
-* P1 a nicely editable and extendable data format for the species & level setups
-* P1 all code accessible from anywhere (cannot access new scripts from procgen toolkit files)
-* P1 all UI should always visible in edit mode, even when not playing
+* P1 a nicely editable and extendable data format for the species & level setups (level =  species config, initial game & potentially grid state)
+* P1 all code accessible from anywhere (cannot currently access new scripts from procgen toolkit files)
+* P1 most UI should always visible in edit mode, even when not playing
 * P2 support different grid sizes
 * P2 support zoom & camera movement (for interaction with larger grids)
 * P3 support drag & drop movement of tiles (https://ncase.me/polygons/)
 
 ### P1 Game Modes
 
-* P1 menu to select the different modes
-    * "knowledge graph" of fixed configurations plus unlocks for CLASSIFICATION mode
 * P1 challenge: create a state
     * P1 fixed list of challenges / puzzles to pick from
     * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
