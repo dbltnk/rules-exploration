@@ -72,6 +72,7 @@ namespace ProceduralToolkit.Samples
         private SliderControl birthControl;
         private SliderControl survivalControl;
         private bool setupDone = false;
+        private SliderControl speedSlider;
 
         // Only public for code reasons, not to manually override
         [HideInInspector]
@@ -196,7 +197,8 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<SliderControl>(LeftPanel).Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
+            speedSlider = InstantiateControl<SliderControl>(LeftPanel);
+            speedSlider.Initialize("Steps per second", 0, 100, stepsPerSecond, value => {
                 stepsPerSecond = value;
             });
 
@@ -294,12 +296,23 @@ namespace ProceduralToolkit.Samples
 
         private void Update()
         {
+
             if (Input.GetKeyDown(KeyCode.Space)) PlayPause();
             if (Input.GetKeyDown(KeyCode.N)) Step();
             if (Input.GetKeyDown(KeyCode.R)) Generate();
             if (Input.GetKeyDown(KeyCode.C)) Clear();
             if (Input.GetKeyDown(KeyCode.F)) Fill();
 
+            if (Input.GetKeyDown(KeyCode.Alpha1)) speedSlider.slider.value = 1f;
+            if (Input.GetKeyDown(KeyCode.Alpha2)) speedSlider.slider.value = 2f;
+            if (Input.GetKeyDown(KeyCode.Alpha3)) speedSlider.slider.value = 5f;
+            if (Input.GetKeyDown(KeyCode.Alpha4)) speedSlider.slider.value = 10f;
+            if (Input.GetKeyDown(KeyCode.Alpha5)) speedSlider.slider.value = 2f;
+            if (Input.GetKeyDown(KeyCode.Alpha6)) speedSlider.slider.value = 3f;
+            if (Input.GetKeyDown(KeyCode.Alpha7)) speedSlider.slider.value = 5f;
+            if (Input.GetKeyDown(KeyCode.Alpha8)) speedSlider.slider.value = 75f;
+            if (Input.GetKeyDown(KeyCode.Alpha9)) speedSlider.slider.value = 100f;
+            if (Input.GetKeyDown(KeyCode.Alpha0)) speedSlider.slider.value = 0f;
 
             DrawCells();
             UpdateSkybox();
