@@ -5446,10 +5446,10 @@ MonoBehaviour:
   Mode: 1
   MaxCustomBirthRule: 1000000000
   MaxCustomSurvivalRule: 1000000000
-  FixedRuleset: 0
-  FixedSeed: 1
-  FixedStartNoise: 0.5
-  FixedBorderIsAwake: 1
+  FixedRuleset: 5
+  FixedSeed: 48
+  FixedStartNoise: 0.9
+  FixedBorderIsAwake: 0
   config:
     width: 12
     height: 12
