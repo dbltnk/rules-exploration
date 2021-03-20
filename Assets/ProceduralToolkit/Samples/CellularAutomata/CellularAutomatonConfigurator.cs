@@ -307,9 +307,9 @@ namespace ProceduralToolkit.Samples
             if (Input.GetKeyDown(KeyCode.Alpha2)) speedSlider.slider.value = 2f;
             if (Input.GetKeyDown(KeyCode.Alpha3)) speedSlider.slider.value = 5f;
             if (Input.GetKeyDown(KeyCode.Alpha4)) speedSlider.slider.value = 10f;
-            if (Input.GetKeyDown(KeyCode.Alpha5)) speedSlider.slider.value = 2f;
-            if (Input.GetKeyDown(KeyCode.Alpha6)) speedSlider.slider.value = 3f;
-            if (Input.GetKeyDown(KeyCode.Alpha7)) speedSlider.slider.value = 5f;
+            if (Input.GetKeyDown(KeyCode.Alpha5)) speedSlider.slider.value = 20f;
+            if (Input.GetKeyDown(KeyCode.Alpha6)) speedSlider.slider.value = 30f;
+            if (Input.GetKeyDown(KeyCode.Alpha7)) speedSlider.slider.value = 50f;
             if (Input.GetKeyDown(KeyCode.Alpha8)) speedSlider.slider.value = 75f;
             if (Input.GetKeyDown(KeyCode.Alpha9)) speedSlider.slider.value = 100f;
             if (Input.GetKeyDown(KeyCode.Alpha0)) speedSlider.slider.value = 0f;
