@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProceduralToolkit.Samples;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,16 +12,19 @@ public class Nickname : MonoBehaviour
     public Text NickName;
     private InputField inputField;
     public const string Separator = "$";
+    private CellularAutomatonConfigurator cac;
 
     // Start is called before the first frame update
     void Start()
     {
         inputField = GetComponent<InputField>();
+        cac = FindObjectOfType<CellularAutomatonConfigurator>();
     }
 
     // Update is called once per frame
     void Update() {
         RenderName();
+        cac.IsTyping = inputField.isFocused;
     }
 
     public void RenderName () {
