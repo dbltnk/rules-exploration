@@ -17,6 +17,8 @@ namespace ProceduralToolkit.Samples
     {
         [Header("Game mode setup")]
         public gameMode Mode = gameMode.RandomCustom;
+        public int MaxCustomBirthRule = 9;
+        public int MaxCustomSurvivalRule = 9;
 
         [Header("Could maybe be changed in the editor for level setup")]
         public CellularAutomaton.Config config = new CellularAutomaton.Config();
@@ -61,8 +63,6 @@ namespace ProceduralToolkit.Samples
         private float lastStep = 0f;
         private int customBirthRule = 0;
         private int customSurvivalRule = 0;
-        private int maxCustomBirthRule = 9;
-        private int maxCustomSurvivalRule = 9;
         private int seedMin = 0;
         private int seedMax = 100;
         private bool confirmNewGame = false;
@@ -158,7 +158,7 @@ namespace ProceduralToolkit.Samples
             randomizeRulesControl.Initialize("Randomize rules", RandomizeRules);
 
             birthControl = InstantiateControl<SliderControl>(RulesPopup);
-            birthControl.Initialize("Birth rule", 0, maxCustomBirthRule-1, config.seed, value => {
+            birthControl.Initialize("Birth rule", 0, MaxCustomBirthRule-1, config.seed, value => {
                 customBirthRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
@@ -168,7 +168,7 @@ namespace ProceduralToolkit.Samples
             });
 
             survivalControl = InstantiateControl<SliderControl>(RulesPopup);
-            survivalControl.Initialize("Survive rule", 0, maxCustomSurvivalRule-1, config.seed, value => {
+            survivalControl.Initialize("Survive rule", 0, MaxCustomSurvivalRule-1, config.seed, value => {
                 customSurvivalRule = Mathf.FloorToInt(value);
                 currentRulesetName = RulesetName.Custom;
                 SelectRuleset(RulesetName.Custom);
@@ -286,9 +286,9 @@ namespace ProceduralToolkit.Samples
         }
 
         private void RandomizeRules () {
-            customBirthRule = UnityEngine.Random.Range(0, maxCustomBirthRule);
+            customBirthRule = UnityEngine.Random.Range(0, MaxCustomBirthRule);
             if (birthControl != null) birthControl.slider.value = customBirthRule;
-            customSurvivalRule = UnityEngine.Random.Range(0, maxCustomSurvivalRule);
+            customSurvivalRule = UnityEngine.Random.Range(0, MaxCustomSurvivalRule);
             if (survivalControl != null) survivalControl.slider.value = customSurvivalRule;
             SelectRuleset(RulesetName.Custom);
             if (GameObject.Find("Canvas") != null) GameObject.Find("Canvas").GetComponentInChildren<ToggleGroup>().SetAllTogglesOff();
