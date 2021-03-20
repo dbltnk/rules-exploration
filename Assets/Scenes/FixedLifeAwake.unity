@@ -5443,9 +5443,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67c6d69c265a56449e53801fe0c2895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mode: 2
-  MaxCustomBirthRule: 9
-  MaxCustomSurvivalRule: 9
+  Mode: 1
+  MaxCustomBirthRule: 1000000000
+  MaxCustomSurvivalRule: 1000000000
   FixedRuleset: 0
   FixedSeed: 1
   FixedStartNoise: 0.5
@@ -9599,7 +9599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.1335222
+  m_AspectRatio: 1.1332209
 --- !u!114 &1094236753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21279,7 +21279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.0754449
+  m_AspectRatio: 1.0752089
 --- !u!114 &2136439631
 MonoBehaviour:
   m_ObjectHideFlags: 0

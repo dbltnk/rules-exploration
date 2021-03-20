@@ -21,9 +21,9 @@ namespace ProceduralToolkit.Samples
 
         [Header("For Classification")]
         [Range(0, 999999999)]
-        public int MaxCustomBirthRule = 9;
+        public int MaxCustomBirthRule = 999999999;
         [Range(0, 999999999)]
-        public int MaxCustomSurvivalRule = 9;
+        public int MaxCustomSurvivalRule = 999999999;
 
         [Header("For Fixed")]
         public RulesetName FixedRuleset = RulesetName.Life;
@@ -76,7 +76,7 @@ namespace ProceduralToolkit.Samples
 
         // Only public for code reasons, not to manually override
         [HideInInspector]
-        public enum gameMode { RandomCustom, RandomKnown, Fixed };
+        public enum gameMode { RandomCustom, Fixed };
         [HideInInspector]
         public enum RulesetName
         {
@@ -119,30 +119,21 @@ namespace ProceduralToolkit.Samples
             UnityEngine.Random.InitState(timestamp);
             RulesetName currentRulesetName = RulesetName.Custom;
             bool pickBordersRandomly = true;
-            config.seed = UnityEngine.Random.Range(seedMin, seedMax);
             if (Mode == gameMode.RandomCustom) {
+                config.seed = UnityEngine.Random.Range(seedMin, seedMax);
                 RandomizeRules();
-                SelectRuleset(currentRulesetName);
-            } else if (Mode == gameMode.RandomKnown) {
-                int r = UnityEngine.Random.Range(0, 8);
-                currentRulesetName = (RulesetName)r;
-                SelectRuleset(currentRulesetName);
-                // TODO MAKE THIS WORK =D
-                // customBirthRule = BitConverter.ToInt32(config.ruleset.birthRule, config.ruleset.birthRule.Length);
-                // customSurvivalRule = BitConverter.ToInt32(config.ruleset.survivalRule, config.ruleset.survivalRule.Length);
             } else if (Mode == gameMode.Fixed) {
+                MaxCustomBirthRule = 999999999;
+                MaxCustomSurvivalRule = 999999999;
                 currentRulesetName = FixedRuleset;
                 config.seed = FixedSeed;
                 config.startNoise = FixedStartNoise;
                 pickBordersRandomly = false;
                 config.aliveBorders = FixedBorderIsAwake;
-                SelectRuleset(currentRulesetName);
-                // TODO MAKE THIS WORK =D
-                // customBirthRule = BitConverter.ToInt32(config.ruleset.birthRule, config.ruleset.birthRule.Length);
-                // customSurvivalRule = BitConverter.ToInt32(config.ruleset.survivalRule, config.ruleset.survivalRule.Length);
             } else {
                 Debug.LogError("UNKNOWN GAME MODE");
             }
+            SelectRuleset(currentRulesetName);
             if (pickBordersRandomly) {
                 if (UnityEngine.Random.Range(0f, 1f) < 0.5f) {
                     config.aliveBorders = true;
@@ -362,6 +353,18 @@ namespace ProceduralToolkit.Samples
                 config.ruleset = nameToRuleset[rulesetName];
             }
             header.Initialize("Rulestring: " + config.ruleset);
+
+            string s = "";
+            foreach (byte b in config.ruleset.birthRule) {
+                s += b.ToString();
+            }
+            int.TryParse(s, out customBirthRule);
+
+            string bi = "";
+            foreach (byte b in config.ruleset.survivalRule) {
+                bi += b.ToString();
+            }
+            int.TryParse(bi, out customSurvivalRule);
         }
 
         private void Generate()
