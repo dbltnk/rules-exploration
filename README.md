@@ -73,6 +73,10 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P3 do we need animations to figure out what has had influence on what?
 * P3 Load nickname presets for the known species
 
+## Usability Improvements
+
+* Pattern stamps (1-9 blocks)
+
 ## Games to try
 
 * https://games.increpare.com/Gestalt_OS/
