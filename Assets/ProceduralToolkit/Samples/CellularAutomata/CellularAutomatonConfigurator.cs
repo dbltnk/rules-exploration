@@ -180,11 +180,11 @@ namespace ProceduralToolkit.Samples
                 Generate();
             });
 
-            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Start / pause", PlayPause);
-            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Next step", Step);
-            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Reset experiment", Generate);
-            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Clear dish", Clear);
-            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Fill dish", Fill);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Play / pause [SPACE]", PlayPause);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Next step [N]", Step);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Reset experiment [R]", Generate);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Clear dish [C]", Clear);
+            InstantiateControl<ButtonControl>(LeftPanel).Initialize("Fill dish [F]", Fill);
 
             InstantiateControl<SliderControl>(LeftPanel).Initialize("Seed value", seedMin, seedMax, config.seed, value => {
                 config.seed = Mathf.FloorToInt(value);
@@ -294,6 +294,13 @@ namespace ProceduralToolkit.Samples
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Space)) PlayPause();
+            if (Input.GetKeyDown(KeyCode.N)) Step();
+            if (Input.GetKeyDown(KeyCode.R)) Generate();
+            if (Input.GetKeyDown(KeyCode.C)) Clear();
+            if (Input.GetKeyDown(KeyCode.F)) Fill();
+
+
             DrawCells();
             UpdateSkybox();
             if (IsPlaying) {
