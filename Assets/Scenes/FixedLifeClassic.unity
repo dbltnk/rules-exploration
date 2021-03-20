@@ -5444,6 +5444,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mode: 2
+  MaxCustomBirthRule: 9
+  MaxCustomSurvivalRule: 9
+  FixedRuleset: 0
+  FixedSeed: 1
+  FixedStartNoise: 0.5
+  FixedBorderIsAwake: 1
   config:
     width: 12
     height: 12
@@ -5467,6 +5473,7 @@ MonoBehaviour:
   IsPlaying: 1
   StepCount: 0
   Dirty: 0
+  IsTyping: 0
 --- !u!4 &643499691
 Transform:
   m_ObjectHideFlags: 0
@@ -9592,7 +9599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.1337404
+  m_AspectRatio: 1.1335222
 --- !u!114 &1094236753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21272,7 +21279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 0
-  m_AspectRatio: 1.075616
+  m_AspectRatio: 1.0754449
 --- !u!114 &2136439631
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/ClassificationKnownSpecies.unity
     guid: fb7a57d2c5e007f4cbfa485800328508
   - enabled: 1
-    path: Assets/Scenes/Fixed.unity
+    path: Assets/Scenes/FixedLifeClassic.unity
     guid: 504d4fa3d9cac9c49a87af23504a0286
   - enabled: 1
     path: Assets/Scenes/KnownSpeciesCollection.unity

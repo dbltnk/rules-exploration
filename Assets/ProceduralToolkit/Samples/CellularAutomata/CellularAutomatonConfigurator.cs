@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Text;
+using System;
 
 namespace ProceduralToolkit.Samples
 {
@@ -15,25 +16,24 @@ namespace ProceduralToolkit.Samples
 
     public class CellularAutomatonConfigurator : ConfiguratorBase
     {
-        [Header("Game mode setup")]
+        [Header("Game Mode")]
         public gameMode Mode = gameMode.RandomCustom;
+
+        [Header("For Classification")]
+        [Range(0, 999999999)]
         public int MaxCustomBirthRule = 9;
+        [Range(0, 999999999)]
         public int MaxCustomSurvivalRule = 9;
 
-        [Header("Could maybe be changed in the editor for level setup")]
-        public CellularAutomaton.Config config = new CellularAutomaton.Config();
+        [Header("For Fixed")]
+        public RulesetName FixedRuleset = RulesetName.Life;
+        public int FixedSeed = 1;
+        [Range(0f, 1f)]
+        public float FixedStartNoise;
+        public bool FixedBorderIsAwake = true;
 
-        private enum RulesetName
-        {
-            Life,
-            Mazectric,
-            Coral,
-            WalledCities,
-            Coagulations,
-            Anneal,
-            Majority,
-            Custom
-        }
+        [Header("Probably should not be changed ...")]
+        public CellularAutomaton.Config config = new CellularAutomaton.Config();
 
         private Dictionary<RulesetName, CellularAutomaton.Ruleset> nameToRuleset = new Dictionary<RulesetName, CellularAutomaton.Ruleset>
 {
@@ -78,6 +78,18 @@ namespace ProceduralToolkit.Samples
         [HideInInspector]
         public enum gameMode { RandomCustom, RandomKnown, Fixed };
         [HideInInspector]
+        public enum RulesetName
+        {
+            Life,
+            Mazectric,
+            Coral,
+            WalledCities,
+            Coagulations,
+            Anneal,
+            Majority,
+            Custom
+        }
+        [HideInInspector]
         public CellularAutomaton Automaton;
         [HideInInspector]
         public Color DeadColor;
@@ -103,21 +115,31 @@ namespace ProceduralToolkit.Samples
 
             // RULE SETUP
 
-            var epochStart = new System.DateTime(1970, 1, 1, 8, 0, 0, System.DateTimeKind.Utc);
-            var timestamp = (System.DateTime.UtcNow - epochStart).Milliseconds;
+            int timestamp = (int)DateTimeOffset.Now.ToUnixTimeSeconds();
             UnityEngine.Random.InitState(timestamp);
             RulesetName currentRulesetName = RulesetName.Custom;
             bool pickBordersRandomly = true;
             config.seed = UnityEngine.Random.Range(seedMin, seedMax);
             if (Mode == gameMode.RandomCustom) {
                 RandomizeRules();
+                SelectRuleset(currentRulesetName);
             } else if (Mode == gameMode.RandomKnown) {
                 int r = UnityEngine.Random.Range(0, 8);
                 currentRulesetName = (RulesetName)r;
+                SelectRuleset(currentRulesetName);
+                // TODO MAKE THIS WORK =D
+                // customBirthRule = BitConverter.ToInt32(config.ruleset.birthRule, config.ruleset.birthRule.Length);
+                // customSurvivalRule = BitConverter.ToInt32(config.ruleset.survivalRule, config.ruleset.survivalRule.Length);
             } else if (Mode == gameMode.Fixed) {
-                currentRulesetName = (RulesetName)0;
-                config.seed = 0;
+                currentRulesetName = FixedRuleset;
+                config.seed = FixedSeed;
+                config.startNoise = FixedStartNoise;
                 pickBordersRandomly = false;
+                config.aliveBorders = FixedBorderIsAwake;
+                SelectRuleset(currentRulesetName);
+                // TODO MAKE THIS WORK =D
+                // customBirthRule = BitConverter.ToInt32(config.ruleset.birthRule, config.ruleset.birthRule.Length);
+                // customSurvivalRule = BitConverter.ToInt32(config.ruleset.survivalRule, config.ruleset.survivalRule.Length);
             } else {
                 Debug.LogError("UNKNOWN GAME MODE");
             }
@@ -128,7 +150,6 @@ namespace ProceduralToolkit.Samples
                     config.aliveBorders = false;
                 }
             }
-            SelectRuleset(currentRulesetName);
             Generate();
             SetupSkyboxAndPalette();
             pixels = new Color[config.width * config.height];
