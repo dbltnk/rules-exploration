@@ -221,6 +221,7 @@ namespace ProceduralToolkit.Samples
 
             InstantiateControl<ButtonControl>(LeftPanel).Initialize("New experiment", NewGame);
 
+            InstantiateControl<ButtonControl>(RightPanel).Initialize("Exit To Menu", Exit);
             var answer = InstantiateControl<TextControl>(RightPanel).headerText.text = "<b>My answer</b> for Dr. Connie is:";
             answerBirth = InstantiateControl<TextBoxControl>(RightPanel);
             answerBirth.Initialize("<i>Birth rule: (e.g. 123)</i>");
@@ -232,6 +233,10 @@ namespace ProceduralToolkit.Samples
             });
             InstantiateControl<ButtonControl>(RightPanel).Initialize("Submit your theory", Answer);
             setupDone = true;
+        }
+
+        private void Exit () {
+            SceneManager.LoadScene("KnowledgeGraph", LoadSceneMode.Single);
         }
 
         private string SetSpeciesName () {
