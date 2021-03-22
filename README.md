@@ -26,6 +26,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P1 challenge: create a state
     * P1 fixed list of challenges / puzzles to pick from
     * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
+    * minimize works w/ mazentric
     * P1 create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
     * P1 Make [N] mutations to a species to get to a specific result
 * P1 CLASSIFICATION: what are the rules?
