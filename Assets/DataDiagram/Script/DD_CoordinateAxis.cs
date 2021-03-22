@@ -28,7 +28,7 @@ public class DD_CoordinateScaleChangeEventArgs : EventArgs {
 }
 
 /// <summary>
-/// 改变当前观察区域的坐标零点事件
+/// Change the current viewing area of the coordinate zero events  
 /// </summary>
 public class DD_CoordinateZeroPointChangeEventArgs : EventArgs {
 
@@ -47,70 +47,70 @@ public class DD_CoordinateAxis : DD_DrawGraphic {
     private static readonly string LINES_BASE_NAME = "Line";
     private static readonly string COORDINATE_RECT = "CoordinateRect";
     private const float INCH_PER_CENTIMETER = 0.3937008f;
-    private readonly float[] MarkIntervalTab = { 1, 2, 5 };//c#中数组不支持const
-#endregion
+    private readonly float[] MarkIntervalTab = { 1, 2, 5 };//array isd not supported
+    #endregion
 
-#region property
+    #region property
     /// <summary>
-    /// 数据表格入口类
+    /// Class data table entry 
     /// </summary>
     //[SerializeField]
     private DD_DataDiagram m_DataDiagram = null;
 
     /// <summary>
-    /// 实际折线绘制区域,以像素为单位
+    /// Actual polyline drawing area, in pixels 
     /// </summary>
     private RectTransform m_CoordinateRectT = null;
 
     /// <summary>
-    /// 折线的预设，提前load，提升性能
+    /// Preset of polyline, load in advance to improve performance 
     /// </summary>
     private GameObject m_LinesPreb = null;
 
     /// <summary>
-    /// 坐标轴字体的预设，提前load，提升性能
+    /// The preset of the axis font, load in advance to improve performance 
     /// </summary>
     private GameObject m_MarkTextPreb = null;
 
     /// <summary>
-    /// 所有存在于该坐标系中的折线列表
+    /// List of all polylines that exist in this coordinate system 
     /// </summary>
     private List<GameObject> m_LineList = new List<GameObject>();
 
     /// <summary>
-    /// 坐标轴显示区域范围，以像素为单位
+    /// Coordinate axis range of the display area, in pixels 
     /// </summary>
     //private Rect m_CoordinatePixelRect = new Rect();
 
     /// <summary>
-    /// 坐标轴缩放的速度
+    /// The speed of the axis scaling 
     /// </summary>
     private Vector2 m_ZoomSpeed = new Vector2(1, 1);
 
     /// <summary>
-    /// 坐标轴移动的速度
+    /// Axis movement speed 
     /// </summary>
     private Vector2 m_MoveSpeed = new Vector2(1, 1);
 
     /// <summary>
-    /// 坐标轴最大可伸缩范围，以坐标轴为单位
-    /// Y轴的通过长宽比例计算获得
+    /// The maximum retractable range of the coordinate axis, with the coordinate axis as the unit
+    /// The Y axis is calculated by the aspect ratio 
     /// </summary>
     private float m_CoordinateAxisMaxWidth = 100;
     private float m_CoordinateAxisMinWidth = 0.1f;
 
     /// <summary>
-    /// 矩形框式坐标轴线条粗细
+    /// Rectangular frame axis lines thickness formula 
     /// </summary>
     private float m_RectThickness = 2;
 
     /// <summary>
-    /// 矩形框式坐标轴背景颜色
+    /// Rectangular axis background color 
     /// </summary>
     private Color m_BackgroundColor = new Color(0, 0, 0, 0.5f);
 
     /// <summary>
-    /// 矩形框式坐标标记线颜色
+    /// Rectangular frame coordinate marking line color 
     /// </summary>
     private Color m_MarkColor = new Color(0.8f, 0.8f, 0.8f, 1);
 
