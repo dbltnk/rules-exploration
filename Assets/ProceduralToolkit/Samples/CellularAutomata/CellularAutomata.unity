@@ -5644,9 +5644,9 @@ MonoBehaviour:
   PrefConnieWei: {fileID: 8316235345974135777, guid: c9f0554150107a14386e8394d325c5b0,
     type: 3}
   RulesPopup: {fileID: 1680414892}
-  LeftPanel: {fileID: 0}
-  RightPanel: {fileID: 0}
-  ToggleGroup: {fileID: 0}
+  LeftPanel: {fileID: 1785664460}
+  RightPanel: {fileID: 347272021}
+  ToggleGroup: {fileID: 1079176263}
   Image: {fileID: 1094236749}
   DeadColor: {r: 0, g: 0, b: 0, a: 0}
   AliveColor: {r: 0, g: 0, b: 0, a: 0}
