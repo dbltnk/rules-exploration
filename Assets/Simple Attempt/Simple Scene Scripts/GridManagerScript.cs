@@ -94,6 +94,16 @@ public class GridManagerScript : MonoBehaviour
         coordsToSpriteRenderer[coords].color = color;
     }
 
+    public bool CheckWallAdjacent(Coords coords)
+    {
+        if(GetAllValidNeighbors(coords).Count < 8)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     public List<Coords> GetAllValidNeighbors(Coords baseCoords)
     {
         List<Coords> validNeighbors = new List<Coords>();

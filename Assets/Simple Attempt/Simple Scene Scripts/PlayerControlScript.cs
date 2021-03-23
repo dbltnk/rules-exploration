@@ -37,6 +37,30 @@ public class PlayerControlScript : MonoBehaviour
         cellManager.IncrementTime();
     }
 
+    /// <summary>
+    /// Sets the map to the exact condition it started.
+    /// </summary>
+    public void ResetExperement()
+    {
+
+    }
+
+    /// <summary>
+    /// Removes all living cells.
+    /// </summary>
+    public void ClearDish()
+    {
+        cellManager.ClearAllLife();
+    }
+
+    /// <summary>
+    /// Puts a living cell in every position.
+    /// </summary>
+    public void FillDish()
+    {
+        cellManager.AllCellsLiving();
+    }
+
     public void SetSimulationSpeed()
     {
         float stepsPerSecond = simulationSpeedSlider.value;

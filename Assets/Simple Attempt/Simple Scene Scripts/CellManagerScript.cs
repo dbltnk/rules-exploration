@@ -2,7 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CONDITION
+public enum PROPIGATION_RULE
+{
+    /// <summary>
+    /// Level-wide rule will generate a generic living cell.
+    /// </summary>
+    CLASSIC_GENERIC,
+    /// <summary>
+    /// Level-wide rule will generate a random species from the enabled species list.
+    /// </summary>
+    CLASSIC_RANDOM_SPECIES,
+    /// <summary>
+    /// Each species will use their specific propigation rule.
+    /// </summary>
+    SPECIES_SPECIFIC,
+}
+
+public enum STATE
 {
     NONE,
     NORMAL,
@@ -12,37 +28,29 @@ public enum CONDITION
 
 public enum SPECIES
 {
+    NONE,
     BLOB,
     FLOPPER,
-    GOBLIN,
-    NONE//This must always be the last on this list so as to not throw off the int value.
-}
-
-public enum RULES
-{
-    STANDARD,
-    SERIOUS,
-    WACKY,
-    SOMETHING_ELSE,
+    GOBLIN,    
 }
 
 public class CellState
 {
-    public CellState(Coords coords, CONDITION condition, SpeciesAttributes species, bool alive)
+    public CellState(Coords coords, STATE state, SpeciesAttributes species, bool alive)
     {
         this.coords = coords;
-        this.condition = condition;
+        this.state = state;
         this.species = species;
         this.alive = alive;
 
-        futureCondition = CONDITION.NONE;
+        futureState = STATE.NONE;
         futureSpecies = SPECIES.NONE;
         futureAlive = alive;
     }
 
     public Coords coords;
-    public CONDITION condition;
-    public CONDITION futureCondition;
+    public STATE state;
+    public STATE futureState;
     public SpeciesAttributes species;
     public SPECIES futureSpecies;
     public bool alive;
@@ -52,28 +60,29 @@ public class CellState
 [System.Serializable]
 public class SpeciesAttributes
 {
-    public SpeciesAttributes(string speciesName, SPECIES speciesEnum, Vector2Int neighborRange, Vector2Int reginRange, Color aliveColor)
+    public SpeciesAttributes(string speciesName, SPECIES speciesEnum, Rule[] speciesRules, Color aliveColor)
     {
         this.speciesName = speciesName;
-        this.neighborRange = neighborRange;
-        this.reginRange = reginRange;
         this.aliveColor = aliveColor;
     }
 
     public string speciesName;
     public SPECIES speciesEnum;
-    public Vector2Int neighborRange;
-    public Vector2Int reginRange;
-    public Color aliveColor;
+    public Rule[] speciesRules;
+    public Color aliveColor;    
 }
 
 public class CellManagerScript : MonoBehaviour
 {
     [SerializeField] GridManagerScript gridManager = null;
 
-    [SerializeField] RULES rules;
+    [SerializeField] ArbiterScript arbiter = null;
 
-    [SerializeField] float updateRate = 2f;
+    [SerializeField] PROPIGATION_RULE propigationRule = PROPIGATION_RULE.CLASSIC_GENERIC;
+
+    [SerializeField] List<Rule> levelRules = null;
+
+    float updateRate = 1f;
 
     [SerializeField] Color deadColor = Color.grey;
 
@@ -86,6 +95,17 @@ public class CellManagerScript : MonoBehaviour
 
     private void Awake()
     {
+        if(propigationRule == PROPIGATION_RULE.CLASSIC_GENERIC)
+        {
+            levelRules.Add(new Rule(new Condition[] { new Condition(CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_COUNT, CONDITION_TYPE.VALUE_WITHIN_RANGE, new Vector2Int(3, 3), null) }, 
+                new Result[] { new Result(true, null, false, true, SPECIES.NONE, STATE.NORMAL) }));
+        }
+        else if(propigationRule == PROPIGATION_RULE.CLASSIC_RANDOM_SPECIES)
+        {
+            levelRules.Add(new Rule(new Condition[] { new Condition(CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_COUNT, CONDITION_TYPE.VALUE_WITHIN_RANGE, new Vector2Int(3, 3), null) },
+                new Result[] { new Result(true, null, false, true, SPECIES.NONE, STATE.NORMAL) }));
+        }//DO THESE NEED TO BE TWO DIFFERENT CALLS????????????????????????????????????????????????????????????????????????????????????????????????
+
         StartConstantSimulate();
     }
 
@@ -96,25 +116,34 @@ public class CellManagerScript : MonoBehaviour
         for(int i = 0; i < allCoords.Length; i++)
         {
             Coords currentCoords = allCoords[i];
-            CellState newCellState = new CellState(currentCoords, CONDITION.NONE, null, false);
+            CellState newCellState = new CellState(currentCoords, STATE.NONE, null, false);
             coordsToCellState[currentCoords] = newCellState;
             cellStateArray[i] = newCellState;
 
             //Debug
-            SetSpecies(currentCoords, (SPECIES)Random.Range(0, 3));
+            SetSpecies(currentCoords, (SPECIES)Random.Range(1, 4));
             //SetSpecies(currentCoords, SPECIES.BLOB);
             SetAlive(currentCoords, Random.Range(0, 3) == 2);            
         }
     }
 
-    void SetCondition(Coords coords, CONDITION newCondition)
+    public CellState GetCellStateAtCoords(Coords coods) { return coordsToCellState[coods]; }
+
+    void SetState(Coords coords, STATE newState)
     {
-        coordsToCellState[coords].condition = newCondition;
+        coordsToCellState[coords].state = newState;
     }
 
     void SetSpecies(Coords coords, SPECIES newSpecies)
     {
         coordsToCellState[coords].species = speciesAttributes[(int)newSpecies];
+    }
+
+    SpeciesAttributes GetRandomSpecies()
+    {
+        SPECIES chosenSpecies = enabledSpecies[Random.Range(0, enabledSpecies.Count)];
+
+        return speciesAttributes[(int)chosenSpecies];
     }
 
     void SetAlive(Coords coords, bool alive)
@@ -135,6 +164,29 @@ public class CellManagerScript : MonoBehaviour
         }
     }
 
+    public void ClearAllLife()
+    {
+        for(int i = 0; i < cellStateArray.Length; i ++)
+        {
+            SetAlive(cellStateArray[i].coords, false);
+        }
+    }
+
+    public void AllCellsLiving()
+    {
+        for(int i = 0; i < cellStateArray.Length; i++)
+        {
+            CellState thisCellState = cellStateArray[i];
+
+            if(thisCellState.species == null)
+            {
+                thisCellState.species = GetRandomSpecies();
+            }
+
+            SetAlive(cellStateArray[i].coords, true);
+        }
+    }
+
     public void IncrementTime()
     {
         List<CellState> changingCells = new List<CellState>();
@@ -143,35 +195,68 @@ public class CellManagerScript : MonoBehaviour
         {
             CellState cellState = cellStateArray[i];
 
-            switch(rules)
+            for(int r = 0; r < levelRules.Count; r++)
             {
-                case RULES.STANDARD:
-                    int livingCount = CountLivingNeighbors(cellState.coords);
+                Result[] results = arbiter.TestRule(cellState.coords, levelRules[r]);
+                for(int t = 0; t < results.Length; t++)
+                {
+                    ApplyResult(results[t]);
+                }
+            }
 
-                    bool currentlyAlive = cellState.alive;
+            Rule[] speciesRules = cellState.species.speciesRules;
+            for(int r = 0; r < speciesRules.Length; r++)
+            {
+                Result[] results = arbiter.TestRule(cellState.coords, speciesRules[r]);
+                for(int t = 0; t < results.Length; t++)
+                {
+                    ApplyResult(results[t]);
+                }
+            }
 
-                    SpeciesAttributes currentSpecies = cellState.species;
-
-                    if(currentlyAlive)
+            void ApplyResult(Result result)
+            {
+                List<Coords> affectedCoords = new List<Coords>();
+                Coords baseCoords = cellState.coords;
+                if(result.affectSourceCoords)
+                {
+                    affectedCoords.Add(baseCoords);
+                    List<NEIGHBORS> neighbors = result.affectedNeighbors;
+                    for(int n = 0; n < neighbors.Count; n++)
                     {
-                        if(livingCount < currentSpecies.neighborRange.x || livingCount > currentSpecies.neighborRange.y)
+                        Coords potentialNeighbor = gridManager.GetSpecificNeighbor(baseCoords, neighbors[n]);
+                        if(potentialNeighbor.x < 0)
                         {
-                            AddToChangingCells(cellState);
-                            cellState.futureAlive = false;
+                            continue;
                         }
+                        affectedCoords.Add(potentialNeighbor);
                     }
-                    else
-                    {
-                        SpeciesAttributes newRegin = FindValidRegin(livingCount);
 
-                        if(newRegin != null)
+                    for(int c = 0; c < affectedCoords.Count; c++)
+                    {
+                        Coords currentAffectedCoords = affectedCoords[c];
+                        CellState currentAffectedCellState = coordsToCellState[currentAffectedCoords];
+
+                        if(result.killIfAlive && currentAffectedCellState.alive)
                         {
-                            AddToChangingCells(cellState);
-                            cellState.futureSpecies = newRegin.speciesEnum;
-                            cellState.futureAlive = true;
+                            currentAffectedCellState.futureAlive = false;
                         }
+                        if(result.reginIfDead && !currentAffectedCellState.alive)
+                        {
+                            currentAffectedCellState.futureAlive = true;
+                        }
+                        if(result.newSpecies != SPECIES.NONE)
+                        {
+                            currentAffectedCellState.futureSpecies = result.newSpecies;
+                        }
+                        if(result.newState != STATE.NONE)
+                        {
+                            currentAffectedCellState.futureState = result.newState;
+                        }
+
+                        AddToChangingCells(currentAffectedCellState);
                     }
-                    break;
+                }
             }
         }
         
@@ -189,11 +274,11 @@ public class CellManagerScript : MonoBehaviour
         {
             CellState changingState = changingCells[i];
 
-            CONDITION newCondition = changingState.futureCondition;
-            if(newCondition != CONDITION.NONE)
+            STATE newState = changingState.futureState;
+            if(newState != STATE.NONE)
             {
-                SetCondition(changingState.coords, newCondition);
-                changingState.futureCondition = CONDITION.NONE;
+                SetState(changingState.coords, newState);
+                changingState.futureState = STATE.NONE;
             }
 
             SPECIES newSpecies = changingState.futureSpecies;
@@ -234,16 +319,29 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
-    public int CountLivingNeighbors(Coords coords)
+    public int CountLivingNeighbors(Coords coords, bool matchSpecies)
     {
         List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
         int livingCount = 0;
+        SPECIES sourceSpecies = coordsToCellState[coords].species.speciesEnum;
 
         for(int i = 0; i < validNeighbors.Count; i++)
         {
-            if(coordsToCellState[validNeighbors[i]].alive)
+            CellState neighbor = coordsToCellState[validNeighbors[i]];
+
+            if(neighbor.alive)
             {
-                livingCount++;
+                if(matchSpecies)
+                {
+                    if(neighbor.species.speciesEnum == sourceSpecies)
+                    {
+                        livingCount++;
+                    }
+                }
+                else
+                {
+                    livingCount++;
+                }                
             }
         }
 

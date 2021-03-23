@@ -279,7 +279,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 98560136}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 694274194}
+        m_MethodName: ClearDish
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &98560136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1867,39 +1878,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &694274192 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2305390745902653400, guid: 708f6e958714bf74f855900b4db5051a,
+--- !u!114 &694274194 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 694274194, guid: 708f6e958714bf74f855900b4db5051a,
     type: 3}
   m_PrefabInstance: {fileID: 3926358790715221902}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &694274193 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
-    type: 3}
-  m_PrefabInstance: {fileID: 3926358790715221902}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 694274192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81e45bed054d8e246acb1570261e9022, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &694274194
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 694274192}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 65737668b6cabec47bd5c4f938b52210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellManager: {fileID: 694274193}
-  simulationSpeedSlider: {fileID: 1012983140}
-  simulationSpeedReadout: {fileID: 1066346049}
 --- !u!1 &702987834
 GameObject:
   m_ObjectHideFlags: 0
@@ -5341,7 +5331,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1968990829}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 694274194}
+        m_MethodName: FillDish
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1968990829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5938,6 +5939,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 694274194, guid: 708f6e958714bf74f855900b4db5051a, type: 3}
+      propertyPath: simulationSpeedSlider
+      value: 
+      objectReference: {fileID: 1012983140}
+    - target: {fileID: 694274194, guid: 708f6e958714bf74f855900b4db5051a, type: 3}
+      propertyPath: simulationSpeedReadout
+      value: 
+      objectReference: {fileID: 1066346049}
     - target: {fileID: 2305390745902653400, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
       propertyPath: m_Name
@@ -5948,11 +5957,6 @@ PrefabInstance:
       propertyPath: sceneCamera
       value: 
       objectReference: {fileID: 925062356}
-    - target: {fileID: 4136632377573663505, guid: 708f6e958714bf74f855900b4db5051a,
-        type: 3}
-      propertyPath: autoAdjustCameraSize
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7583248747352537095, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
       propertyPath: m_RootOrder
@@ -6010,13 +6014,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
-      propertyPath: enabledSpecies.Array.size
-      value: 1
+      propertyPath: speciesAttributes.Array.data[0].speciesName
+      value: Keep This Empty
       objectReference: {fileID: 0}
     - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
-      propertyPath: enabledSpecies.Array.data[0]
-      value: 0
+      propertyPath: speciesAttributes.Array.data[1].speciesEnum
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 708f6e958714bf74f855900b4db5051a, type: 3}
