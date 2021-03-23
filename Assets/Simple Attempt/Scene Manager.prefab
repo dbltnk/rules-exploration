@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2305390745902653400
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7583248747352537095}
+  - component: {fileID: 4136632377573663505}
+  - component: {fileID: 8784801598108222760}
+  m_Layer: 0
+  m_Name: Scene Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7583248747352537095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2305390745902653400}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4136632377573663505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2305390745902653400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36f87b6df4c699f4e882c50100dd9f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellManager: {fileID: 8784801598108222760}
+  gridWidth: 15
+  gridHeight: 10
+  cellSize: 1
+  sceneCamera: {fileID: 0}
+  cellPrefab: {fileID: 7834420745860804714, guid: 82b0d19bfe5f1c845a0d39184c198e25,
+    type: 3}
+--- !u!114 &8784801598108222760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2305390745902653400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e45bed054d8e246acb1570261e9022, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridManager: {fileID: 4136632377573663505}
+  rules: 0
+  updateRate: 1
+  deadColor: {r: 0.5283019, g: 0.39124244, b: 0.39124244, a: 0.105882354}
+  enabledSpecies: 000000000100000002000000
+  speciesAttributes:
+  - speciesName: Blob
+    speciesEnum: 0
+    neighborRange: {x: 2, y: 3}
+    reginRange: {x: 3, y: 3}
+    aliveColor: {r: 0.7490196, g: 0.0039215763, b: 0.7225583, a: 1}
+  - speciesName: Flopper
+    speciesEnum: 1
+    neighborRange: {x: 2, y: 4}
+    reginRange: {x: 1, y: 0}
+    aliveColor: {r: 0.8113208, g: 0.6788051, b: 0.16456035, a: 1}
+  - speciesName: Goblin
+    speciesEnum: 2
+    neighborRange: {x: 1, y: 4}
+    reginRange: {x: 4, y: 5}
+    aliveColor: {r: 0.16081212, g: 0.6509434, b: 0.0521983, a: 1}

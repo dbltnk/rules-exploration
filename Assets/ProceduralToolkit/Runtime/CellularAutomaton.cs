@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 using Random = UnityEngine.Random;
+using UnityEngine;
 
 namespace ProceduralToolkit
 {
