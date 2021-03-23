@@ -35,6 +35,9 @@ public class GridManagerScript : MonoBehaviour
     [SerializeField] float cellSize = 1f;
 
     [SerializeField] Camera sceneCamera = null;
+    [Tooltip("If true, camera size adjusts on start depending on cell size and grid size.")]
+    [SerializeField] bool autoAdjustCameraSize = false;
+
     [SerializeField] GameObject cellPrefab = null;
 
     Coords[] allCoords;
@@ -54,7 +57,11 @@ public class GridManagerScript : MonoBehaviour
         coordsToPosition = new Dictionary<Coords, Vector3>();
         coordsToSpriteRenderer = new Dictionary<Coords, SpriteRenderer>();
 
-        sceneCamera.orthographicSize = (cellSize * Mathf.Max(gridWidth, gridHeight) / 2);
+        if(autoAdjustCameraSize)
+        {
+            sceneCamera.orthographicSize = (cellSize * Mathf.Max(gridWidth, gridHeight) / 2);
+        }
+        
         sceneCamera.transform.position = new Vector3((gridWidth / 2) * cellSize, (gridHeight / 2) * cellSize, -10);
 
         allCoords = new Coords[gridWidth * gridHeight];

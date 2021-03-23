@@ -211,6 +211,11 @@ public class CellManagerScript : MonoBehaviour
         }
     }
 
+    public void SetSimulationSpeed(float stepsPerSecond)
+    {
+        updateRate = 1f / stepsPerSecond;
+    }
+
     public void StartConstantSimulate()
     {
         StopCoroutine("RunSimulation");
