@@ -100,7 +100,6 @@ public class ArbiterScript : MonoBehaviour
 
     public Result[] TestRule(Coords coords, Rule rule)
     {
-
         Condition[] conditions = rule.conditions;
 
         for(int i = 0; i < conditions.Length; i++)
@@ -116,10 +115,10 @@ public class ArbiterScript : MonoBehaviour
             switch(thisCondition.conditionCompareSource)
             {
                 case CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, false);
+                    inputInt = cellManager.CountLivingNeighbors(coords, null);
                     break;
                 case CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, true);
+                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareSpecies);
                     break;
                 case CONDITION_COMPARE_SOURCE.NEIGHBOR_DE:
                     AssignInputValuesBasedOnSpecificNeighbor(NEIGHBORS.DE);

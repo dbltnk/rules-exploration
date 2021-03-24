@@ -5954,6 +5954,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4136632377573663505, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
+      propertyPath: gridWidth
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136632377573663505, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: gridHeight
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4136632377573663505, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
       propertyPath: sceneCamera
       value: 
       objectReference: {fileID: 925062356}
@@ -6014,13 +6024,88 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
-      propertyPath: speciesAttributes.Array.data[0].speciesName
-      value: Keep This Empty
+      propertyPath: propigationRule
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
-      propertyPath: speciesAttributes.Array.data[1].speciesEnum
+      propertyPath: enabledSpecies.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: enabledSpecies.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: enabledSpecies.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: enabledSpecies.Array.data[2]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[1].propigationRule.results.Array.data[0].newSpecies
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[2].propigationRule.results.Array.data[0].killIfAlive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[2].propigationRule.results.Array.data[0].reginIfDead
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[2].propigationRule.conditions.Array.data[0].compareInts.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[2].propigationRule.conditions.Array.data[0].compareInts.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[3].propigationRule.conditions.Array.data[0].compareInts.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[3].propigationRule.conditions.Array.data[0].compareInts.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[1].propigationRule.conditions.Array.data[0].conditionCompareSource
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[2].propigationRule.conditions.Array.data[0].conditionCompareSource
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[3].propigationRule.conditions.Array.data[0].conditionCompareSource
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[3].propigationRule.conditions.Array.data[0].compareSpecies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8784801598108222760, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: speciesAttributes.Array.data[3].propigationRule.conditions.Array.data[0].compareSpecies.Array.data[1]
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 708f6e958714bf74f855900b4db5051a, type: 3}

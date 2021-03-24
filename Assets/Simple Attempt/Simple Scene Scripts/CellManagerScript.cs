@@ -31,7 +31,7 @@ public enum SPECIES
     NONE,
     BLOB,
     FLOPPER,
-    GOBLIN,    
+    GOBLIN
 }
 
 public class CellState
@@ -60,7 +60,7 @@ public class CellState
 [System.Serializable]
 public class SpeciesAttributes
 {
-    public SpeciesAttributes(string speciesName, SPECIES speciesEnum, Rule[] speciesRules, Color aliveColor)
+    public SpeciesAttributes(string speciesName, SPECIES speciesEnum, Rule[] speciesRules, Rule propigationRule, Color aliveColor)
     {
         this.speciesName = speciesName;
         this.aliveColor = aliveColor;
@@ -69,6 +69,7 @@ public class SpeciesAttributes
     public string speciesName;
     public SPECIES speciesEnum;
     public Rule[] speciesRules;
+    public Rule propigationRule;
     public Color aliveColor;    
 }
 
@@ -79,6 +80,8 @@ public class CellManagerScript : MonoBehaviour
     [SerializeField] ArbiterScript arbiter = null;
 
     [SerializeField] PROPIGATION_RULE propigationRule = PROPIGATION_RULE.CLASSIC_GENERIC;
+
+    [SerializeField] bool enableSpeciesRules = true;
 
     [SerializeField] List<Rule> levelRules = null;
 
@@ -95,16 +98,11 @@ public class CellManagerScript : MonoBehaviour
 
     private void Awake()
     {
-        if(propigationRule == PROPIGATION_RULE.CLASSIC_GENERIC)
+        if(propigationRule != PROPIGATION_RULE.SPECIES_SPECIFIC)
         {
             levelRules.Add(new Rule(new Condition[] { new Condition(CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_COUNT, CONDITION_TYPE.VALUE_WITHIN_RANGE, new Vector2Int(3, 3), null) }, 
                 new Result[] { new Result(true, null, false, true, SPECIES.NONE, STATE.NORMAL) }));
         }
-        else if(propigationRule == PROPIGATION_RULE.CLASSIC_RANDOM_SPECIES)
-        {
-            levelRules.Add(new Rule(new Condition[] { new Condition(CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_COUNT, CONDITION_TYPE.VALUE_WITHIN_RANGE, new Vector2Int(3, 3), null) },
-                new Result[] { new Result(true, null, false, true, SPECIES.NONE, STATE.NORMAL) }));
-        }//DO THESE NEED TO BE TWO DIFFERENT CALLS????????????????????????????????????????????????????????????????????????????????????????????????
 
         StartConstantSimulate();
     }
@@ -121,7 +119,7 @@ public class CellManagerScript : MonoBehaviour
             cellStateArray[i] = newCellState;
 
             //Debug
-            SetSpecies(currentCoords, (SPECIES)Random.Range(1, 4));
+            SetSpecies(currentCoords, enabledSpecies[Random.Range(0, enabledSpecies.Count)]);
             //SetSpecies(currentCoords, SPECIES.BLOB);
             SetAlive(currentCoords, Random.Range(0, 3) == 2);            
         }
@@ -136,7 +134,14 @@ public class CellManagerScript : MonoBehaviour
 
     void SetSpecies(Coords coords, SPECIES newSpecies)
     {
-        coordsToCellState[coords].species = speciesAttributes[(int)newSpecies];
+        //Debug.LogFormat("Setting species to {0} at {1}, {2}.", newSpecies, coords.x, coords.y);
+        CellState thisCellState = coordsToCellState[coords];
+        thisCellState.species = speciesAttributes[(int)newSpecies];
+
+        if(thisCellState.alive)
+        {
+            gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
+        }        
     }
 
     SpeciesAttributes GetRandomSpecies()
@@ -150,12 +155,27 @@ public class CellManagerScript : MonoBehaviour
     {
         CellState thisCellState = coordsToCellState[coords];
 
+        bool wasAlreadyAlive = thisCellState.alive;
+
         thisCellState.alive = alive;
 
         int speciesIndex = (int)thisCellState.species.speciesEnum;
 
         if(alive)
         {
+            if(!wasAlreadyAlive)//Depending on rule set, bringing a cell back to life may require settting the species here.
+            {
+                if(propigationRule == PROPIGATION_RULE.CLASSIC_GENERIC)
+                {
+                    //Whatever the default species is should be set here.
+                    thisCellState.species = speciesAttributes[(int)enabledSpecies[0]];//This is just the first thing in the enabled species list.
+                }
+                else if(propigationRule == PROPIGATION_RULE.CLASSIC_RANDOM_SPECIES)
+                {
+                    thisCellState.species = GetRandomSpecies();
+                }
+            }
+
             gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
         }
         else
@@ -198,16 +218,47 @@ public class CellManagerScript : MonoBehaviour
             for(int r = 0; r < levelRules.Count; r++)
             {
                 Result[] results = arbiter.TestRule(cellState.coords, levelRules[r]);
-                for(int t = 0; t < results.Length; t++)
-                {
-                    ApplyResult(results[t]);
-                }
+                if(results == null) { continue; }
+                ApplyResults(results);
             }
 
-            Rule[] speciesRules = cellState.species.speciesRules;
-            for(int r = 0; r < speciesRules.Length; r++)
+            if(enableSpeciesRules)
             {
-                Result[] results = arbiter.TestRule(cellState.coords, speciesRules[r]);
+                Rule[] speciesRules = cellState.species.speciesRules;
+                if(speciesRules == null) { continue; }
+                for(int r = 0; r < speciesRules.Length; r++)
+                {
+                    ApplyResults(arbiter.TestRule(cellState.coords, speciesRules[r]));
+                }
+            }         
+            
+            if(!cellState.alive &&
+                !cellState.futureAlive)
+            {
+                if(propigationRule == PROPIGATION_RULE.SPECIES_SPECIFIC)
+                {
+                    List<Result[]> successfulResults = new List<Result[]>();
+
+                    for(int s = 0; s < enabledSpecies.Count; s++)
+                    {
+                        Result[] theseResults = arbiter.TestRule(cellState.coords, speciesAttributes[(int)enabledSpecies[s]].propigationRule);
+
+                        if(theseResults != null)
+                        {
+                            //Debug.LogFormat("Adding succesful results for {0} at {1}, {2}.", enabledSpecies[s], cellState.coords.x, cellState.coords.y);
+                            successfulResults.Add(theseResults);
+                        }
+                    }
+
+                    if(successfulResults.Count > 0)
+                    {
+                        ApplyResults(successfulResults[Random.Range(0, successfulResults.Count)]);
+                    }
+                }
+            }            
+
+            void ApplyResults(Result[] results)
+            {
                 for(int t = 0; t < results.Length; t++)
                 {
                     ApplyResult(results[t]);
@@ -221,7 +272,10 @@ public class CellManagerScript : MonoBehaviour
                 if(result.affectSourceCoords)
                 {
                     affectedCoords.Add(baseCoords);
-                    List<NEIGHBORS> neighbors = result.affectedNeighbors;
+                }
+                List<NEIGHBORS> neighbors = result.affectedNeighbors;
+                if(neighbors != null)
+                {
                     for(int n = 0; n < neighbors.Count; n++)
                     {
                         Coords potentialNeighbor = gridManager.GetSpecificNeighbor(baseCoords, neighbors[n]);
@@ -231,33 +285,34 @@ public class CellManagerScript : MonoBehaviour
                         }
                         affectedCoords.Add(potentialNeighbor);
                     }
+                }                    
 
-                    for(int c = 0; c < affectedCoords.Count; c++)
+                for(int c = 0; c < affectedCoords.Count; c++)
+                {
+                    Coords currentAffectedCoords = affectedCoords[c];
+                    CellState currentAffectedCellState = coordsToCellState[currentAffectedCoords];
+
+                    if(result.killIfAlive && currentAffectedCellState.alive)
                     {
-                        Coords currentAffectedCoords = affectedCoords[c];
-                        CellState currentAffectedCellState = coordsToCellState[currentAffectedCoords];
-
-                        if(result.killIfAlive && currentAffectedCellState.alive)
-                        {
-                            currentAffectedCellState.futureAlive = false;
-                        }
-                        if(result.reginIfDead && !currentAffectedCellState.alive)
-                        {
-                            currentAffectedCellState.futureAlive = true;
-                        }
-                        if(result.newSpecies != SPECIES.NONE)
-                        {
-                            currentAffectedCellState.futureSpecies = result.newSpecies;
-                        }
-                        if(result.newState != STATE.NONE)
-                        {
-                            currentAffectedCellState.futureState = result.newState;
-                        }
-
-                        AddToChangingCells(currentAffectedCellState);
+                        currentAffectedCellState.futureAlive = false;
                     }
+                    if(result.reginIfDead && !currentAffectedCellState.alive)
+                    {
+                        currentAffectedCellState.futureAlive = true;
+                    }
+                    if(result.newSpecies != SPECIES.NONE)
+                    {
+                        //Debug.LogFormat("Newspecies is {0} at {1}, {2}..", result.newSpecies, currentAffectedCoords.x, currentAffectedCoords.y);
+                        currentAffectedCellState.futureSpecies = result.newSpecies;
+                    }
+                    if(result.newState != STATE.NONE)
+                    {
+                        currentAffectedCellState.futureState = result.newState;
+                    }
+
+                    AddToChangingCells(currentAffectedCellState);
                 }
-            }
+            }                   
         }
         
         void AddToChangingCells(CellState cellState)
@@ -319,11 +374,10 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
-    public int CountLivingNeighbors(Coords coords, bool matchSpecies)
+    public int CountLivingNeighbors(Coords coords, List<SPECIES> matchSpecies)
     {
         List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
         int livingCount = 0;
-        SPECIES sourceSpecies = coordsToCellState[coords].species.speciesEnum;
 
         for(int i = 0; i < validNeighbors.Count; i++)
         {
@@ -331,9 +385,9 @@ public class CellManagerScript : MonoBehaviour
 
             if(neighbor.alive)
             {
-                if(matchSpecies)
+                if(matchSpecies != null)
                 {
-                    if(neighbor.species.speciesEnum == sourceSpecies)
+                    if(matchSpecies.Contains(neighbor.species.speciesEnum))
                     {
                         livingCount++;
                     }
@@ -346,22 +400,5 @@ public class CellManagerScript : MonoBehaviour
         }
 
         return livingCount;
-    }
-
-    SpeciesAttributes FindValidRegin(int neighborCount)
-    {
-        for(int i = 0; i < speciesAttributes.Count; i++)
-        {
-            SpeciesAttributes checkedSpecies = speciesAttributes[i];
-            if(neighborCount >= checkedSpecies.reginRange.x && neighborCount <= checkedSpecies.reginRange.y)
-            {
-                if(enabledSpecies.Contains(checkedSpecies.speciesEnum))
-                {
-                    return checkedSpecies;
-                }                
-            }
-        }
-
-        return null;
     }
 }

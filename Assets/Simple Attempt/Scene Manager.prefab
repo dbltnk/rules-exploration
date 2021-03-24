@@ -68,6 +68,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 4136632377573663505}
   arbiter: {fileID: 694274196}
+  propigationRule: 2
+  enableSpeciesRules: 1
   levelRules:
   - conditions:
     - conditionCompareSource: 0
@@ -82,45 +84,69 @@ MonoBehaviour:
       reginIfDead: 0
       newSpecies: 0
       newState: 0
-  - conditions:
-    - conditionCompareSource: 0
-      conditionType: 0
-      compareInts: {x: 3, y: 3}
-      compareSpecies: 
-      compareStates: 
-    results:
-    - affectSourceCoords: 1
-      affectedNeighbors: 
-      killIfAlive: 0
-      reginIfDead: 1
-      newSpecies: 0
-      newState: 0
   deadColor: {r: 0.5283019, g: 0.39124244, b: 0.39124244, a: 0.105882354}
-  enabledSpecies: 01000000
+  enabledSpecies: 010000000200000003000000
   speciesAttributes:
-  - speciesName: Empty
+  - speciesName: Keep This Empty
     speciesEnum: 0
     speciesRules: []
-    neighborRange: {x: 2, y: 3}
-    reginRange: {x: 3, y: 3}
+    propigationRule:
+      conditions: []
+      results: []
     aliveColor: {r: 1, g: 1, b: 1, a: 1}
   - speciesName: Blob
-    speciesEnum: 0
+    speciesEnum: 1
     speciesRules: []
-    neighborRange: {x: 2, y: 3}
-    reginRange: {x: 3, y: 3}
+    propigationRule:
+      conditions:
+      - conditionCompareSource: 0
+        conditionType: 0
+        compareInts: {x: 3, y: 3}
+        compareSpecies: 01000000
+        compareStates: 
+      results:
+      - affectSourceCoords: 1
+        affectedNeighbors: 
+        killIfAlive: 0
+        reginIfDead: 1
+        newSpecies: 3
+        newState: 0
     aliveColor: {r: 0.7490196, g: 0.0039215763, b: 0.7225583, a: 1}
   - speciesName: Flopper
     speciesEnum: 2
     speciesRules: []
-    neighborRange: {x: 2, y: 4}
-    reginRange: {x: 1, y: 0}
+    propigationRule:
+      conditions:
+      - conditionCompareSource: 0
+        conditionType: 0
+        compareInts: {x: 2, y: 2}
+        compareSpecies: 02000000
+        compareStates: 
+      results:
+      - affectSourceCoords: 1
+        affectedNeighbors: 
+        killIfAlive: 1
+        reginIfDead: 0
+        newSpecies: 2
+        newState: 0
     aliveColor: {r: 0.8113208, g: 0.6788051, b: 0.16456035, a: 1}
   - speciesName: Goblin
     speciesEnum: 3
     speciesRules: []
-    neighborRange: {x: 1, y: 4}
-    reginRange: {x: 4, y: 5}
+    propigationRule:
+      conditions:
+      - conditionCompareSource: 0
+        conditionType: 0
+        compareInts: {x: 1, y: 1}
+        compareSpecies: 0300000002000000
+        compareStates: 
+      results:
+      - affectSourceCoords: 1
+        affectedNeighbors: 
+        killIfAlive: 0
+        reginIfDead: 1
+        newSpecies: 3
+        newState: 0
     aliveColor: {r: 0.16081212, g: 0.6509434, b: 0.0521983, a: 1}
 --- !u!114 &694274194
 MonoBehaviour:
