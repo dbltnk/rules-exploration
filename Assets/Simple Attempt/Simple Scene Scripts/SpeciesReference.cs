@@ -51,7 +51,8 @@ public static class SpeciesReference
                 new Condition[] { new Condition(SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT, CONDITON.VALUE_OUTSIDE_RANGE, new Vector2Int(1, 2), new List<SPECIES>{ SPECIES.BLOB, SPECIES.FLOPPER }) },
                 new Result[] { new Result(LIFE_EFFECT.KILL) } ),
             new Rule(//Propigation rule
-                new Condition[] { new Condition(SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT, CONDITON.VALUE_WITHIN_RANGE, new Vector2Int(2, 2), SPECIES.BLOB) },
+                new Condition[] { new Condition(SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT, CONDITON.VALUE_WITHIN_RANGE, new Vector2Int(2, 2), SPECIES.BLOB),
+                                    new Condition(SOURCE.TOP_SPECIES, CONDITON.VALUE_DOES_NOT_MATCH_SPECIES, SPECIES.FLOPPER) } ,
                 new Result[] { new Result(LIFE_EFFECT.PROPIGATE, SPECIES.FLOPPER, STATE.HAPPY) } ),
             new Color(0.81f, 0.68f, 0.16f, 1)),
         new SpeciesAttributes("Goblin", SPECIES.GOBLIN,

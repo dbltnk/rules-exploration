@@ -169,6 +169,7 @@ public enum SOURCE
     NEIGHBOR_SW,
     NEIGHBOR_DW,
     RANDOM_D6,//Random roll of 1-6
+    TOP_SPECIES,//species withthe highest population.
 }
 
 public enum CONDITON
@@ -198,6 +199,7 @@ public class ArbiterScript : MonoBehaviour
 {
     [SerializeField] CellManagerScript cellManager = null;
     [SerializeField] GridManagerScript gridManager = null;
+    [SerializeField] LayerStatusScript layerManager = null;
 
     public Result[] TestRule(Coords coords, Rule rule)
     {
@@ -266,6 +268,9 @@ public class ArbiterScript : MonoBehaviour
                     break;
                 case SOURCE.RANDOM_D6:
                     inputInt = Random.Range(1, 7);
+                    break;
+                case SOURCE.TOP_SPECIES:
+                    inputSpecies = layerManager.GetSpeciesAtRank(0);
                     break;
             }          
 

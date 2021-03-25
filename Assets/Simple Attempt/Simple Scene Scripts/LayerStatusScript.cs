@@ -88,4 +88,9 @@ public class LayerStatusScript : MonoBehaviour
             }
         }
     }
+
+    public SPECIES GetSpeciesAtRank(int index)
+    {
+        return topThreePopulations[index].species;
+    }
 }

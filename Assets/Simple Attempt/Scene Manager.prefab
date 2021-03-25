@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8784801598108222760}
   - component: {fileID: 694274194}
   - component: {fileID: 694274196}
+  - component: {fileID: 1318971633}
   m_Layer: 0
   m_Name: Scene Manager
   m_TagString: Untagged
@@ -68,86 +69,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 4136632377573663505}
   arbiter: {fileID: 694274196}
-  propigationRule: 2
+  levelRuleset: 5
   enableSpeciesRules: 1
-  levelRules:
-  - conditions:
-    - conditionCompareSource: 0
-      conditionType: 1
-      compareInts: {x: 2, y: 3}
-      compareSpecies: 
-      compareStates: 
-    results:
-    - affectSourceCoords: 1
-      affectedNeighbors: 
-      killIfAlive: 1
-      reginIfDead: 0
-      newSpecies: 0
-      newState: 0
+  randomizeSpeciesOfDeadCellsOnDishRefill: 1
+  layerStatus: {fileID: 1318971633}
   deadColor: {r: 0.5283019, g: 0.39124244, b: 0.39124244, a: 0.105882354}
-  enabledSpecies: 010000000200000003000000
-  speciesAttributes:
-  - speciesName: Keep This Empty
-    speciesEnum: 0
-    speciesRules: []
-    propigationRule:
-      conditions: []
-      results: []
-    aliveColor: {r: 1, g: 1, b: 1, a: 1}
-  - speciesName: Blob
-    speciesEnum: 1
-    speciesRules: []
-    propigationRule:
-      conditions:
-      - conditionCompareSource: 0
-        conditionType: 0
-        compareInts: {x: 3, y: 3}
-        compareSpecies: 01000000
-        compareStates: 
-      results:
-      - affectSourceCoords: 1
-        affectedNeighbors: 
-        killIfAlive: 0
-        reginIfDead: 1
-        newSpecies: 3
-        newState: 0
-    aliveColor: {r: 0.7490196, g: 0.0039215763, b: 0.7225583, a: 1}
-  - speciesName: Flopper
-    speciesEnum: 2
-    speciesRules: []
-    propigationRule:
-      conditions:
-      - conditionCompareSource: 0
-        conditionType: 0
-        compareInts: {x: 2, y: 2}
-        compareSpecies: 02000000
-        compareStates: 
-      results:
-      - affectSourceCoords: 1
-        affectedNeighbors: 
-        killIfAlive: 1
-        reginIfDead: 0
-        newSpecies: 2
-        newState: 0
-    aliveColor: {r: 0.8113208, g: 0.6788051, b: 0.16456035, a: 1}
-  - speciesName: Goblin
-    speciesEnum: 3
-    speciesRules: []
-    propigationRule:
-      conditions:
-      - conditionCompareSource: 0
-        conditionType: 0
-        compareInts: {x: 1, y: 1}
-        compareSpecies: 0300000002000000
-        compareStates: 
-      results:
-      - affectSourceCoords: 1
-        affectedNeighbors: 
-        killIfAlive: 0
-        reginIfDead: 1
-        newSpecies: 3
-        newState: 0
-    aliveColor: {r: 0.16081212, g: 0.6509434, b: 0.0521983, a: 1}
+  enabledSpecies: 01000000030000000200000004000000
+  speciesOverride: []
 --- !u!114 &694274194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,3 +105,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellManager: {fileID: 8784801598108222760}
   gridManager: {fileID: 4136632377573663505}
+  layerManager: {fileID: 1318971633}
+--- !u!114 &1318971633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2305390745902653400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f316d7c8f0a3e694aba5d99a30b86a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topThreeReadout:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

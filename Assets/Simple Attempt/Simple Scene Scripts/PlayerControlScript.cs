@@ -11,6 +11,8 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] Slider simulationSpeedSlider = null;
     [SerializeField] TMP_Text simulationSpeedReadout = null;
 
+    [SerializeField] Camera theCamera = null;
+
     bool simulationRunning = true;
 
     public void PlayPausePressed()
@@ -83,6 +85,22 @@ public class PlayerControlScript : MonoBehaviour
     bool inputCooling = false;
 
     private void Update()
+    {
+        CameraControls();
+        KeyboardControls();
+    }
+
+    void CameraControls()
+    {
+        Vector2 mouseScrollDelta = Input.mouseScrollDelta;
+
+        if(mouseScrollDelta.y != 0)
+        {
+            theCamera.orthographicSize += mouseScrollDelta.y * -0.25f;
+        }
+    }
+
+    void KeyboardControls()
     {
         if(inputCooling)
         {
