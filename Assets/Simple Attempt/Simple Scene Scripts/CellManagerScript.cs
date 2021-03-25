@@ -83,6 +83,8 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] bool randomizeSpeciesOfDeadCellsOnDishRefill = true;
 
+    [SerializeField] LayerStatusScript layerStatus = null;
+
     /// <summary>
     /// The higher the number, the more likely each species is to populate a cell at the start of the level. This includes NONE for blank spaces.
     /// Note that this can be changed before the level generates to weight each scenario as you see fit.
@@ -192,6 +194,9 @@ public class CellManagerScript : MonoBehaviour
         return RuleReference.premadeRuleArray[(int)ruleReference];
     }
 
+    Dictionary<SPECIES, int> initalPopulationDictionary;
+    List<PopulationCount> initialPopulationCount;
+
     public void InitializeAllCells(Coords[] allCoords)
     {
         coordsToCellState = new Dictionary<Coords, CellState>();
@@ -199,6 +204,13 @@ public class CellManagerScript : MonoBehaviour
         cellStateArray = new CellState[allCoords.Length];
 
         List<SPECIES> speciesPool = new List<SPECIES>();
+
+        initalPopulationDictionary = new Dictionary<SPECIES, int>();
+
+        for(int i = 0; i < enabledSpecies.Count; i++)
+        {
+            initalPopulationDictionary[enabledSpecies[i]] = 0;
+        }
 
         for(int i = 0; i < speciesWeightDictionary[SPECIES.NONE]; i++)
         {
@@ -233,10 +245,20 @@ public class CellManagerScript : MonoBehaviour
             else
             {                
                 SetAlive(currentCoords, true);
+                initalPopulationDictionary[thisSpecies]++;
             }
 
             startingConditions[currentCoords] = newCellState.Copy();
         }
+
+        initialPopulationCount = new List<PopulationCount>();
+
+        foreach(SPECIES species in initalPopulationDictionary.Keys)
+        {
+            initialPopulationCount.Add(new PopulationCount(species, initalPopulationDictionary[species]));
+        }
+
+        layerStatus.UpdateSpeciesPopulation(initialPopulationCount, initalPopulationDictionary);
 
         StartConstantSimulate();
     }
@@ -259,6 +281,8 @@ public class CellManagerScript : MonoBehaviour
             cellState.futureState = STATE.NONE;
             cellState.futureAlive = cellState.alive;
         }
+
+        layerStatus.UpdateSpeciesPopulation(initialPopulationCount, initalPopulationDictionary);
     }
 
     public CellState GetCellStateAtCoords(Coords coods) { return coordsToCellState[coods]; }
@@ -345,7 +369,13 @@ public class CellManagerScript : MonoBehaviour
     public void IncrementTime()
     {
         List<CellState> changingCells = new List<CellState>();
-        
+        Dictionary<SPECIES, int> speciesPopulationDictionary = new Dictionary<SPECIES, int>();
+
+        for(int i = 0; i < enabledSpecies.Count; i++)
+        {
+            speciesPopulationDictionary[enabledSpecies[i]] = 0;
+        }
+
         for(int i = 0; i < cellStateArray.Length; i++)
         {
             CellState cellState = cellStateArray[i];
@@ -356,7 +386,7 @@ public class CellManagerScript : MonoBehaviour
                 if(results != null)
                 {
                     ApplyResults(results);
-                }                
+                }
             }
 
             if(enableSpeciesRules)
@@ -367,16 +397,16 @@ public class CellManagerScript : MonoBehaviour
                 {
                     speciesLifeRules = cellState.species.lifeRule;
                 }
-                
+
                 if(speciesLifeRules != null)
                 {
                     Result[] results = arbiter.TestRule(cellState.coords, speciesLifeRules);
                     if(results != null)
                     {
                         ApplyResults(results);
-                    }                   
-                }                
-            }         
+                    }
+                }
+            }
 
             for(int r = 0; r < deathRules.Count; r++)
             {
@@ -384,9 +414,9 @@ public class CellManagerScript : MonoBehaviour
                 if(results != null)
                 {
                     ApplyResults(results);
-                }                
+                }
             }
-            
+
             if(!cellState.alive &&
                 !cellState.futureAlive)
             {
@@ -406,7 +436,7 @@ public class CellManagerScript : MonoBehaviour
                             {
                                 successfulResults.Add(theseResults);
                             }
-                        }                        
+                        }
                     }
 
                     if(successfulResults.Count > 0)
@@ -426,7 +456,7 @@ public class CellManagerScript : MonoBehaviour
 
             void ApplyResult(Result result)
             {
-                Coords affectedCoords = cellState.coords;  
+                Coords affectedCoords = cellState.coords;
 
                 CellState affectedCellState = coordsToCellState[affectedCoords];
 
@@ -450,9 +480,9 @@ public class CellManagerScript : MonoBehaviour
                 }
 
                 AddToChangingCells(affectedCellState);
-            }                   
+            }
         }
-        
+
         void AddToChangingCells(CellState cellState)
         {
             if(changingCells.Contains(cellState))
@@ -487,6 +517,40 @@ public class CellManagerScript : MonoBehaviour
                 SetAlive(changingState.coords, newAlive);
             }
         }
+
+        //Loop through one final time to get accurate counts
+        for(int i = 0; i < cellStateArray.Length; i++)
+        {
+            CellState thisCellState = cellStateArray[i];
+
+            if(thisCellState.species == null)
+            {
+                continue;
+            }
+
+            SPECIES thisSpecies = thisCellState.species.speciesEnum;
+
+            if(thisSpecies == SPECIES.NONE)
+            {
+                continue;
+            }
+
+            if(!thisCellState.alive)
+            {
+                continue;
+            }
+
+            speciesPopulationDictionary[thisSpecies]++;
+        }
+
+        List<PopulationCount> populationCountList = new List<PopulationCount>();
+
+        foreach(SPECIES species in speciesPopulationDictionary.Keys)
+        {
+            populationCountList.Add(new PopulationCount(species, speciesPopulationDictionary[species]));
+        }
+
+        layerStatus.UpdateSpeciesPopulation(populationCountList, speciesPopulationDictionary);
     }
 
     public void SetSimulationSpeed(float stepsPerSecond)

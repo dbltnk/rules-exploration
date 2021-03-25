@@ -24,11 +24,19 @@ public class Condition
         this.condition = condition;
         this.compareInts = compareInts;
         this.compareCoords = compareCoords;
-        this.compareCoords = compareCoords;
         this.compareSpecies = compareSpecies;
         this.compareStates = compareStates;
     }
 
+    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<SPECIES> compareSpecies)
+    {
+        this.source = source;
+        this.condition = condition;
+        this.compareInts = compareInts;
+        compareCoords = null;
+        this.compareSpecies = compareSpecies;
+        compareStates = null;
+    }
 
     public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts)
     {

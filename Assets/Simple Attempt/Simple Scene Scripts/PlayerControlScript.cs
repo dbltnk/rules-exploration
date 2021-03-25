@@ -79,4 +79,58 @@ public class PlayerControlScript : MonoBehaviour
         simulationSpeedReadout.SetText(string.Format("Steps per Second: {0}", stepsPerSecond));
         cellManager.SetSimulationSpeed(stepsPerSecond);
     }
+
+    bool inputCooling = false;
+
+    private void Update()
+    {
+        if(inputCooling)
+        {
+            return;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            PlayPausePressed();
+            CallInputCooldown();
+        }
+        else if(Input.GetKeyDown(KeyCode.N))
+        {
+            StepOnce();
+            CallInputCooldown();
+        }
+        else if(Input.GetKeyDown(KeyCode.R))
+        {
+            ResetExperement();
+            CallInputCooldown();
+        }
+        else if(Input.GetKeyDown(KeyCode.C))
+        {
+            ClearDish();
+            CallInputCooldown();
+        }
+        else if(Input.GetKeyDown(KeyCode.F))
+        {
+            FillDish();
+            CallInputCooldown();
+        }
+    }
+
+    void CallInputCooldown()
+    {
+        if(inputCooling)
+        {
+            return;
+        }
+
+        inputCooling = true;
+        StartCoroutine(InputCooldown());
+    }
+
+    IEnumerator InputCooldown()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        inputCooling = false;
+    }
 }
