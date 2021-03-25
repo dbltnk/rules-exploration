@@ -108,7 +108,7 @@ public class GridManagerScript : MonoBehaviour
     {
         List<Coords> validNeighbors = new List<Coords>();
 
-        for(int i = 0; i < 7; i++)
+        for(int i = 0; i < 8; i++)
         {
             Coords potentialNeighbor = GetSpecificNeighbor(baseCoords, (NEIGHBORS)i);
 
@@ -168,7 +168,7 @@ public class GridManagerScript : MonoBehaviour
         }
     }
 
-    bool CheckValidCell(Coords coords)
+    public bool CheckValidCell(Coords coords)
     {
         if(coords.x < 0)
         {

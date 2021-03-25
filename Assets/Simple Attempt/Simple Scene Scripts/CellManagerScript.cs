@@ -18,6 +18,16 @@ public enum PROPIGATION_RULE
     SPECIES_SPECIFIC,
 }
 
+public enum RULESET
+{
+    CUSTOM,
+    STANDARD, 
+    SCRAMBLE_RULES,
+    SCRAMBLE_SPECIES,
+    SCRAMBLE_ALL,
+    ALL_RULES,
+}
+
 public enum STATE
 {
     NONE,
@@ -26,12 +36,11 @@ public enum STATE
     HAPPY,
 }
 
-public enum SPECIES
+public enum LIFE_EFFECT
 {
     NONE,
-    BLOB,
-    FLOPPER,
-    GOBLIN
+    PROPIGATE,
+    KILL,
 }
 
 public class CellState
@@ -55,22 +64,11 @@ public class CellState
     public SPECIES futureSpecies;
     public bool alive;
     public bool futureAlive;
-}
 
-[System.Serializable]
-public class SpeciesAttributes
-{
-    public SpeciesAttributes(string speciesName, SPECIES speciesEnum, Rule[] speciesRules, Rule propigationRule, Color aliveColor)
+    public CellState Copy()
     {
-        this.speciesName = speciesName;
-        this.aliveColor = aliveColor;
+        return new CellState(coords, state, species, alive);
     }
-
-    public string speciesName;
-    public SPECIES speciesEnum;
-    public Rule[] speciesRules;
-    public Rule propigationRule;
-    public Color aliveColor;    
 }
 
 public class CellManagerScript : MonoBehaviour
@@ -79,11 +77,30 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] ArbiterScript arbiter = null;
 
-    [SerializeField] PROPIGATION_RULE propigationRule = PROPIGATION_RULE.CLASSIC_GENERIC;
+    [SerializeField] RULESET levelRuleset = RULESET.CUSTOM;
 
     [SerializeField] bool enableSpeciesRules = true;
 
-    [SerializeField] List<Rule> levelRules = null;
+    [SerializeField] bool randomizeSpeciesOfDeadCellsOnDishRefill = true;
+
+    /// <summary>
+    /// The higher the number, the more likely each species is to populate a cell at the start of the level. This includes NONE for blank spaces.
+    /// Note that this can be changed before the level generates to weight each scenario as you see fit.
+    /// </summary>
+    Dictionary<SPECIES, int> speciesWeightDictionary = new Dictionary<SPECIES, int>
+    {
+        { SPECIES.NONE, 15 },
+        { SPECIES.BLOB, 5 },
+        { SPECIES.FLOPPER, 3 },
+        { SPECIES.GOBLIN, 2 },
+        { SPECIES.ROCK, 1 },
+    };
+
+    List<Rule> levelRules;
+    /// <summary>
+    /// Rules that only come into play for dying cells. These are referenced after the first round of rule application.
+    /// </summary>
+    List<Rule> deathRules;
 
     float updateRate = 1f;
 
@@ -91,26 +108,113 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] List<SPECIES> enabledSpecies = new List<SPECIES>();
 
-    [SerializeField] List<SpeciesAttributes> speciesAttributes = new List<SpeciesAttributes>();
+    List<SpeciesAttributes> speciesAttributes = new List<SpeciesAttributes>();
+
+    [SerializeField] List<SpeciesAttributes> speciesOverride = null;
 
     Dictionary<Coords, CellState> coordsToCellState;
     CellState[] cellStateArray;
 
+    Dictionary<Coords, CellState> startingConditions;
+
     private void Awake()
     {
-        if(propigationRule != PROPIGATION_RULE.SPECIES_SPECIFIC)
+        levelRules = new List<Rule>();
+        deathRules = new List<Rule>();
+
+        speciesAttributes.AddRange(SpeciesReference.defaultSpeciesAttributes);
+
+        if(speciesOverride != null)
         {
-            levelRules.Add(new Rule(new Condition[] { new Condition(CONDITION_COMPARE_SOURCE.LIVING_NEIGHBOR_COUNT, CONDITION_TYPE.VALUE_WITHIN_RANGE, new Vector2Int(3, 3), null) }, 
-                new Result[] { new Result(true, null, false, true, SPECIES.NONE, STATE.NORMAL) }));
+            for(int i = 0; i < speciesOverride.Count; i++)
+            {
+                SpeciesAttributes currentOverride = speciesOverride[i];
+                speciesAttributes[(int)currentOverride.speciesEnum] = currentOverride;
+            }
         }
 
-        StartConstantSimulate();
+        switch(levelRuleset)
+        {
+            case RULESET.STANDARD:
+                levelRules.Add(GetPremadeRule(RULE_REFERENCE.STANDARD_DEATH));
+                levelRules.Add(GetPremadeRule(RULE_REFERENCE.STANDARD_PROPIGATION));
+                enabledSpecies = new List<SPECIES> { SPECIES.BLOB };
+                enableSpeciesRules = false;
+                break;
+            case RULESET.CUSTOM:
+                deathRules.Add(RuleReference.premadeDeathRules[(int)DEATH_RULES.ROCKS_ARE_IMMORTAL]);
+                levelRules.Add(GetPremadeRule(RULE_REFERENCE.FLOPPERS_CAN_BECOME_BLOBS));
+                levelRules.Add(GetPremadeRule(RULE_REFERENCE.SICK_CELLS_CAN_DIE));
+                enableSpeciesRules = true;
+                break;
+            case RULESET.SCRAMBLE_RULES:
+                ApplyScrambledRules();
+                break;
+            case RULESET.SCRAMBLE_ALL:
+                ApplyScrambledRules();
+                break;
+            case RULESET.ALL_RULES:
+                for(int i = 2; i < (int)RULE_REFERENCE.FINAL_RULE_LEAVE_EMPTY; i++)//We do ignore the first two standard rules.
+                {
+                    RULE_REFERENCE currentRule = (RULE_REFERENCE)i;
+
+                    levelRules.Add(GetPremadeRule(currentRule));
+                }
+                for(int i = 0; i < (int)DEATH_RULES.FINAL_RULE_LEAVE_EMPTY; i++)
+                {
+                    deathRules.Add(RuleReference.premadeDeathRules[i]);
+                }
+                break;
+        }        
+    }
+
+    void ApplyScrambledRules()
+    {
+        for(int i = 2; i < (int)RULE_REFERENCE.FINAL_RULE_LEAVE_EMPTY; i++)//ignoring the first two standard rules.
+        {
+            if(Random.Range(0, 2) == 1)
+            {
+                levelRules.Add(RuleReference.premadeRuleArray[i]);
+            }
+        }
+
+        for(int i = 0; i < (int)DEATH_RULES.FINAL_RULE_LEAVE_EMPTY; i++)
+        {
+            if(Random.Range(0, 2) == 1)
+            {
+                deathRules.Add(RuleReference.premadeDeathRules[i]);
+            }
+        }
+    }
+
+    Rule GetPremadeRule(RULE_REFERENCE ruleReference)
+    {
+        return RuleReference.premadeRuleArray[(int)ruleReference];
     }
 
     public void InitializeAllCells(Coords[] allCoords)
     {
         coordsToCellState = new Dictionary<Coords, CellState>();
+        startingConditions = new Dictionary<Coords, CellState>();
         cellStateArray = new CellState[allCoords.Length];
+
+        List<SPECIES> speciesPool = new List<SPECIES>();
+
+        for(int i = 0; i < speciesWeightDictionary[SPECIES.NONE]; i++)
+        {
+            speciesPool.Add(SPECIES.NONE);
+        }
+
+        for(int i = 0; i < enabledSpecies.Count; i++)
+        {
+            SPECIES thisSpecies = enabledSpecies[i];            
+
+            for(int s = 0; s < speciesWeightDictionary[thisSpecies]; s++)
+            {
+                speciesPool.Add(thisSpecies);
+            }
+        }
+
         for(int i = 0; i < allCoords.Length; i++)
         {
             Coords currentCoords = allCoords[i];
@@ -118,10 +222,42 @@ public class CellManagerScript : MonoBehaviour
             coordsToCellState[currentCoords] = newCellState;
             cellStateArray[i] = newCellState;
 
-            //Debug
-            SetSpecies(currentCoords, enabledSpecies[Random.Range(0, enabledSpecies.Count)]);
-            //SetSpecies(currentCoords, SPECIES.BLOB);
-            SetAlive(currentCoords, Random.Range(0, 3) == 2);            
+            SPECIES thisSpecies = speciesPool[Random.Range(0, speciesPool.Count)];
+
+            SetSpecies(currentCoords, thisSpecies);
+
+            if(thisSpecies == SPECIES.NONE)
+            {
+                SetAlive(currentCoords, false);
+            }
+            else
+            {                
+                SetAlive(currentCoords, true);
+            }
+
+            startingConditions[currentCoords] = newCellState.Copy();
+        }
+
+        StartConstantSimulate();
+    }
+
+    public void ReInitializeAllCells()
+    {
+        Coords[] allCoords = gridManager.GetAllCoords();
+
+        for(int i = 0; i < allCoords.Length; i++)
+        {
+            Coords currentCoords = allCoords[i];
+            CellState cellState = coordsToCellState[currentCoords];
+            CellState initialCellState = startingConditions[currentCoords];
+
+            SetSpecies(currentCoords, initialCellState.species.speciesEnum);
+            SetState(currentCoords, initialCellState.state);
+            SetAlive(currentCoords, initialCellState.alive);
+
+            cellState.futureSpecies = SPECIES.NONE;
+            cellState.futureState = STATE.NONE;
+            cellState.futureAlive = cellState.alive;
         }
     }
 
@@ -134,7 +270,6 @@ public class CellManagerScript : MonoBehaviour
 
     void SetSpecies(Coords coords, SPECIES newSpecies)
     {
-        //Debug.LogFormat("Setting species to {0} at {1}, {2}.", newSpecies, coords.x, coords.y);
         CellState thisCellState = coordsToCellState[coords];
         thisCellState.species = speciesAttributes[(int)newSpecies];
 
@@ -142,7 +277,7 @@ public class CellManagerScript : MonoBehaviour
         {
             gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
         }        
-    }
+    }    
 
     SpeciesAttributes GetRandomSpecies()
     {
@@ -158,22 +293,12 @@ public class CellManagerScript : MonoBehaviour
         bool wasAlreadyAlive = thisCellState.alive;
 
         thisCellState.alive = alive;
-
-        int speciesIndex = (int)thisCellState.species.speciesEnum;
-
+        
         if(alive)
         {
-            if(!wasAlreadyAlive)//Depending on rule set, bringing a cell back to life may require settting the species here.
+            if(!wasAlreadyAlive && !enableSpeciesRules)//Depending on rule set, bringing a cell back to life may require settting the species here.
             {
-                if(propigationRule == PROPIGATION_RULE.CLASSIC_GENERIC)
-                {
-                    //Whatever the default species is should be set here.
-                    thisCellState.species = speciesAttributes[(int)enabledSpecies[0]];//This is just the first thing in the enabled species list.
-                }
-                else if(propigationRule == PROPIGATION_RULE.CLASSIC_RANDOM_SPECIES)
-                {
-                    thisCellState.species = GetRandomSpecies();
-                }
+                thisCellState.species = speciesAttributes[(int)enabledSpecies[0]];//This is just the first thing in the enabled species list.
             }
 
             gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
@@ -188,7 +313,16 @@ public class CellManagerScript : MonoBehaviour
     {
         for(int i = 0; i < cellStateArray.Length; i ++)
         {
-            SetAlive(cellStateArray[i].coords, false);
+            CellState cellState = cellStateArray[i];
+            Coords coords = cellState.coords;
+
+            cellState.futureSpecies = SPECIES.NONE;
+            cellState.futureState = STATE.NONE;
+            cellState.futureAlive = false;
+
+            SetSpecies(coords, SPECIES.NONE);
+            SetState(coords, STATE.NONE);
+            SetAlive(coords, false);
         }
     }
 
@@ -198,7 +332,8 @@ public class CellManagerScript : MonoBehaviour
         {
             CellState thisCellState = cellStateArray[i];
 
-            if(thisCellState.species == null)
+            if(thisCellState.species == null ||
+                (!thisCellState.alive && randomizeSpeciesOfDeadCellsOnDishRefill))
             {
                 thisCellState.species = GetRandomSpecies();
             }
@@ -210,7 +345,7 @@ public class CellManagerScript : MonoBehaviour
     public void IncrementTime()
     {
         List<CellState> changingCells = new List<CellState>();
-
+        
         for(int i = 0; i < cellStateArray.Length; i++)
         {
             CellState cellState = cellStateArray[i];
@@ -218,36 +353,60 @@ public class CellManagerScript : MonoBehaviour
             for(int r = 0; r < levelRules.Count; r++)
             {
                 Result[] results = arbiter.TestRule(cellState.coords, levelRules[r]);
-                if(results == null) { continue; }
-                ApplyResults(results);
+                if(results != null)
+                {
+                    ApplyResults(results);
+                }                
             }
 
             if(enableSpeciesRules)
             {
-                Rule[] speciesRules = cellState.species.speciesRules;
-                if(speciesRules == null) { continue; }
-                for(int r = 0; r < speciesRules.Length; r++)
+                Rule speciesLifeRules = null;
+
+                if(cellState.species != null)
                 {
-                    ApplyResults(arbiter.TestRule(cellState.coords, speciesRules[r]));
+                    speciesLifeRules = cellState.species.lifeRule;
                 }
+                
+                if(speciesLifeRules != null)
+                {
+                    Result[] results = arbiter.TestRule(cellState.coords, speciesLifeRules);
+                    if(results != null)
+                    {
+                        ApplyResults(results);
+                    }                   
+                }                
             }         
+
+            for(int r = 0; r < deathRules.Count; r++)
+            {
+                Result[] results = arbiter.TestRule(cellState.coords, deathRules[r]);
+                if(results != null)
+                {
+                    ApplyResults(results);
+                }                
+            }
             
             if(!cellState.alive &&
                 !cellState.futureAlive)
             {
-                if(propigationRule == PROPIGATION_RULE.SPECIES_SPECIFIC)
+                if(enableSpeciesRules)
                 {
                     List<Result[]> successfulResults = new List<Result[]>();
 
                     for(int s = 0; s < enabledSpecies.Count; s++)
                     {
-                        Result[] theseResults = arbiter.TestRule(cellState.coords, speciesAttributes[(int)enabledSpecies[s]].propigationRule);
+                        Rule propigationRule = speciesAttributes[(int)enabledSpecies[s]].propigationRule;
 
-                        if(theseResults != null)
+                        if(propigationRule != null)
                         {
-                            //Debug.LogFormat("Adding succesful results for {0} at {1}, {2}.", enabledSpecies[s], cellState.coords.x, cellState.coords.y);
-                            successfulResults.Add(theseResults);
-                        }
+                            Result[] theseResults = arbiter.TestRule(cellState.coords, propigationRule);
+
+                            if(theseResults != null)
+                            {
+                                successfulResults.Add(theseResults);
+                            }
+                        }                        
                     }
 
                     if(successfulResults.Count > 0)
@@ -255,7 +414,7 @@ public class CellManagerScript : MonoBehaviour
                         ApplyResults(successfulResults[Random.Range(0, successfulResults.Count)]);
                     }
                 }
-            }            
+            }
 
             void ApplyResults(Result[] results)
             {
@@ -267,51 +426,30 @@ public class CellManagerScript : MonoBehaviour
 
             void ApplyResult(Result result)
             {
-                List<Coords> affectedCoords = new List<Coords>();
-                Coords baseCoords = cellState.coords;
-                if(result.affectSourceCoords)
+                Coords affectedCoords = cellState.coords;  
+
+                CellState affectedCellState = coordsToCellState[affectedCoords];
+
+                switch(result.lifeEffect)
                 {
-                    affectedCoords.Add(baseCoords);
+                    case LIFE_EFFECT.KILL:
+                        affectedCellState.futureAlive = false;
+                        break;
+                    case LIFE_EFFECT.PROPIGATE:
+                        affectedCellState.futureAlive = true;
+                        break;
                 }
-                List<NEIGHBORS> neighbors = result.affectedNeighbors;
-                if(neighbors != null)
+
+                if(result.newSpecies != SPECIES.NONE)
                 {
-                    for(int n = 0; n < neighbors.Count; n++)
-                    {
-                        Coords potentialNeighbor = gridManager.GetSpecificNeighbor(baseCoords, neighbors[n]);
-                        if(potentialNeighbor.x < 0)
-                        {
-                            continue;
-                        }
-                        affectedCoords.Add(potentialNeighbor);
-                    }
-                }                    
-
-                for(int c = 0; c < affectedCoords.Count; c++)
-                {
-                    Coords currentAffectedCoords = affectedCoords[c];
-                    CellState currentAffectedCellState = coordsToCellState[currentAffectedCoords];
-
-                    if(result.killIfAlive && currentAffectedCellState.alive)
-                    {
-                        currentAffectedCellState.futureAlive = false;
-                    }
-                    if(result.reginIfDead && !currentAffectedCellState.alive)
-                    {
-                        currentAffectedCellState.futureAlive = true;
-                    }
-                    if(result.newSpecies != SPECIES.NONE)
-                    {
-                        //Debug.LogFormat("Newspecies is {0} at {1}, {2}..", result.newSpecies, currentAffectedCoords.x, currentAffectedCoords.y);
-                        currentAffectedCellState.futureSpecies = result.newSpecies;
-                    }
-                    if(result.newState != STATE.NONE)
-                    {
-                        currentAffectedCellState.futureState = result.newState;
-                    }
-
-                    AddToChangingCells(currentAffectedCellState);
+                    affectedCellState.futureSpecies = result.newSpecies;
                 }
+                if(result.newState != STATE.NONE)
+                {
+                    affectedCellState.futureState = result.newState;
+                }
+
+                AddToChangingCells(affectedCellState);
             }                   
         }
         
@@ -374,9 +512,25 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
+    public int CountLivingNeighbors(Coords coords)
+    {
+        return CountLivingNeighbors(coords, null, null);
+    }
+
     public int CountLivingNeighbors(Coords coords, List<SPECIES> matchSpecies)
     {
+        return CountLivingNeighbors(coords, matchSpecies, null);
+    }
+
+    public int CountLivingNeighbors(Coords coords, List<STATE> matchState)
+    {
+        return CountLivingNeighbors(coords, null, matchState);
+    }
+
+    int CountLivingNeighbors(Coords coords, List<SPECIES> matchSpecies, List<STATE> matchState)
+    {
         List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
+
         int livingCount = 0;
 
         for(int i = 0; i < validNeighbors.Count; i++)
@@ -388,6 +542,13 @@ public class CellManagerScript : MonoBehaviour
                 if(matchSpecies != null)
                 {
                     if(matchSpecies.Contains(neighbor.species.speciesEnum))
+                    {
+                        livingCount++;
+                    }
+                }
+                else if(matchState != null)
+                {
+                    if(matchState.Contains(neighbor.state))
                     {
                         livingCount++;
                     }

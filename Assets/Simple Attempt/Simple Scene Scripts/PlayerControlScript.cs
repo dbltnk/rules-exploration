@@ -17,24 +17,34 @@ public class PlayerControlScript : MonoBehaviour
     {
         if(simulationRunning)
         {
-            cellManager.StopConstantSimulate();
+            CallStopSimulating();
         }
         else
         {
-            cellManager.StartConstantSimulate();
+            CallStartSimulating();
         }
-
-        simulationRunning = !simulationRunning;
     }
 
     public void StepOnce()
     {
         if(simulationRunning)
         {
-            cellManager.StopConstantSimulate();
+            CallStopSimulating();
         }
 
         cellManager.IncrementTime();
+    }
+
+    void CallStopSimulating()
+    {
+        simulationRunning = false;
+        cellManager.StopConstantSimulate();
+    }
+
+    void CallStartSimulating()
+    {
+        simulationRunning = true;
+        cellManager.StartConstantSimulate();
     }
 
     /// <summary>
@@ -42,7 +52,8 @@ public class PlayerControlScript : MonoBehaviour
     /// </summary>
     public void ResetExperement()
     {
-
+        CallStopSimulating();
+        cellManager.ReInitializeAllCells();
     }
 
     /// <summary>
