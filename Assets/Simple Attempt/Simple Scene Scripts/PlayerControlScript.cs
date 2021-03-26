@@ -85,10 +85,19 @@ public class PlayerControlScript : MonoBehaviour
     bool inputCooling = false;
 
     private void Update()
-    {
-        CameraControls();
+    {        
         KeyboardControls();
     }
+
+    private void LateUpdate()
+    {
+        CameraControls();
+    }
+
+    Vector2 mouseDownPosition;//Point where the mouse was clicked. Used to calculate dragging.
+    bool mouseHeld = false;
+
+    Vector2 oldMousePosition;
 
     void CameraControls()
     {
@@ -98,6 +107,33 @@ public class PlayerControlScript : MonoBehaviour
         {
             theCamera.orthographicSize += mouseScrollDelta.y * -0.25f;
         }
+
+        if(Input.GetMouseButtonUp(1))
+        {
+            mouseHeld = false;
+        }
+
+        if(mouseHeld)
+        {
+            Vector2 currentMousePostion = Input.mousePosition;
+
+            //Vector2 rawPosition = theCamera.ScreenToWorldPoint(Input.mousePosition);
+
+            Vector2 changeVector = currentMousePostion - oldMousePosition;
+            
+            theCamera.transform.position -= (Vector3)changeVector * 0.02f;
+            //mouseDownPosition = rawPosition;
+
+            oldMousePosition = currentMousePostion;
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            mouseDownPosition = theCamera.ScreenToWorldPoint(Input.mousePosition);
+            oldMousePosition = Input.mousePosition;
+
+            mouseHeld = true;
+        }        
     }
 
     void KeyboardControls()
