@@ -38,4 +38,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FixedWalledCitiesAsleep.unity
     guid: ebc8ac0069926e24cb5aa9b2abbddc37
+  - enabled: 1
+    path: Assets/Simple Attempt/Scenes/LevelSetup.unity
+    guid: 0bf92396cae664247bf5a1f23f0542b9
+  - enabled: 1
+    path: Assets/Simple Attempt/Scenes/Simple Scene.unity
+    guid: 26cfc10d9e6eeaa408e1537934ff402b
   m_configObjects: {}

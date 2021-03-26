@@ -13,7 +13,11 @@ public class PlayerControlScript : MonoBehaviour
 
     [SerializeField] Camera theCamera = null;
 
+    GameManagerScript gameManager;
+
     bool simulationRunning = true;
+
+    public void AssignGameManager(GameManagerScript gameManager) { this.gameManager = gameManager; }
 
     public void PlayPausePressed()
     {
@@ -80,6 +84,17 @@ public class PlayerControlScript : MonoBehaviour
 
         simulationSpeedReadout.SetText(string.Format("Steps per Second: {0}", stepsPerSecond));
         cellManager.SetSimulationSpeed(stepsPerSecond);
+    }
+
+    public void BackToMenu()
+    {
+        gameManager.LoadScene(SCENE.LEVEL_SETUP);
+    }
+
+    public void NewExperement()
+    {
+        gameManager.SetCurrentLevel(null);//Trying to load a null level will force a random roll.
+        gameManager.LoadScene(SCENE.EXPEREMENT);
     }
 
     bool inputCooling = false;

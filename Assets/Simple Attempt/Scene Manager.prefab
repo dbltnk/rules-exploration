@@ -48,6 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cellManager: {fileID: 8784801598108222760}
+  playerControl: {fileID: 694274194}
+  gameManagerPrefab: {fileID: 2071066168707965562, guid: 60d777e4ed7bac1498b1d96d07921fc8,
+    type: 3}
   gridWidth: 15
   gridHeight: 10
   cellSize: 1
@@ -69,13 +72,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 4136632377573663505}
   arbiter: {fileID: 694274196}
-  levelRuleset: 5
-  enableSpeciesRules: 1
-  randomizeSpeciesOfDeadCellsOnDishRefill: 1
   layerStatus: {fileID: 1318971633}
   deadColor: {r: 0.5283019, g: 0.39124244, b: 0.39124244, a: 0.105882354}
-  enabledSpecies: 01000000030000000200000004000000
-  speciesOverride: []
 --- !u!114 &694274194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +89,7 @@ MonoBehaviour:
   cellManager: {fileID: 8784801598108222760}
   simulationSpeedSlider: {fileID: 0}
   simulationSpeedReadout: {fileID: 0}
+  theCamera: {fileID: 0}
 --- !u!114 &694274196
 MonoBehaviour:
   m_ObjectHideFlags: 0

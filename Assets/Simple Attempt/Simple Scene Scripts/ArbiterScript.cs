@@ -9,10 +9,19 @@ public class Rule
     {
         this.conditions = conditions;
         this.results = results;
+        deathRule = false;
+    }
+
+    public Rule(Condition[] conditions, Result[] results, bool deathRule)
+    {
+        this.conditions = conditions;
+        this.results = results;
+        this.deathRule = deathRule;
     }
 
     public Condition[] conditions;
     public Result[] results;
+    public bool deathRule;//If true, this rule will get filed in and sorted only to be calculated during the death phase of rule checks.
 }
 
 [System.Serializable]

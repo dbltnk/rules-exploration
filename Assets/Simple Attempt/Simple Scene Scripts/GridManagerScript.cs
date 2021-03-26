@@ -29,14 +29,19 @@ public enum NEIGHBORS
 public class GridManagerScript : MonoBehaviour
 {
     [SerializeField] CellManagerScript cellManager = null;
+    [SerializeField] PlayerControlScript playerControl = null;
 
-    [SerializeField] int gridWidth = 15;
-    [SerializeField] int gridHeight = 10;
-    [SerializeField] float cellSize = 1f;
+    GameManagerScript gameManager;
+
+    [SerializeField] GameObject gameManagerPrefab = null;
+
+    int gridWidth = 15;
+    int gridHeight = 10;
+    float cellSize = 1f;
 
     [SerializeField] Camera sceneCamera = null;
     [Tooltip("If true, camera size adjusts on start depending on cell size and grid size.")]
-    [SerializeField] bool autoAdjustCameraSize = false;
+    bool autoAdjustCameraSize = false;
 
     [SerializeField] GameObject cellPrefab = null;
 
@@ -46,8 +51,30 @@ public class GridManagerScript : MonoBehaviour
     Dictionary<Coords, Vector3> coordsToPosition;
     Dictionary<Coords, SpriteRenderer> coordsToSpriteRenderer;
 
+    Level currentLevel;
+
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManagerScript>();
+        if(gameManager == null)
+        {
+            gameManager = Instantiate(gameManagerPrefab).GetComponent<GameManagerScript>();
+        }
+
+        AssignLevel(gameManager.GetCurrentLevel());
+    }
+
+    void AssignLevel(Level level)
+    {
+        cellManager.AssignLevel(level);
+
+        playerControl.AssignGameManager(gameManager);
+
+        currentLevel = level;
+
+        gridWidth = level.levelWidth;
+        gridHeight = level.levelHeight;
+
         BuildGrid();
     }
 

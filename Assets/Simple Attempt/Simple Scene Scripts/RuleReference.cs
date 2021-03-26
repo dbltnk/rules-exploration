@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum RULE_REFERENCE
+public enum PREMADE_RULES
 {
     STANDARD_DEATH,
     STANDARD_PROPIGATION,
@@ -12,13 +12,7 @@ public enum RULE_REFERENCE
     FLOPPERS_HATE_GOBLINS,
     DISEASE_CAN_SPREAD,
     DISEASE_CAN_CLEAR_UP,
-    FINAL_RULE_LEAVE_EMPTY//Scramble currently depends on this as being the final rule enum.
-}
-
-public enum DEATH_RULES
-{
     ROCKS_ARE_IMMORTAL,
-    FINAL_RULE_LEAVE_EMPTY//Scramble currently depends on this as being the final rule enum.
 }
 
 public static class RuleReference
@@ -126,10 +120,7 @@ public static class RuleReference
             new Result(STATE.NORMAL)
         }
         ),
-    };
 
-    public static Rule[] premadeDeathRules = new Rule[]
-    {
         new Rule( //ROCKS_ARE_IMMORTAL
         new Condition[]
         {
@@ -139,7 +130,7 @@ public static class RuleReference
         new Result[]
         {
             new Result(LIFE_EFFECT.PROPIGATE)
-        }
-        ),
+        },
+        true),
     };
-}
+};

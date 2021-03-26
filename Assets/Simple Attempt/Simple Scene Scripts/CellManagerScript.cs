@@ -2,32 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PROPIGATION_RULE
-{
-    /// <summary>
-    /// Level-wide rule will generate a generic living cell.
-    /// </summary>
-    CLASSIC_GENERIC,
-    /// <summary>
-    /// Level-wide rule will generate a random species from the enabled species list.
-    /// </summary>
-    CLASSIC_RANDOM_SPECIES,
-    /// <summary>
-    /// Each species will use their specific propigation rule.
-    /// </summary>
-    SPECIES_SPECIFIC,
-}
-
-public enum RULESET
-{
-    CUSTOM,
-    STANDARD, 
-    SCRAMBLE_RULES,
-    SCRAMBLE_SPECIES,
-    SCRAMBLE_ALL,
-    ALL_RULES,
-}
-
 public enum STATE
 {
     NONE,
@@ -77,26 +51,13 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] ArbiterScript arbiter = null;
 
-    [SerializeField] RULESET levelRuleset = RULESET.CUSTOM;
-
-    [SerializeField] bool enableSpeciesRules = true;
-
-    [SerializeField] bool randomizeSpeciesOfDeadCellsOnDishRefill = true;
-
     [SerializeField] LayerStatusScript layerStatus = null;
 
     /// <summary>
     /// The higher the number, the more likely each species is to populate a cell at the start of the level. This includes NONE for blank spaces.
     /// Note that this can be changed before the level generates to weight each scenario as you see fit.
     /// </summary>
-    Dictionary<SPECIES, int> speciesWeightDictionary = new Dictionary<SPECIES, int>
-    {
-        { SPECIES.NONE, 15 },
-        { SPECIES.BLOB, 5 },
-        { SPECIES.FLOPPER, 3 },
-        { SPECIES.GOBLIN, 2 },
-        { SPECIES.ROCK, 1 },
-    };
+    Dictionary<SPECIES, int> speciesWeightDictionary;
 
     List<Rule> levelRules;
     /// <summary>
@@ -108,88 +69,81 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] Color deadColor = Color.grey;
 
-    [SerializeField] List<SPECIES> enabledSpecies = new List<SPECIES>();
+    SPECIES[] enabledSpecies;
 
     List<SpeciesAttributes> speciesAttributes = new List<SpeciesAttributes>();
-
-    [SerializeField] List<SpeciesAttributes> speciesOverride = null;
 
     Dictionary<Coords, CellState> coordsToCellState;
     CellState[] cellStateArray;
 
     Dictionary<Coords, CellState> startingConditions;
 
-    private void Awake()
+    public void AssignLevel(Level level)
     {
         levelRules = new List<Rule>();
         deathRules = new List<Rule>();
 
+        PREMADE_RULES[] premadeRules = level.premadeRules;
+
+        for(int i = 0; i < premadeRules.Length; i++)
+        {
+            Rule currentRule = RuleReference.premadeRuleArray[(int)premadeRules[i]];
+
+            if(currentRule.deathRule)
+            {
+                deathRules.Add(currentRule);
+            }
+            else
+            {
+                levelRules.Add(currentRule);
+            }
+        }
+
+        RuleObject[] ruleObjects = level.ruleObjects;
+
+        for(int i = 0; i < ruleObjects.Length; i++)
+        {
+            RuleObject ruleObject = ruleObjects[i];
+
+            Rule newRule = new Rule(ruleObject.conditions, ruleObject.results, ruleObject.deathRule);
+
+            if(newRule.deathRule)
+            {
+                deathRules.Add(newRule);
+            }
+            else
+            {
+                levelRules.Add(newRule);
+            }
+        }
+
+        enabledSpecies = level.enabledSpecies;
+
         speciesAttributes.AddRange(SpeciesReference.defaultSpeciesAttributes);
 
-        if(speciesOverride != null)
+        speciesWeightDictionary = new Dictionary<SPECIES, int>();
+        bool noneValueAssigned = false;
+
+        SpeciesWeight[] speciesWeightReference = level.speciesWeightArray;
+
+        for(int i = 0; i < speciesWeightReference.Length; i++)
         {
-            for(int i = 0; i < speciesOverride.Count; i++)
+            SpeciesWeight currentEntry = speciesWeightReference[i];
+            speciesWeightDictionary[currentEntry.species] = currentEntry.weight;
+
+            if(currentEntry.species == SPECIES.NONE)
             {
-                SpeciesAttributes currentOverride = speciesOverride[i];
-                speciesAttributes[(int)currentOverride.speciesEnum] = currentOverride;
+                noneValueAssigned = true;
             }
         }
 
-        switch(levelRuleset)
+        if(!noneValueAssigned)
         {
-            case RULESET.STANDARD:
-                levelRules.Add(GetPremadeRule(RULE_REFERENCE.STANDARD_DEATH));
-                levelRules.Add(GetPremadeRule(RULE_REFERENCE.STANDARD_PROPIGATION));
-                enabledSpecies = new List<SPECIES> { SPECIES.BLOB };
-                enableSpeciesRules = false;
-                break;
-            case RULESET.CUSTOM:
-                deathRules.Add(RuleReference.premadeDeathRules[(int)DEATH_RULES.ROCKS_ARE_IMMORTAL]);
-                levelRules.Add(GetPremadeRule(RULE_REFERENCE.FLOPPERS_CAN_BECOME_BLOBS));
-                levelRules.Add(GetPremadeRule(RULE_REFERENCE.SICK_CELLS_CAN_DIE));
-                enableSpeciesRules = true;
-                break;
-            case RULESET.SCRAMBLE_RULES:
-                ApplyScrambledRules();
-                break;
-            case RULESET.SCRAMBLE_ALL:
-                ApplyScrambledRules();
-                break;
-            case RULESET.ALL_RULES:
-                for(int i = 2; i < (int)RULE_REFERENCE.FINAL_RULE_LEAVE_EMPTY; i++)//We do ignore the first two standard rules.
-                {
-                    RULE_REFERENCE currentRule = (RULE_REFERENCE)i;
-
-                    levelRules.Add(GetPremadeRule(currentRule));
-                }
-                for(int i = 0; i < (int)DEATH_RULES.FINAL_RULE_LEAVE_EMPTY; i++)
-                {
-                    deathRules.Add(RuleReference.premadeDeathRules[i]);
-                }
-                break;
-        }        
-    }
-
-    void ApplyScrambledRules()
-    {
-        for(int i = 2; i < (int)RULE_REFERENCE.FINAL_RULE_LEAVE_EMPTY; i++)//ignoring the first two standard rules.
-        {
-            if(Random.Range(0, 2) == 1)
-            {
-                levelRules.Add(RuleReference.premadeRuleArray[i]);
-            }
-        }
-
-        for(int i = 0; i < (int)DEATH_RULES.FINAL_RULE_LEAVE_EMPTY; i++)
-        {
-            if(Random.Range(0, 2) == 1)
-            {
-                deathRules.Add(RuleReference.premadeDeathRules[i]);
-            }
+            speciesWeightDictionary[SPECIES.NONE] = 20;
         }
     }
 
-    Rule GetPremadeRule(RULE_REFERENCE ruleReference)
+    Rule GetPremadeRule(PREMADE_RULES ruleReference)
     {
         return RuleReference.premadeRuleArray[(int)ruleReference];
     }
@@ -207,7 +161,7 @@ public class CellManagerScript : MonoBehaviour
 
         initalPopulationDictionary = new Dictionary<SPECIES, int>();
 
-        for(int i = 0; i < enabledSpecies.Count; i++)
+        for(int i = 0; i < enabledSpecies.Length; i++)
         {
             initalPopulationDictionary[enabledSpecies[i]] = 0;
         }
@@ -217,7 +171,7 @@ public class CellManagerScript : MonoBehaviour
             speciesPool.Add(SPECIES.NONE);
         }
 
-        for(int i = 0; i < enabledSpecies.Count; i++)
+        for(int i = 0; i < enabledSpecies.Length; i++)
         {
             SPECIES thisSpecies = enabledSpecies[i];            
 
@@ -305,7 +259,7 @@ public class CellManagerScript : MonoBehaviour
 
     SpeciesAttributes GetRandomSpecies()
     {
-        SPECIES chosenSpecies = enabledSpecies[Random.Range(0, enabledSpecies.Count)];
+        SPECIES chosenSpecies = enabledSpecies[Random.Range(0, enabledSpecies.Length)];
 
         return speciesAttributes[(int)chosenSpecies];
     }
@@ -320,11 +274,6 @@ public class CellManagerScript : MonoBehaviour
         
         if(alive)
         {
-            if(!wasAlreadyAlive && !enableSpeciesRules)//Depending on rule set, bringing a cell back to life may require settting the species here.
-            {
-                thisCellState.species = speciesAttributes[(int)enabledSpecies[0]];//This is just the first thing in the enabled species list.
-            }
-
             gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
         }
         else
@@ -357,7 +306,7 @@ public class CellManagerScript : MonoBehaviour
             CellState thisCellState = cellStateArray[i];
 
             if(thisCellState.species == null ||
-                (!thisCellState.alive && randomizeSpeciesOfDeadCellsOnDishRefill))
+                !thisCellState.alive)
             {
                 thisCellState.species = GetRandomSpecies();
             }
@@ -371,7 +320,7 @@ public class CellManagerScript : MonoBehaviour
         List<CellState> changingCells = new List<CellState>();
         Dictionary<SPECIES, int> speciesPopulationDictionary = new Dictionary<SPECIES, int>();
 
-        for(int i = 0; i < enabledSpecies.Count; i++)
+        for(int i = 0; i < enabledSpecies.Length; i++)
         {
             speciesPopulationDictionary[enabledSpecies[i]] = 0;
         }
@@ -389,22 +338,19 @@ public class CellManagerScript : MonoBehaviour
                 }
             }
 
-            if(enableSpeciesRules)
+            Rule speciesLifeRules = null;
+
+            if(cellState.species != null)
             {
-                Rule speciesLifeRules = null;
+                speciesLifeRules = cellState.species.lifeRule;
+            }
 
-                if(cellState.species != null)
+            if(speciesLifeRules != null)
+            {
+                Result[] results = arbiter.TestRule(cellState.coords, speciesLifeRules);
+                if(results != null)
                 {
-                    speciesLifeRules = cellState.species.lifeRule;
-                }
-
-                if(speciesLifeRules != null)
-                {
-                    Result[] results = arbiter.TestRule(cellState.coords, speciesLifeRules);
-                    if(results != null)
-                    {
-                        ApplyResults(results);
-                    }
+                    ApplyResults(results);
                 }
             }
 
@@ -420,29 +366,26 @@ public class CellManagerScript : MonoBehaviour
             if(!cellState.alive &&
                 !cellState.futureAlive)
             {
-                if(enableSpeciesRules)
+                List<Result[]> successfulResults = new List<Result[]>();
+
+                for(int s = 0; s < enabledSpecies.Length; s++)
                 {
-                    List<Result[]> successfulResults = new List<Result[]>();
+                    Rule propigationRule = speciesAttributes[(int)enabledSpecies[s]].propigationRule;
 
-                    for(int s = 0; s < enabledSpecies.Count; s++)
+                    if(propigationRule != null)
                     {
-                        Rule propigationRule = speciesAttributes[(int)enabledSpecies[s]].propigationRule;
+                        Result[] theseResults = arbiter.TestRule(cellState.coords, propigationRule);
 
-                        if(propigationRule != null)
+                        if(theseResults != null)
                         {
-                            Result[] theseResults = arbiter.TestRule(cellState.coords, propigationRule);
-
-                            if(theseResults != null)
-                            {
-                                successfulResults.Add(theseResults);
-                            }
+                            successfulResults.Add(theseResults);
                         }
                     }
+                }
 
-                    if(successfulResults.Count > 0)
-                    {
-                        ApplyResults(successfulResults[Random.Range(0, successfulResults.Count)]);
-                    }
+                if(successfulResults.Count > 0)
+                {
+                    ApplyResults(successfulResults[Random.Range(0, successfulResults.Count)]);
                 }
             }
 
