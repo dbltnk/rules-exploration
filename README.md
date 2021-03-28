@@ -36,7 +36,9 @@ Build: https://dbltnk.itch.io/connie-weis-lab
   * https://en.wikipedia.org/wiki/Brian%27s_Brain
   * Multiple organisms in one layer (food?)
 4. Probabilistic transitions
-5. Fixed pattern comparers (if top = x and left = y then)
+5. Non-totalistic CA (https://conwaylife.com/wiki/Non-totalistic_Life-like_cellular_automaton)
+   1. Non-isotropic https://conwaylife.com/wiki/Non-isotropic_Life-like_cellular_automaton
+   2. Isotropic https://conwaylife.com/wiki/Isotropic_non-totalistic_Life-like_cellular_automaton
 6. Continuous state
 7. Advanced border types
    * Wrapping (Torus, Moebius strip)
@@ -46,7 +48,11 @@ Build: https://dbltnk.itch.io/connie-weis-lab
    * Block CA https://en.wikipedia.org/wiki/Block_cellular_automaton
 * Multiple layers
 * Rules based on layer / species analytics (count of species X etc)
-* Long list of CA: https://softology.com.au/voc.htm
+* Lists of known CA:
+  * https://conwaylife.com/wiki/List_of_Life-like_cellular_automata
+  * https://softology.com.au/voc.htm
+  * https://catagolue.hatsya.com/rules
+* Generations? https://conwaylife.com/wiki/Generations
 
 ## P1 Game Modes
 
@@ -54,7 +60,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     * P1 fixed list of challenges / puzzles to pick from
     * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
     * minimize works w/ mazentric
-    * P1 create [a specific / any] [stable / oscillating / moving] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+    * P1 create [a specific / any] [stable / oscillating / moving / replcating] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns // https://conwaylife.com/wiki/Cellular_automaton)
     * P1 Make [N] mutations to a species to get to a specific result
 		* https://codegolf.stackexchange.com/questions/221091/minimally-destroy-cgcc-in-game-of-life
 * P1 CLASSIFICATION: Class 1-4
@@ -104,10 +110,17 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P3 do we need animations to figure out what has had influence on what?
 * P3 Load nickname presets for the known species
 * P3 Different types of creatures (movement?)
+* P3 Other grids (https://conwaylife.com/wiki/Cellular_automaton)
+    * Hex
+    * Triangle
 
 ## Usability Improvements
 
 * Pattern stamps (1-9 blocks)
+
+## Potential Collaborators
+
+* Lior Ben-Gai (London):  https://www.youtube.com/watch?v=coL5GKxYg90
 
 ## Games to try
 
