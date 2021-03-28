@@ -47,7 +47,8 @@ namespace ProceduralToolkit.Samples
         };
 
         [Header("Asset References For Manual Assignment")]
-        public GameObject PrefCell;
+        public GameObject PrefCell4;
+        public GameObject PrefCell8;
         public GameObject PrefConnieWei;
         public RectTransform RulesPopup;
         public RectTransform LeftPanel;
@@ -401,7 +402,13 @@ namespace ProceduralToolkit.Samples
                     int cellsNeeded = config.width * config.height;
                     int cellCount = Image.transform.childCount;
                     if (cellCount < cellsNeeded) {
-                        GameObject cell = Instantiate(PrefCell);
+                        GameObject cell = null;
+                        if (config.useMooreNeighbourhood) {
+                            cell = Instantiate(PrefCell4);
+                        }
+                        else {
+                            cell = Instantiate(PrefCell8);
+                        }
                         cell.transform.SetParent(Image.transform, false);
                         Cell c = cell.AddComponent<Cell>();
                         c.X = x;

@@ -7,6 +7,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * P1 List of known species (click them to load a scene with that species configuration, random grid)
 * P2 "knowledge graph" (DAG) of levels that unlock one after another, clicking opens a scene with that species configuration, goal definition (& maybe grid state) 
   * P2 in addition to the "challenge" levels you also unlock "classification" levels where similar CA rules are being used but with a random config
+* P3 Cap for multi-digit random rule selection to not go beyond useful (Moor neigh. = max 4 etc)
 
 ## Refactoring
 
@@ -117,6 +118,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 ## Usability Improvements
 
 * Pattern stamps (1-9 blocks)
+* Visualize more cell properties in sprite (walls alive/dead)
 
 ## Potential Collaborators
 

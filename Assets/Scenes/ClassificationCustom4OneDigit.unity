@@ -5536,7 +5536,9 @@ MonoBehaviour:
     aliveBorders: 0
     seed: 0
     useMooreNeighbourhood: 1
-  PrefCell: {fileID: 2594283169984067351, guid: 37fdb59923f109e4c935eba2b85c645b,
+  PrefCell4: {fileID: 2594283169984067351, guid: 131d63843e3772245ad9d084785f4725,
+    type: 3}
+  PrefCell8: {fileID: 2594283169984067351, guid: 37fdb59923f109e4c935eba2b85c645b,
     type: 3}
   PrefConnieWei: {fileID: 8316235345974135777, guid: c9f0554150107a14386e8394d325c5b0,
     type: 3}
