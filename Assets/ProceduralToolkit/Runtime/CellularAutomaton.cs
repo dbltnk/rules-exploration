@@ -20,6 +20,7 @@ namespace ProceduralToolkit
             public float startNoise = 0.25f;
             public bool aliveBorders = false;
             public int seed = 0;
+            public bool useMooreNeighbourhood = false;
         }
 
         private bool[,] _cells;
@@ -145,11 +146,20 @@ namespace ProceduralToolkit
             aliveNeighbours = 0;
             if (config.aliveBorders)
             {
-                copy.Visit8Unbounded(x, y, visitAliveBorders);
+                if (config.useMooreNeighbourhood) { 
+                    copy.Visit4Unbounded(x, y, visitAliveBorders);
+                }
+                else {
+                    copy.Visit8Unbounded(x, y, visitAliveBorders);
+                }
             }
             else
             {
-                copy.Visit8(x, y, visitDeadBorders);
+                if (config.useMooreNeighbourhood) {
+                    copy.Visit4(x, y, visitAliveBorders);
+                } else {
+                    copy.Visit8(x, y, visitAliveBorders);
+                }
             }
             return aliveNeighbours;
         }
