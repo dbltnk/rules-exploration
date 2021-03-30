@@ -1,49 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-
-[System.Serializable]
-public class Rule
-{
-    public Rule(Condition[] conditions, Result[] results)
-    {
-        this.conditions = conditions;
-        this.results = results;
-        deathRule = false;
-    }
-
-    public Rule(Condition[] conditions, Result[] results, bool deathRule)
-    {
-        this.conditions = conditions;
-        this.results = results;
-        this.deathRule = deathRule;
-    }
-
-    public Condition[] conditions;
-    public Result[] results;
-    public bool deathRule;//If true, this rule will get filed in and sorted only to be calculated during the death phase of rule checks.
-}
 
 [System.Serializable]
 public class Condition
 {
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<Coords> compareCoords, List<SPECIES> compareSpecies, List<STATE> compareStates)
+    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<Coords> compareCoords, List<Species> compareSpecies, List<SPECIES_GROUP> compareSpeciesGroups, List<STATE> compareStates)
     {
         this.source = source;
         this.condition = condition;
         this.compareInts = compareInts;
         this.compareCoords = compareCoords;
-        this.compareSpecies = compareSpecies;
+        this.compareSpeciesGroups = compareSpeciesGroups;
         this.compareStates = compareStates;
     }
 
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<SPECIES> compareSpecies)
+    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<SPECIES_GROUP> compareSpeciesGroups)
     {
         this.source = source;
         this.condition = condition;
         this.compareInts = compareInts;
         compareCoords = null;
-        this.compareSpecies = compareSpecies;
+        this.compareSpeciesGroups = compareSpeciesGroups;
         compareStates = null;
     }
 
@@ -53,7 +30,7 @@ public class Condition
         this.condition = condition;
         this.compareInts = compareInts;
         compareCoords = null;
-        compareSpecies = null;
+        compareSpeciesGroups = null;
         compareStates = null;
     }
 
@@ -64,15 +41,15 @@ public class Condition
         this.compareInts = compareInts;
         compareStates = new List<STATE> { compareState };
         compareCoords = null;
-        compareSpecies = null;
+        compareSpeciesGroups = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, SPECIES compareSpecies)
+    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, SPECIES_GROUP compareSpeciesGroups)
     {
         this.source = source;
         this.condition = condition;
         this.compareInts = compareInts;
-        this.compareSpecies = new List<SPECIES> { compareSpecies };
+        this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
         compareCoords = null;
         compareStates = null;
     }
@@ -83,14 +60,14 @@ public class Condition
         this.condition = condition;
         compareStates = new List<STATE> { compareState };
         compareCoords = null;
-        compareSpecies = null;
+        compareSpeciesGroups = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, SPECIES compareSpecies)
+    public Condition(SOURCE source, CONDITON condition, SPECIES_GROUP compareSpeciesGroups)
     {
         this.source = source;
         this.condition = condition;
-        this.compareSpecies = new List<SPECIES> { compareSpecies };
+        this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
         compareCoords = null;
         compareStates = null;
     }
@@ -100,7 +77,7 @@ public class Condition
         this.source = source;
         this.condition = condition;
         compareCoords = null;
-        compareSpecies = null;
+        compareSpeciesGroups = null;
         compareStates = null;
     }
 
@@ -108,21 +85,22 @@ public class Condition
     public CONDITON condition;
     public Vector2Int compareInts;
     public List<Coords> compareCoords;
-    public List<SPECIES> compareSpecies;
+    public List<Species> compareSpecies;
+    public List<SPECIES_GROUP> compareSpeciesGroups;
     public List<STATE> compareStates;
 }
 
 [System.Serializable]
 public class Result
 {
-    public Result(LIFE_EFFECT lifeEffect, SPECIES newSpecies, STATE newState)
+    public Result(LIFE_EFFECT lifeEffect, Species newSpecies, STATE newState)
     {
         this.lifeEffect = lifeEffect;
         this.newSpecies = newSpecies;
         this.newState = newState;
     }
 
-    public Result(LIFE_EFFECT lifeEffect, SPECIES newSpecies)
+    public Result(LIFE_EFFECT lifeEffect, Species newSpecies)
     {
         this.lifeEffect = lifeEffect;
         this.newSpecies = newSpecies;
@@ -134,7 +112,7 @@ public class Result
         this.newState = newState;
     }
 
-    public Result(SPECIES newSpecies, STATE newState)
+    public Result(Species newSpecies, STATE newState)
     {
         this.newSpecies = newSpecies;
         this.newState = newState;
@@ -145,7 +123,7 @@ public class Result
         this.lifeEffect = lifeEffect;
     }
 
-    public Result(SPECIES newSpecies)
+    public Result(Species newSpecies)
     {
         this.newSpecies = newSpecies;
     }
@@ -156,19 +134,19 @@ public class Result
     }
 
     public LIFE_EFFECT lifeEffect;
-    public SPECIES newSpecies;
+    public Species newSpecies;
     public STATE newState;
 }
 
 public enum SOURCE
 {
     LIVING_NEIGHBOR_COUNT,
-    LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT,
+    LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT,
     LIVING_NEIGHBORS_MATCHING_STATE_COUNT,
     /// <summary>
     /// The cell currently being reviewed by the arbiter.
     /// </summary>
-    TARGET,
+    SOURCE_CELL,
     NEIGHBOR_NW,
     NEIGHBOR_DN,
     NEIGHBOR_NE,
@@ -191,17 +169,19 @@ public enum CONDITON
     /// Range defined as compareInts.x to compareInts.y, inclusive.
     /// </summary>
     VALUE_OUTSIDE_RANGE,
-    VALUE_MATCHES_SPECIES,
-    VALUE_DOES_NOT_MATCH_SPECIES,
-    VALUE_MATCHES_STATE,
-    VALUE_DOES_NOT_MATCH_STATE,
-    VALUE_ALIVE,
-    VALUE_DEAD,
-    VALUE_IS_WALL_ADJACENT,
+    MATCHES_SPECIES,
+    DOES_NOT_MATCH_SPECIES,
+    CONTAINS_SPECIES_GROUP,
+    DOES_NOT_CONTAIN_SPECIES_GROUP,
+    MATCHES_STATE,
+    DOES_NOT_MATCH_STATE,
+    IS_ALIVE,
+    IS_DEAD,
+    IS_WALL_ADJACENT,
     /// <summary>
     /// This step, the cell is going to be set to dead.
     /// </summary>
-    CELL_IS_DYING,
+    IS_DYING,
 }
 
 public class ArbiterScript : MonoBehaviour
@@ -220,7 +200,8 @@ public class ArbiterScript : MonoBehaviour
 
             int inputInt = 0;
             bool inputAlive = false;
-            SPECIES inputSpecies = SPECIES.NONE;
+            Species inputSpecies = null;
+            List<SPECIES_GROUP> inputSpeciesGroups = null;
             STATE inputState = STATE.NONE;
             bool inputWallAdjacent = false;
             bool inputIsDying = false;
@@ -230,8 +211,8 @@ public class ArbiterScript : MonoBehaviour
                 case SOURCE.LIVING_NEIGHBOR_COUNT:
                     inputInt = cellManager.CountLivingNeighbors(coords);
                     break;
-                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareSpecies);
+                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT:
+                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareSpeciesGroups);
                     break;
                 case SOURCE.LIVING_NEIGHBORS_MATCHING_STATE_COUNT:
                     inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareStates);
@@ -260,15 +241,12 @@ public class ArbiterScript : MonoBehaviour
                 case SOURCE.NEIGHBOR_SW:
                     AssignInputValuesBasedOnSpecificNeighbor(NEIGHBORS.SW);
                     break;
-                case SOURCE.TARGET:
+                case SOURCE.SOURCE_CELL:
                     CellState cellState = cellManager.GetCellStateAtCoords(coords);
-                    if(cellState.species == null)
+                    inputSpecies = cellState.species;
+                    if(inputSpecies != null)
                     {
-                        inputSpecies = SPECIES.NONE;
-                    }
-                    else
-                    {
-                        inputSpecies = cellState.species.speciesEnum;
+                        inputSpeciesGroups = cellState.species.speciesGroups;
                     }                    
                     inputState = cellState.state;
                     inputAlive = cellState.alive;
@@ -308,13 +286,15 @@ public class ArbiterScript : MonoBehaviour
                     return;
                 }
 
-                if(cellState.species == null)
+                inputSpecies = cellState.species;
+
+                if(inputSpecies == null)
                 {
-                    inputSpecies = SPECIES.NONE;
+                    inputSpeciesGroups = null;
                 }
                 else
                 {
-                    inputSpecies = cellState.species.speciesEnum;
+                    inputSpeciesGroups = inputSpecies.speciesGroups;
                 }
                 
                 inputState = cellState.state;
@@ -339,59 +319,103 @@ public class ArbiterScript : MonoBehaviour
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_MATCHES_SPECIES:
+                case CONDITON.MATCHES_SPECIES:
                     if(!inputAlive) { return null; }
-                    if(thisCondition.compareSpecies == null)
-                    {
-                        return null;
-                    }
                     if(!thisCondition.compareSpecies.Contains(inputSpecies))
                     {
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_DOES_NOT_MATCH_SPECIES:
-                    if(thisCondition.compareSpecies == null)
-                    {
-                        return null;
-                    }
+                case CONDITON.DOES_NOT_MATCH_SPECIES:
                     if(thisCondition.compareSpecies.Contains(inputSpecies))
                     {
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_ALIVE:
+                case CONDITON.CONTAINS_SPECIES_GROUP:
+                    if(thisCondition.compareSpeciesGroups == null)
+                    {
+                        return null;
+                    }
+                    if(inputSpeciesGroups == null)
+                    {
+                        return null;
+                    }
+
+                    bool matchFound = false;
+
+                    for(int sg1 = 0; sg1 < thisCondition.compareSpeciesGroups.Count; sg1++)
+                    {
+                        for(int sg2 = 0; sg2 < inputSpeciesGroups.Count; sg2++)
+                        {
+                            if(thisCondition.compareSpeciesGroups.Contains(inputSpeciesGroups[sg2]))
+                            {
+                                matchFound = true;
+                                break;
+                            }
+                        }
+                        if(matchFound) { break; }
+                    }
+
+                    if(!matchFound)
+                    {
+                        return null;
+                    }
+                    break;
+                case CONDITON.DOES_NOT_CONTAIN_SPECIES_GROUP:
+                    if(thisCondition.compareSpeciesGroups == null)
+                    {
+                        return null;
+                    }
+                    if(inputSpeciesGroups == null)
+                    {
+                        return null;
+                    }
+
+                    for(int sg1 = 0; sg1 < thisCondition.compareSpeciesGroups.Count; sg1++)
+                    {
+                        for(int sg2 = 0; sg2 < inputSpeciesGroups.Count; sg2++)
+                        {
+                            if(thisCondition.compareSpeciesGroups.Contains(inputSpeciesGroups[sg2]))
+                            {
+                                return null;
+                            }
+                        }
+                    }
+
+                    break;
+                case CONDITON.IS_ALIVE:
                     if(!inputAlive)
                     {
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_DEAD:
+                case CONDITON.IS_DEAD:
                     if(inputAlive)
                     {
                         return null;
                     }
                     break;                
-                case CONDITON.VALUE_MATCHES_STATE:
+                case CONDITON.MATCHES_STATE:
                     if(!inputAlive) { return null; }
                     if(!thisCondition.compareStates.Contains(inputState))
                     {
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_DOES_NOT_MATCH_STATE:
+                case CONDITON.DOES_NOT_MATCH_STATE:
                     if(thisCondition.compareStates.Contains(inputState))
                     {
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_IS_WALL_ADJACENT:
+                case CONDITON.IS_WALL_ADJACENT:
                     if(!inputWallAdjacent)
                     {
                         return null;
                     }
                     break;
-                case CONDITON.CELL_IS_DYING:
+                case CONDITON.IS_DYING:
                     if(!inputIsDying)
                     {
                         return null;

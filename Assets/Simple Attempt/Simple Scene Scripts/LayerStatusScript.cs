@@ -5,13 +5,13 @@ using TMPro;
 
 public struct PopulationCount
 {
-    public PopulationCount(SPECIES species, int population)
+    public PopulationCount(Species species, int population)
     {
         this.species = species;
         this.population = population;
     }
 
-    public SPECIES species;
+    public Species species;
     public int population;
 }
 
@@ -19,23 +19,23 @@ public class LayerStatusScript : MonoBehaviour
 {
     [SerializeField] TMP_Text[] topThreeReadout = null;
 
-    Dictionary<SPECIES, int> populationBySpecies;
+    Dictionary<Species, int> populationBySpecies;
 
     PopulationCount[] topThreePopulations;
 
     private void Awake()
     {
-        populationBySpecies = new Dictionary<SPECIES, int>();
+        populationBySpecies = new Dictionary<Species, int>();
 
         topThreePopulations = new PopulationCount[]
         {
-            new PopulationCount(SPECIES.NONE, 0),
-            new PopulationCount(SPECIES.NONE, 0),
-            new PopulationCount(SPECIES.NONE, 0),
+            new PopulationCount(null, 0),
+            new PopulationCount(null, 0),
+            new PopulationCount(null, 0),
         };
     }
 
-    public void UpdateSpeciesPopulation(List<PopulationCount> populationReport, Dictionary<SPECIES, int> populationDictionary)
+    public void UpdateSpeciesPopulation(List<PopulationCount> populationReport, Dictionary<Species, int> populationDictionary)
     {
         populationBySpecies = populationDictionary;
 
@@ -46,9 +46,9 @@ public class LayerStatusScript : MonoBehaviour
     {
         PopulationCount[] newPopulationRanking = new PopulationCount[]
         {
-            new PopulationCount(SPECIES.NONE, 0),
-            new PopulationCount(SPECIES.NONE, 0),
-            new PopulationCount(SPECIES.NONE, 0),
+            new PopulationCount(null, 0),
+            new PopulationCount(null, 0),
+            new PopulationCount(null, 0),
         };
 
         for(int i = 0; i < populationCount.Count; i++)
@@ -78,7 +78,7 @@ public class LayerStatusScript : MonoBehaviour
         {
             PopulationCount currentPopulationCount = newPopulationRanking[i];
 
-            if(currentPopulationCount.species == SPECIES.NONE)
+            if(currentPopulationCount.species == null)
             {
                 topThreeReadout[i].text = "---NULL---";
             }
@@ -89,7 +89,7 @@ public class LayerStatusScript : MonoBehaviour
         }
     }
 
-    public SPECIES GetSpeciesAtRank(int index)
+    public Species GetSpeciesAtRank(int index)
     {
         return topThreePopulations[index].species;
     }

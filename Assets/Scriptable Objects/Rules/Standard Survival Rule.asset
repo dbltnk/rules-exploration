@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
-  m_Name: Standard Rule Example
+  m_Name: Standard Survival Rule
   m_EditorClassIdentifier: 
   conditions:
   - source: 0
     condition: 0
     compareInts: {x: 3, y: 3}
-    compareSpecies: 
+    compareSpecies: []
+    compareSpeciesGroups: 
     compareStates: 
   results:
   - lifeEffect: 1
-    newSpecies: 0
+    newSpecies: {fileID: 0}
     newState: 1
   deathRule: 0

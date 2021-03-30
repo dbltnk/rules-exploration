@@ -19,7 +19,7 @@ public enum LIFE_EFFECT
 
 public class CellState
 {
-    public CellState(Coords coords, STATE state, SpeciesAttributes species, bool alive)
+    public CellState(Coords coords, STATE state, Species species, bool alive)
     {
         this.coords = coords;
         this.state = state;
@@ -27,15 +27,15 @@ public class CellState
         this.alive = alive;
 
         futureState = STATE.NONE;
-        futureSpecies = SPECIES.NONE;
+        futureSpecies = null;
         futureAlive = alive;
     }
 
     public Coords coords;
     public STATE state;
     public STATE futureState;
-    public SpeciesAttributes species;
-    public SPECIES futureSpecies;
+    public Species species;
+    public Species futureSpecies;
     public bool alive;
     public bool futureAlive;
 
@@ -57,7 +57,8 @@ public class CellManagerScript : MonoBehaviour
     /// The higher the number, the more likely each species is to populate a cell at the start of the level. This includes NONE for blank spaces.
     /// Note that this can be changed before the level generates to weight each scenario as you see fit.
     /// </summary>
-    Dictionary<SPECIES, int> speciesWeightDictionary;
+    Dictionary<Species, int> speciesWeightDictionary;
+    int emptySpaceWeight = 3;
 
     List<Rule> levelRules;
     /// <summary>
@@ -69,9 +70,7 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] Color deadColor = Color.grey;
 
-    SPECIES[] enabledSpecies;
-
-    List<SpeciesAttributes> speciesAttributes = new List<SpeciesAttributes>();
+    Species[] enabledSpecies;
 
     Dictionary<Coords, CellState> coordsToCellState;
     CellState[] cellStateArray;
@@ -82,30 +81,12 @@ public class CellManagerScript : MonoBehaviour
     {
         levelRules = new List<Rule>();
         deathRules = new List<Rule>();
+        
+        Rule[] rules = level.rules;
 
-        PREMADE_RULES[] premadeRules = level.premadeRules;
-
-        for(int i = 0; i < premadeRules.Length; i++)
+        for(int i = 0; i < rules.Length; i++)
         {
-            Rule currentRule = RuleReference.premadeRuleArray[(int)premadeRules[i]];
-
-            if(currentRule.deathRule)
-            {
-                deathRules.Add(currentRule);
-            }
-            else
-            {
-                levelRules.Add(currentRule);
-            }
-        }
-
-        RuleObject[] ruleObjects = level.ruleObjects;
-
-        for(int i = 0; i < ruleObjects.Length; i++)
-        {
-            RuleObject ruleObject = ruleObjects[i];
-
-            Rule newRule = new Rule(ruleObject.conditions, ruleObject.results, ruleObject.deathRule);
+            Rule newRule = rules[i];
 
             if(newRule.deathRule)
             {
@@ -117,38 +98,40 @@ public class CellManagerScript : MonoBehaviour
             }
         }
 
-        enabledSpecies = level.enabledSpecies;
+        enabledSpecies = level.species;
 
-        speciesAttributes.AddRange(SpeciesReference.defaultSpeciesAttributes);
+        speciesWeightDictionary = new Dictionary<Species, int>();
 
-        speciesWeightDictionary = new Dictionary<SPECIES, int>();
-        bool noneValueAssigned = false;
-
-        SpeciesWeight[] speciesWeightReference = level.speciesWeightArray;
-
-        for(int i = 0; i < speciesWeightReference.Length; i++)
+        for(int i = 0; i < enabledSpecies.Length; i++)
         {
-            SpeciesWeight currentEntry = speciesWeightReference[i];
-            speciesWeightDictionary[currentEntry.species] = currentEntry.weight;
-
-            if(currentEntry.species == SPECIES.NONE)
+            Species thisSpecies = enabledSpecies[i];
+            switch(thisSpecies.startingPopulation)
             {
-                noneValueAssigned = true;
+                case SPECIES_STARTING_POPULATION.VERY_RARE:
+                    speciesWeightDictionary[thisSpecies] = 1;
+                    break;
+                case SPECIES_STARTING_POPULATION.RARE:
+                    speciesWeightDictionary[thisSpecies] = 2;
+                    break;
+                case SPECIES_STARTING_POPULATION.UNCOMMON:
+                    speciesWeightDictionary[thisSpecies] = 3;
+                    break;
+                case SPECIES_STARTING_POPULATION.COMMON:
+                    speciesWeightDictionary[thisSpecies] = 4;
+                    break;
+                case SPECIES_STARTING_POPULATION.VERY_COMMON:
+                    speciesWeightDictionary[thisSpecies] = 5;
+                    break;
+                case SPECIES_STARTING_POPULATION.UBIQUITOUS:
+                    speciesWeightDictionary[thisSpecies] = 6;
+                    break;
             }
         }
 
-        if(!noneValueAssigned)
-        {
-            speciesWeightDictionary[SPECIES.NONE] = 20;
-        }
+        emptySpaceWeight = enabledSpecies.Length * 4;
     }
 
-    Rule GetPremadeRule(PREMADE_RULES ruleReference)
-    {
-        return RuleReference.premadeRuleArray[(int)ruleReference];
-    }
-
-    Dictionary<SPECIES, int> initalPopulationDictionary;
+    Dictionary<Species, int> initalPopulationDictionary;
     List<PopulationCount> initialPopulationCount;
 
     public void InitializeAllCells(Coords[] allCoords)
@@ -157,23 +140,23 @@ public class CellManagerScript : MonoBehaviour
         startingConditions = new Dictionary<Coords, CellState>();
         cellStateArray = new CellState[allCoords.Length];
 
-        List<SPECIES> speciesPool = new List<SPECIES>();
+        List<Species> speciesPool = new List<Species>();
 
-        initalPopulationDictionary = new Dictionary<SPECIES, int>();
+        initalPopulationDictionary = new Dictionary<Species, int>();
 
         for(int i = 0; i < enabledSpecies.Length; i++)
         {
             initalPopulationDictionary[enabledSpecies[i]] = 0;
         }
 
-        for(int i = 0; i < speciesWeightDictionary[SPECIES.NONE]; i++)
+        for(int i = 0; i < emptySpaceWeight; i++)
         {
-            speciesPool.Add(SPECIES.NONE);
+            speciesPool.Add(null);
         }
 
         for(int i = 0; i < enabledSpecies.Length; i++)
         {
-            SPECIES thisSpecies = enabledSpecies[i];            
+            Species thisSpecies = enabledSpecies[i];            
 
             for(int s = 0; s < speciesWeightDictionary[thisSpecies]; s++)
             {
@@ -188,11 +171,11 @@ public class CellManagerScript : MonoBehaviour
             coordsToCellState[currentCoords] = newCellState;
             cellStateArray[i] = newCellState;
 
-            SPECIES thisSpecies = speciesPool[Random.Range(0, speciesPool.Count)];
+            Species thisSpecies = speciesPool[Random.Range(0, speciesPool.Count)];
 
             SetSpecies(currentCoords, thisSpecies);
 
-            if(thisSpecies == SPECIES.NONE)
+            if(thisSpecies == null)
             {
                 SetAlive(currentCoords, false);
             }
@@ -207,7 +190,7 @@ public class CellManagerScript : MonoBehaviour
 
         initialPopulationCount = new List<PopulationCount>();
 
-        foreach(SPECIES species in initalPopulationDictionary.Keys)
+        foreach(Species species in initalPopulationDictionary.Keys)
         {
             initialPopulationCount.Add(new PopulationCount(species, initalPopulationDictionary[species]));
         }
@@ -227,11 +210,11 @@ public class CellManagerScript : MonoBehaviour
             CellState cellState = coordsToCellState[currentCoords];
             CellState initialCellState = startingConditions[currentCoords];
 
-            SetSpecies(currentCoords, initialCellState.species.speciesEnum);
+            SetSpecies(currentCoords, initialCellState.species);
             SetState(currentCoords, initialCellState.state);
             SetAlive(currentCoords, initialCellState.alive);
 
-            cellState.futureSpecies = SPECIES.NONE;
+            cellState.futureSpecies = null;
             cellState.futureState = STATE.NONE;
             cellState.futureAlive = cellState.alive;
         }
@@ -246,22 +229,20 @@ public class CellManagerScript : MonoBehaviour
         coordsToCellState[coords].state = newState;
     }
 
-    void SetSpecies(Coords coords, SPECIES newSpecies)
+    void SetSpecies(Coords coords, Species newSpecies)
     {
         CellState thisCellState = coordsToCellState[coords];
-        thisCellState.species = speciesAttributes[(int)newSpecies];
+        thisCellState.species = newSpecies;
 
         if(thisCellState.alive)
         {
-            gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
+            gridManager.SetCellColor(coords, thisCellState.species.color);
         }        
     }    
 
-    SpeciesAttributes GetRandomSpecies()
+    Species GetRandomSpecies()
     {
-        SPECIES chosenSpecies = enabledSpecies[Random.Range(0, enabledSpecies.Length)];
-
-        return speciesAttributes[(int)chosenSpecies];
+        return enabledSpecies[Random.Range(0, enabledSpecies.Length)];
     }
 
     void SetAlive(Coords coords, bool alive)
@@ -274,7 +255,7 @@ public class CellManagerScript : MonoBehaviour
         
         if(alive)
         {
-            gridManager.SetCellColor(coords, thisCellState.species.aliveColor);
+            gridManager.SetCellColor(coords, thisCellState.species.color);
         }
         else
         {
@@ -289,11 +270,11 @@ public class CellManagerScript : MonoBehaviour
             CellState cellState = cellStateArray[i];
             Coords coords = cellState.coords;
 
-            cellState.futureSpecies = SPECIES.NONE;
+            cellState.futureSpecies = null;
             cellState.futureState = STATE.NONE;
             cellState.futureAlive = false;
 
-            SetSpecies(coords, SPECIES.NONE);
+            SetSpecies(coords, null);
             SetState(coords, STATE.NONE);
             SetAlive(coords, false);
         }
@@ -318,7 +299,7 @@ public class CellManagerScript : MonoBehaviour
     public void IncrementTime()
     {
         List<CellState> changingCells = new List<CellState>();
-        Dictionary<SPECIES, int> speciesPopulationDictionary = new Dictionary<SPECIES, int>();
+        Dictionary<Species, int> speciesPopulationDictionary = new Dictionary<Species, int>();
 
         for(int i = 0; i < enabledSpecies.Length; i++)
         {
@@ -338,20 +319,25 @@ public class CellManagerScript : MonoBehaviour
                 }
             }
 
-            Rule speciesLifeRules = null;
+            Rule[] speciesLifeRules = null;
 
             if(cellState.species != null)
             {
-                speciesLifeRules = cellState.species.lifeRule;
+                speciesLifeRules = cellState.species.otherRules;
             }
 
             if(speciesLifeRules != null)
             {
-                Result[] results = arbiter.TestRule(cellState.coords, speciesLifeRules);
-                if(results != null)
+                for(int r = 0; r < speciesLifeRules.Length; r++)
                 {
-                    ApplyResults(results);
-                }
+                    Rule currentRule = speciesLifeRules[r];
+
+                    Result[] results = arbiter.TestRule(cellState.coords, currentRule);
+                    if(results != null)
+                    {
+                        ApplyResults(results);
+                    }
+                }                
             }
 
             for(int r = 0; r < deathRules.Count; r++)
@@ -370,17 +356,23 @@ public class CellManagerScript : MonoBehaviour
 
                 for(int s = 0; s < enabledSpecies.Length; s++)
                 {
-                    Rule propigationRule = speciesAttributes[(int)enabledSpecies[s]].propigationRule;
+                    Rule[] propigationRules = enabledSpecies[s].propigationRules;
 
-                    if(propigationRule != null)
+                    for(int p = 0; p < propigationRules.Length; p++)
                     {
-                        Result[] theseResults = arbiter.TestRule(cellState.coords, propigationRule);
+                        Rule propigationRule = propigationRules[p];
 
-                        if(theseResults != null)
+                        if(propigationRule != null)
                         {
-                            successfulResults.Add(theseResults);
+                            Result[] theseResults = arbiter.TestRule(cellState.coords, propigationRule);
+
+                            if(theseResults != null)
+                            {
+                                successfulResults.Add(theseResults);
+                            }
                         }
                     }
+                    
                 }
 
                 if(successfulResults.Count > 0)
@@ -413,7 +405,7 @@ public class CellManagerScript : MonoBehaviour
                         break;
                 }
 
-                if(result.newSpecies != SPECIES.NONE)
+                if(result.newSpecies != null)
                 {
                     affectedCellState.futureSpecies = result.newSpecies;
                 }
@@ -447,11 +439,11 @@ public class CellManagerScript : MonoBehaviour
                 changingState.futureState = STATE.NONE;
             }
 
-            SPECIES newSpecies = changingState.futureSpecies;
-            if(newSpecies != SPECIES.NONE)
+            Species newSpecies = changingState.futureSpecies;
+            if(newSpecies != null)
             {
                 SetSpecies(changingState.coords, newSpecies);
-                changingState.futureSpecies = SPECIES.NONE;
+                changingState.futureSpecies = null;
             }
 
             bool newAlive = changingState.futureAlive;
@@ -471,9 +463,9 @@ public class CellManagerScript : MonoBehaviour
                 continue;
             }
 
-            SPECIES thisSpecies = thisCellState.species.speciesEnum;
+            Species thisSpecies = thisCellState.species;
 
-            if(thisSpecies == SPECIES.NONE)
+            if(thisSpecies == null)
             {
                 continue;
             }
@@ -488,7 +480,7 @@ public class CellManagerScript : MonoBehaviour
 
         List<PopulationCount> populationCountList = new List<PopulationCount>();
 
-        foreach(SPECIES species in speciesPopulationDictionary.Keys)
+        foreach(Species species in speciesPopulationDictionary.Keys)
         {
             populationCountList.Add(new PopulationCount(species, speciesPopulationDictionary[species]));
         }
@@ -521,20 +513,25 @@ public class CellManagerScript : MonoBehaviour
 
     public int CountLivingNeighbors(Coords coords)
     {
-        return CountLivingNeighbors(coords, null, null);
+        return CountLivingNeighbors(coords, null, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, List<SPECIES> matchSpecies)
+    public int CountLivingNeighbors(Coords coords, List<Species> matchSpecies)
     {
-        return CountLivingNeighbors(coords, matchSpecies, null);
+        return CountLivingNeighbors(coords, matchSpecies, null, null);
     }
 
     public int CountLivingNeighbors(Coords coords, List<STATE> matchState)
     {
-        return CountLivingNeighbors(coords, null, matchState);
+        return CountLivingNeighbors(coords, null, matchState, null);
     }
 
-    int CountLivingNeighbors(Coords coords, List<SPECIES> matchSpecies, List<STATE> matchState)
+    public int CountLivingNeighbors(Coords coords, List<SPECIES_GROUP> matchSpeciesGroups)
+    {
+        return CountLivingNeighbors(coords, null, null, matchSpeciesGroups);
+    }
+
+    int CountLivingNeighbors(Coords coords, List<Species> matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
     {
         List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
 
@@ -548,7 +545,7 @@ public class CellManagerScript : MonoBehaviour
             {
                 if(matchSpecies != null)
                 {
-                    if(matchSpecies.Contains(neighbor.species.speciesEnum))
+                    if(matchSpecies.Contains(neighbor.species))
                     {
                         livingCount++;
                     }
@@ -559,6 +556,30 @@ public class CellManagerScript : MonoBehaviour
                     {
                         livingCount++;
                     }
+                }
+                else if(matchSpeciesGroups != null)
+                {
+                    Species neighborSpecies = neighbor.species;
+
+                    if(neighborSpecies != null)
+                    {
+                        bool matchFound = false;
+
+                        for(int s = 0; s < neighborSpecies.speciesGroups.Count; s++)
+                        {
+                            for(int subS = 0; subS < matchSpeciesGroups.Count; subS++)
+                            {
+                                if(neighborSpecies.speciesGroups.Contains(matchSpeciesGroups[subS]))
+                                {
+                                    livingCount++;
+                                    matchFound = true;
+                                    break;
+                                }
+                            }          
+                            
+                            if(matchFound) { break; }
+                        }                        
+                    }                    
                 }
                 else
                 {

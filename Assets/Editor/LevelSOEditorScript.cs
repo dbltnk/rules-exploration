@@ -8,7 +8,7 @@ public class LevelSOEditorScript : Editor
     {
         //Level level = (Level)target;
 
-        //base.OnInspectorGUI();
+        base.OnInspectorGUI();
 
         //level.levelName = GUILayout.TextField(level.levelName);
         //target.name = level.levelName;

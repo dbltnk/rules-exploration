@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
+  m_Name: Blob Propigation
+  m_EditorClassIdentifier: 
+  conditions:
+  - source: 0
+    condition: 0
+    compareInts: {x: 3, y: 3}
+    compareSpecies:
+    - {fileID: 0}
+    compareSpeciesGroups: 01000000
+    compareStates: 
+  results:
+  - lifeEffect: 1
+    newSpecies: {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
+    newState: 1
+  deathRule: 0

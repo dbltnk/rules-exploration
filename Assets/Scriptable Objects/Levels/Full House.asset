@@ -15,40 +15,10 @@ MonoBehaviour:
   levelName: Full House
   levelWidth: 30
   levelHeight: 20
-  enabledSpecies: 01000000020000000400000003000000
-  speciesWeightArray:
-  - species: 1
-    weight: 6
-  - species: 2
-    weight: 2
-  - species: 4
-    weight: 1
-  - species: 0
-    weight: 15
-  - species: 3
-    weight: 0
-  premadeRules: 04000000030000000200000005000000060000000700000008000000
-  customRules:
-  - conditions:
-    - source: 13
-      condition: 2
-      compareInts: {x: 0, y: 0}
-      compareSpecies: 02000000
-      compareStates: 
-    results: []
-    deathRule: 0
-  - conditions: []
-    results: []
-    deathRule: 0
-  - conditions: []
-    results: []
-    deathRule: 0
-  - conditions: []
-    results: []
-    deathRule: 0
-  - conditions: []
-    results: []
-    deathRule: 0
-  - conditions: []
-    results: []
-    deathRule: 0
+  species:
+  - {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
+  - {fileID: 11400000, guid: 786d829c6be9ab94e8a0742b73cbcd24, type: 2}
+  - {fileID: 11400000, guid: 5f86162e25b18454a9a15048e6472da7, type: 2}
+  - {fileID: 11400000, guid: 74ad62d8458c8654ab3d385476417f69, type: 2}
+  emptySpaceWeight: 5
+  rules: []
