@@ -12,6 +12,8 @@ public class LevelSetupScript : MonoBehaviour
 
     [SerializeField] GameObject gameManagerPrefab = null;
 
+    [SerializeField] TMP_InputField seedInputField = null;
+
     Level[] levels;
 
     int selectedLevel = 0;
@@ -27,6 +29,8 @@ public class LevelSetupScript : MonoBehaviour
             gameManager = Instantiate(gameManagerPrefab).GetComponent<GameManagerScript>();
         }
 
+        seedInputField.text = gameManager.GetCurrentSeed().ToString();
+
         levelBank = gameManager.GetComponent<LevelBankScript>();
 
         levels = levelBank.GetLevels();
@@ -41,6 +45,16 @@ public class LevelSetupScript : MonoBehaviour
         }
 
         levelSelectDropdown.AddOptions(optionsDataList);
+    }
+
+    public void RollNewSeed()
+    {
+        seedInputField.text = gameManager.RollNewSeed().ToString();
+    }
+
+    public void UpdateSeed()
+    {
+        gameManager.SetSpecificSeed(int.Parse(seedInputField.text));
     }
 
     public void UpdateSelectedLevel()
@@ -60,6 +74,7 @@ public class LevelSetupScript : MonoBehaviour
 
     void PlayLevel(int levelIndex)
     {
+        Random.InitState(gameManager.GetCurrentSeed());
         gameManager.SetCurrentLevel(levelBank.GetLevelByIndex(levelIndex));
         gameManager.LoadScene(SCENE.EXPEREMENT);
     }

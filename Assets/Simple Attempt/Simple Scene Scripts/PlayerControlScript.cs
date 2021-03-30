@@ -13,11 +13,17 @@ public class PlayerControlScript : MonoBehaviour
 
     [SerializeField] Camera theCamera = null;
 
+    [SerializeField] TMP_InputField seedInput = null;
+
     GameManagerScript gameManager;
 
     bool simulationRunning = true;
 
-    public void AssignGameManager(GameManagerScript gameManager) { this.gameManager = gameManager; }
+    public void AssignGameManager(GameManagerScript gameManager)
+    {
+        this.gameManager = gameManager;
+        seedInput.text = gameManager.GetCurrentSeed().ToString();
+    }
 
     public void PlayPausePressed()
     {
@@ -53,11 +59,22 @@ public class PlayerControlScript : MonoBehaviour
         cellManager.StartConstantSimulate();
     }
 
+    public void RerollSeed()
+    {
+        seedInput.text = gameManager.RollNewSeed().ToString();
+    }
+
+    public void UpdateSeed()
+    {
+        gameManager.SetSpecificSeed(int.Parse(seedInput.text));
+    }
+
     /// <summary>
     /// Sets the map to the exact condition it started.
     /// </summary>
     public void ResetExperement()
     {
+        Random.InitState(gameManager.GetCurrentSeed());
         CallStopSimulating();
         cellManager.ReInitializeAllCells();
     }
@@ -93,6 +110,7 @@ public class PlayerControlScript : MonoBehaviour
 
     public void NewExperement()
     {
+        Random.InitState(gameManager.GetCurrentSeed());
         gameManager.SetCurrentLevel(null);//Trying to load a null level will force a random roll.
         gameManager.LoadScene(SCENE.EXPEREMENT);
     }
