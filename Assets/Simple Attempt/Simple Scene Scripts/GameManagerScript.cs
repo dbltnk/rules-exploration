@@ -13,14 +13,29 @@ public class GameManagerScript : MonoBehaviour
 {
     Level currentLevel;
     [SerializeField] LevelBankScript levelBank = null;
+    [SerializeField] SpeciesBank speciesBank = null;
 
     int currentSeed;
     public int GetCurrentSeed() { return currentSeed; }
 
+    SaveData currentSaveData;
+
     private void Awake()
     {
-        RollNewSeed();
-        DontDestroyOnLoad(gameObject);        
+        DontDestroyOnLoad(gameObject);
+        currentSaveData = SaveDataScript.LoadSaveData();
+
+        if(currentSaveData == null)
+        {
+            currentSaveData = new SaveData(speciesBank.InitializeSpeciesNames());
+        }
+
+        RollNewSeed();              
+    }
+
+    public void SaveGame()
+    {
+        SaveDataScript.SaveGame(currentSaveData);
     }
 
     public int RollNewSeed()

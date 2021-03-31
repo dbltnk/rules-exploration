@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public enum MOUSE_MODE
 {
     NONE,
     CELL_SELECTED,
-    CLONE_HERE,
+    CLONE,
     DELETE,
 }
 
 public class PlayerControlScript : MonoBehaviour
 {
     [SerializeField] CellManagerScript cellManager = null;
+    SpeciesBank speciesBank = null;
 
     [SerializeField] Slider simulationSpeedSlider = null;
     [SerializeField] TMP_Text simulationSpeedReadout = null;
@@ -28,6 +30,7 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] Transform selectorTransform = null;
     [SerializeField] SpriteRenderer selectorRenderer = null;
 
+    [SerializeField] GameObject speciesRenameGameObject = null;
     [SerializeField] TMP_InputField speciesRenameInput = null;
     [SerializeField] TMP_Text speciesNameReadout = null;
 
@@ -46,6 +49,7 @@ public class PlayerControlScript : MonoBehaviour
     {
         this.gameManager = gameManager;
         seedInput.text = gameManager.GetCurrentSeed().ToString();
+        speciesBank = gameManager.GetComponent<SpeciesBank>();
     }
 
     private void Awake()
@@ -64,15 +68,15 @@ public class PlayerControlScript : MonoBehaviour
 
         selectorRenderer.enabled = true;
 
-        Species newSpecies = cellManager.GetSpecies(cellObjectScript.GetCoords());
+        selectedSpecies = cellManager.GetSpecies(cellObjectScript.GetCoords());
 
-        if(newSpecies == null)
+        if(selectedSpecies == null)
         {
             SetSelectedSpeciesReadoutToNone();
         }
         else
         {
-            speciesNameReadout.text = newSpecies.name;
+            speciesNameReadout.text = speciesBank.GetSpeciesName(selectedSpecies);
         }        
 
         mouseMode = MOUSE_MODE.CELL_SELECTED;
@@ -81,8 +85,6 @@ public class PlayerControlScript : MonoBehaviour
 
     void DeselectCell()
     {
-        Debug.Log("Deselect");
-
         selectedSpeciesPanel.SetActive(false);
         selectorRenderer.enabled = false;
 
@@ -114,7 +116,7 @@ public class PlayerControlScript : MonoBehaviour
 
     public void MouseModeCopy()
     {
-        mouseMode = MOUSE_MODE.CLONE_HERE;
+        mouseMode = MOUSE_MODE.CLONE;
         UpdateMouseModeReadout();
     }
 
@@ -131,13 +133,13 @@ public class PlayerControlScript : MonoBehaviour
 
     public void RenameSpeciesButton()
     {
-        speciesRenameInput.enabled = !speciesRenameInput.enabled;
+        speciesRenameGameObject.SetActive(!speciesRenameGameObject.activeSelf);
     }
 
     public void RenameSpecies()
     {
         string newName = speciesRenameInput.text;
-        selectedSpecies.name = newName;
+        speciesBank.SetSpeciesName(selectedSpecies, newName);
         speciesNameReadout.text = newName;        
     }
 
@@ -329,6 +331,11 @@ public class PlayerControlScript : MonoBehaviour
 
     void ParseClickColliders()
     {
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;            
+        }
+
         Collider2D[] foundColliders = Physics2D.OverlapPointAll(theCamera.ScreenToWorldPoint(Input.mousePosition));
 
         if(foundColliders.Length < 1)
@@ -340,27 +347,33 @@ public class PlayerControlScript : MonoBehaviour
             return;
         }
 
+        CellObjectScript cellScriptToSelect = null;
+
         foreach(Collider2D collider in foundColliders)
         {
-            CellObjectScript cellScript = collider.gameObject.GetComponent<CellObjectScript>();
+            CellObjectScript newCellScript = collider.gameObject.GetComponent<CellObjectScript>();
 
-            if(cellScript == null) { continue; }
+            if(newCellScript == null) { continue; }
 
-            switch(mouseMode)
-            {
-                case MOUSE_MODE.NONE:
-                    SelectSpecies(cellScript);
-                    break;
-                case MOUSE_MODE.CELL_SELECTED:
-                    SelectSpecies(cellScript);
-                    break;
-                case MOUSE_MODE.CLONE_HERE:
-                    Clone(cellScript.GetCoords());
-                    break;
-                case MOUSE_MODE.DELETE:
-                    Delete(cellScript.GetCoords());
-                    break;
-            }            
+            cellScriptToSelect = newCellScript;
+        }
+
+        if(cellScriptToSelect == null) { return; }
+
+        switch(mouseMode)
+        {
+            case MOUSE_MODE.NONE:
+                SelectSpecies(cellScriptToSelect);
+                break;
+            case MOUSE_MODE.CELL_SELECTED:
+                SelectSpecies(cellScriptToSelect);
+                break;
+            case MOUSE_MODE.CLONE:
+                Clone(cellScriptToSelect.GetCoords());
+                break;
+            case MOUSE_MODE.DELETE:
+                Delete(cellScriptToSelect.GetCoords());
+                break;
         }
     }
 
