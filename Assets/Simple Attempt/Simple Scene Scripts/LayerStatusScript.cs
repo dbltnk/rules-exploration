@@ -84,7 +84,7 @@ public class LayerStatusScript : MonoBehaviour
             }
             else
             {
-                topThreeReadout[i].text = string.Format("{0}: {1}", currentPopulationCount.species, currentPopulationCount.population);
+                topThreeReadout[i].text = string.Format("{0}: {1}", currentPopulationCount.species.name, currentPopulationCount.population);
             }
         }
     }

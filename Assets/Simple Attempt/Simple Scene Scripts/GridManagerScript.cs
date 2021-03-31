@@ -101,6 +101,9 @@ public class GridManagerScript : MonoBehaviour
                 Coords currentCoords = new Coords(x, y);
                 Vector3 currentPosition = new Vector3(x * cellSize, y * cellSize, 0);
                 GameObject currentCell = Instantiate(cellPrefab, currentPosition, Quaternion.identity);
+                CellObjectScript cellScript = currentCell.GetComponent<CellObjectScript>();
+
+                cellScript.SetCoords(currentCoords);
 
                 coordsToGameObject[currentCoords] = currentCell;
                 coordsToPosition[currentCoords] = currentPosition;

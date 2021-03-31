@@ -15,7 +15,7 @@ MonoBehaviour:
   defaultName: Flopper
   speciesGroups: 02000000
   color: {r: 1, g: 1, b: 0.482, a: 1}
-  startingPopulation: 4
+  startingPopulation: 2
   propigationRules:
   - {fileID: 11400000, guid: b85ec70a14a41b84b88672a6b30f0f2f, type: 2}
   otherRules:

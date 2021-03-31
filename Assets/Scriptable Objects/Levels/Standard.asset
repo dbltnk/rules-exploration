@@ -15,11 +15,6 @@ MonoBehaviour:
   levelName: Standard
   levelWidth: 15
   levelHeight: 10
-  enabledSpecies: 01000000
-  speciesWeightArray:
-  - species: 1
-    weight: 1
-  - species: 0
-    weight: 2
-  premadeRules: 
-  customRules: []
+  species:
+  - {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
+  rules: []

@@ -53,6 +53,8 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] LayerStatusScript layerStatus = null;
 
+    Dictionary<Coords, CellObjectScript> coordsToCellManager = new Dictionary<Coords, CellObjectScript>();
+
     /// <summary>
     /// The higher the number, the more likely each species is to populate a cell at the start of the level. This includes NONE for blank spaces.
     /// Note that this can be changed before the level generates to weight each scenario as you see fit.
@@ -229,10 +231,17 @@ public class CellManagerScript : MonoBehaviour
         coordsToCellState[coords].state = newState;
     }
 
+    public Species GetSpecies(Coords coords) { return coordsToCellState[coords].species; }
+
     void SetSpecies(Coords coords, Species newSpecies)
     {
         CellState thisCellState = coordsToCellState[coords];
         thisCellState.species = newSpecies;
+
+        if(thisCellState.species == null)
+        {
+            thisCellState.alive = false;
+        }
 
         if(thisCellState.alive)
         {
@@ -243,9 +252,20 @@ public class CellManagerScript : MonoBehaviour
     Species GetRandomSpecies()
     {
         return enabledSpecies[Random.Range(0, enabledSpecies.Length)];
+    }    
+
+    public void CopyCellStateOntoNewCell(Coords source, Coords destination)
+    {
+        CellState souceState = coordsToCellState[source];
+
+        SetSpecies(destination, souceState.species);
+        SetState(destination, souceState.state);
+        SetAlive(destination, souceState.alive);
     }
 
-    void SetAlive(Coords coords, bool alive)
+    public bool IsAlive(Coords coords) { return coordsToCellState[coords].alive; }
+
+    public void SetAlive(Coords coords, bool alive)
     {
         CellState thisCellState = coordsToCellState[coords];
 

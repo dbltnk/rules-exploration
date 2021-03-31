@@ -15,14 +15,7 @@ MonoBehaviour:
   levelName: Zombie Rule Test
   levelWidth: 15
   levelHeight: 10
-  enabledSpecies: 0200000003000000
-  speciesWeightArray:
-  - species: 2
-    weight: 8
-  - species: 3
-    weight: 2
-  - species: 0
-    weight: 1
-  premadeRules: 
-  ruleObjects:
-  - {fileID: 11400000, guid: 08eadc1792da02344b365b8b769d59fe, type: 2}
+  species:
+  - {fileID: 11400000, guid: 5f86162e25b18454a9a15048e6472da7, type: 2}
+  - {fileID: 11400000, guid: 74ad62d8458c8654ab3d385476417f69, type: 2}
+  rules: []
