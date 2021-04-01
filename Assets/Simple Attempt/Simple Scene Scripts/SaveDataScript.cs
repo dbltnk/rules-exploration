@@ -7,11 +7,13 @@ using System.Runtime.Serialization.Formatters.Binary;
 [System.Serializable]
 public class SaveData
 {
-    public SaveData(string[] customNames)
+    public SaveData(string[] defaultNames, string[] customNames)
     {
+        this.defaultNames = defaultNames;
         this.customNames = customNames;
     }
 
+    public string[] defaultNames;//Default names of species that have saved custom names
     public string[] customNames;
 }
 
@@ -36,12 +38,14 @@ public static class SaveDataScript
         return null;
     }
 
-    public static void SaveGame(SaveData saveData)
+    public static SaveData SaveGame(SaveData saveData)
     {
         BinaryFormatter bianaryFormatter = new BinaryFormatter();
         FileStream filestream = new FileStream(filePath, FileMode.Create);
 
         bianaryFormatter.Serialize(filestream, saveData);
         filestream.Close();
+
+        return saveData;
     }
 }

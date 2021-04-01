@@ -10,6 +10,5 @@ public class SpeciesSOEditorScript : Editor
 
         base.OnInspectorGUI();
 
-        //species.singleFlag = (SPECIES_FLAG)EditorGUILayout.EnumPopup(species.singleFlag);
     }
 }

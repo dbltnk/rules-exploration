@@ -20,3 +20,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 71661a2cd9ee7304fbf7360299847c90, type: 2}
   otherRules:
   - {fileID: 11400000, guid: 59e7dc54c7169f142b6d7b9534382681, type: 2}
+  nameReferenceIndex: 2

@@ -16,7 +16,6 @@ public enum MOUSE_MODE
 public class PlayerControlScript : MonoBehaviour
 {
     [SerializeField] CellManagerScript cellManager = null;
-    SpeciesBank speciesBank = null;
 
     [SerializeField] Slider simulationSpeedSlider = null;
     [SerializeField] TMP_Text simulationSpeedReadout = null;
@@ -37,8 +36,11 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] TMP_Text mouseModeReadout = null;
 
     GameManagerScript gameManager;
+    NameManagerScript nameManager;
 
     bool simulationRunning = true;
+
+    bool speciesRenameFieldOpen = false;
 
     Species selectedSpecies = null;
     CellObjectScript selectedCellObjectScript = null;
@@ -49,7 +51,7 @@ public class PlayerControlScript : MonoBehaviour
     {
         this.gameManager = gameManager;
         seedInput.text = gameManager.GetCurrentSeed().ToString();
-        speciesBank = gameManager.GetComponent<SpeciesBank>();
+        nameManager = gameManager.GetNameManager();
     }
 
     private void Awake()
@@ -76,7 +78,7 @@ public class PlayerControlScript : MonoBehaviour
         }
         else
         {
-            speciesNameReadout.text = speciesBank.GetSpeciesName(selectedSpecies);
+            speciesNameReadout.text = nameManager.GetSpeciesName(selectedSpecies);
         }        
 
         mouseMode = MOUSE_MODE.CELL_SELECTED;
@@ -110,7 +112,17 @@ public class PlayerControlScript : MonoBehaviour
 
     public void ClearMouseMode()
     {
-        mouseMode = MOUSE_MODE.NONE;
+        if(mouseMode == MOUSE_MODE.CELL_SELECTED ||
+                mouseMode == MOUSE_MODE.NONE)
+        {
+            DeselectCell();
+            mouseMode = MOUSE_MODE.NONE;
+        }
+        else
+        {
+            mouseMode = MOUSE_MODE.CELL_SELECTED;
+        }
+        
         UpdateMouseModeReadout();
     }
 
@@ -134,12 +146,13 @@ public class PlayerControlScript : MonoBehaviour
     public void RenameSpeciesButton()
     {
         speciesRenameGameObject.SetActive(!speciesRenameGameObject.activeSelf);
+        speciesRenameFieldOpen = !speciesRenameFieldOpen;
     }
 
     public void RenameSpecies()
     {
         string newName = speciesRenameInput.text;
-        speciesBank.SetSpeciesName(selectedSpecies, newName);
+        nameManager.NameSpecies(selectedSpecies, newName);
         speciesNameReadout.text = newName;        
     }
 
@@ -310,12 +323,7 @@ public class PlayerControlScript : MonoBehaviour
         }
 
         if(Input.GetMouseButtonDown(1))
-        {
-            if(mouseMode == MOUSE_MODE.CELL_SELECTED)
-            {
-                DeselectCell();
-            }
-
+        {     
             ClearMouseMode();
 
             mouseDownPosition = theCamera.ScreenToWorldPoint(Input.mousePosition);
@@ -390,6 +398,11 @@ public class PlayerControlScript : MonoBehaviour
     void KeyboardControls()
     {
         if(inputCooling)
+        {
+            return;
+        }
+
+        if(speciesRenameFieldOpen)
         {
             return;
         }

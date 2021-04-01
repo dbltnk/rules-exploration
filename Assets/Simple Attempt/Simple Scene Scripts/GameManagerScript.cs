@@ -13,12 +13,16 @@ public class GameManagerScript : MonoBehaviour
 {
     Level currentLevel;
     [SerializeField] LevelBankScript levelBank = null;
-    [SerializeField] SpeciesBank speciesBank = null;
+    [SerializeField] NameManagerScript nameManager = null;
+
+    public NameManagerScript GetNameManager() { return nameManager; }
 
     int currentSeed;
     public int GetCurrentSeed() { return currentSeed; }
 
     SaveData currentSaveData;
+
+    public SaveData GetCurrentSaveData() { return currentSaveData; }
 
     private void Awake()
     {
@@ -27,7 +31,8 @@ public class GameManagerScript : MonoBehaviour
 
         if(currentSaveData == null)
         {
-            currentSaveData = new SaveData(speciesBank.InitializeSpeciesNames());
+            currentSaveData = new SaveData(new string[0], new string[0]);
+            SaveGame();
         }
 
         RollNewSeed();              
@@ -36,6 +41,11 @@ public class GameManagerScript : MonoBehaviour
     public void SaveGame()
     {
         SaveDataScript.SaveGame(currentSaveData);
+    }
+
+    public void SaveGame(SaveData saveData)
+    {
+        currentSaveData = SaveDataScript.SaveGame(saveData);
     }
 
     public int RollNewSeed()

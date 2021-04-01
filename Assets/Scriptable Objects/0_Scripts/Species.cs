@@ -21,5 +21,11 @@ public class Species : ScriptableObject
     public Color color = Color.white;
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
     public Rule[] propigationRules;
-    public Rule[] otherRules;   
+    public Rule[] otherRules;
+    public int nameReferenceIndex;
+
+    private void OnEnable()
+    {
+        
+    }
 }

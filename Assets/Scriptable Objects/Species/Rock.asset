@@ -19,3 +19,4 @@ MonoBehaviour:
   propigationRules: []
   otherRules:
   - {fileID: 11400000, guid: 06e4a92cb92a37c46aa1891c84c4642f, type: 2}
+  nameReferenceIndex: 3
