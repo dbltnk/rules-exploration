@@ -26,6 +26,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     GridManagerScript.AssignLevel (Level level) (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:69)
     GridManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:64)
 * **P0 -** Can no longer create species within a pre-defined range, ProcGen only picks from manually created species (can be fixed by adding birth/death rules that randomly pick between ComparyInts.X and .Y)
+* **P0 -** It is quite hard to define different neighborhoods (for example the Von-Neumann vs the Moor neighborhood) - see branch different_neighborhoods. Is there an easier way?
 * **P1** - Grid zoom should automatically fit the screen when a level is loaded (autoAdjustCameraSize = true is all it needs? disabled for a reason?)
 * **P1 -** Reroll seed button in level select has no functionality
 * **P?** - Should BorderType be in the level or in the species?
