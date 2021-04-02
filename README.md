@@ -12,7 +12,8 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 **P0-1**: Needs a fix by Tony ASAP
 **P2-3:** Alex will deal with this in the future (or just ignore it)
 
-* **P0** - Adding new Levels + Rules takes a lot of clicks since you have to manually add them to the Level/RuleBanks. Can the banks be auto-generated from the scriptable objects in certain folders? Also adding a new rule to the RuleBank triggers the following errors:
+* **P0** - Adding new Levels + Rules takes a lot of clicks since you have to manually add them to the Level/RuleBanks. Can the banks be auto-generated from the scriptable objects in certain folders? 
+* **P0 -** Adding a new rule to the RuleBank triggers the following errors (maybe also connected to saving species? went away after I deleted the save data):
   * IndexOutOfRangeException: Index was outside the bounds of the array.
     SpeciesBank.DeserializeSpecies (System.String defaultName, System.Int32[] speciesGroups, System.Single[] color, System.Int32 startingPopulation, System.Int32 birthRuleIndex, System.Int32 deathRuleIndex) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:156)
     SpeciesBank.InitializeSavedSpecies (SaveData saveData) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:55)
@@ -24,11 +25,12 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     CellManagerScript.AssignLevel (Level level, GameManagerScript gameManager, SpeciesBank speciesBank) (at Assets/Simple Attempt/Simple Scene Scripts/CellManagerScript.cs:104)
     GridManagerScript.AssignLevel (Level level) (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:69)
     GridManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:64)
-
 * **P0 -** Can no longer create species within a pre-defined range, ProcGen only picks from manually created species (can be fixed by adding birth/death rules that randomly pick between ComparyInts.X and .Y)
-* **P1** - Grid zoom should automatically fit the screen when a level is loaded
+* **P1** - Grid zoom should automatically fit the screen when a level is loaded (autoAdjustCameraSize = true is all it needs? disabled for a reason?)
+* **P1 -** Reroll seed button in level select has no functionality
 * **P?** - Should BorderType be in the level or in the species?
 * **P? -** Can no longer edit a species in play mode and/or see its rules (-> show when a cell is selected in the grid?)
+* **P? -** Populations ranks do not update on Clear and Fill Dish, only after the next step after
 
 
 
