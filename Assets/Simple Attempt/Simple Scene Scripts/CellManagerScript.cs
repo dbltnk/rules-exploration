@@ -596,29 +596,29 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
-    public int CountLivingNeighbors(Coords coords)
+    public int CountLivingNeighbors(NEIGHBORHOODS neighborhood, Coords coords)
     {
-        return CountLivingNeighbors(coords, null, null, null);
+        return CountLivingNeighbors(neighborhood, coords, null, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, Species matchSpecies)
+    public int CountLivingNeighbors(NEIGHBORHOODS neighborhood, Coords coords, Species matchSpecies)
     {
-        return CountLivingNeighbors(coords, matchSpecies, null, null);
+        return CountLivingNeighbors(neighborhood, coords, matchSpecies, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, List<STATE> matchState)
+    public int CountLivingNeighbors(NEIGHBORHOODS neighborhood, Coords coords, List<STATE> matchState)
     {
-        return CountLivingNeighbors(coords, null, matchState, null);
+        return CountLivingNeighbors(neighborhood, coords, null, matchState, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, List<SPECIES_GROUP> matchSpeciesGroups)
+    public int CountLivingNeighbors(NEIGHBORHOODS neighborhood, Coords coords, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        return CountLivingNeighbors(coords, null, null, matchSpeciesGroups);
+        return CountLivingNeighbors(neighborhood, coords, null, null, matchSpeciesGroups);
     }
 
-    int CountLivingNeighbors(Coords coords, Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
+    int CountLivingNeighbors(NEIGHBORHOODS neighborhood, Coords coords, Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
+        List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords, neighborhood);
 
         int livingCount = 0;
 

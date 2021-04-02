@@ -26,6 +26,12 @@ public enum NEIGHBORS
     DW,
 }
 
+public enum NEIGHBORHOODS
+{
+    MOORE_8,
+    VON_NEUMANN_4,
+}
+
 public class GridManagerScript : MonoBehaviour
 {
     [SerializeField] CellManagerScript cellManager = null;
@@ -41,7 +47,7 @@ public class GridManagerScript : MonoBehaviour
 
     [SerializeField] Camera sceneCamera = null;
     [Tooltip("If true, camera size adjusts on start depending on cell size and grid size.")]
-    bool autoAdjustCameraSize = false;
+    bool autoAdjustCameraSize = true;
 
     [SerializeField] GameObject cellPrefab = null;
 
@@ -124,9 +130,17 @@ public class GridManagerScript : MonoBehaviour
         coordsToSpriteRenderer[coords].color = color;
     }
 
-    public bool CheckWallAdjacent(Coords coords)
+    public bool CheckWallAdjacent(Coords coords, NEIGHBORHOODS neighborhood)
     {
-        if(GetAllValidNeighbors(coords).Count < 8)
+        int target = 0;
+        if (neighborhood == NEIGHBORHOODS.VON_NEUMANN_4) {
+            target = 4;
+        }
+        else if (neighborhood == NEIGHBORHOODS.MOORE_8) {
+            target = 8;
+        }
+
+        if (GetAllValidNeighbors(coords, neighborhood).Count < target)
         {
             return true;
         }
@@ -134,16 +148,20 @@ public class GridManagerScript : MonoBehaviour
         return false;
     }
 
-    public List<Coords> GetAllValidNeighbors(Coords baseCoords)
+    public List<Coords> GetAllValidNeighbors(Coords baseCoords, NEIGHBORHOODS neighborhood)
     {
         List<Coords> validNeighbors = new List<Coords>();
 
-        for(int i = 0; i < 8; i++)
-        {
+        for (int i = 0; i < 8; i++) {
+
+            if (neighborhood == NEIGHBORHOODS.VON_NEUMANN_4) {
+                // We only want neighbours 1, 3, 5 and 7 (filtering out the corners)
+                if (i % 2 == 0) continue;
+            }
+
             Coords potentialNeighbor = GetSpecificNeighbor(baseCoords, (NEIGHBORS)i);
 
-            if(potentialNeighbor.x < 0)
-            {
+            if (potentialNeighbor.x < 0) {
                 continue;
             }
 

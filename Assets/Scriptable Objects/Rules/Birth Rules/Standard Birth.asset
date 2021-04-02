@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Standard Birth
   m_EditorClassIdentifier: 
   conditions:
-  - source: 1
+  - source: 5
     condition: 0
     compareInts: {x: 3, y: 3}
     compareSpeciesGroups: 
-    compareStates: 
+    compareStates: 00000000
   results:
   - lifeEffect: 1
     newState: 1

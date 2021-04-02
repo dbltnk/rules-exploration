@@ -105,14 +105,19 @@ public class Result
 
 public enum SOURCE
 {
-    LIVING_NEIGHBOR_COUNT,
-    LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT,
-    LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT,
-    LIVING_NEIGHBORS_MATCHING_STATE_COUNT,
+    LIVING_NEIGHBOR_COUNT_8,
+    LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT_8,
+    LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT_8,
+    LIVING_NEIGHBORS_MATCHING_STATE_COUNT_8,
+    LIVING_NEIGHBOR_COUNT_4,
+    LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT_4,
+    LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT_4,
+    LIVING_NEIGHBORS_MATCHING_STATE_COUNT_4,
     /// <summary>
     /// The cell currently being reviewed by the arbiter.
     /// </summary>
-    SOURCE_CELL,
+    SOURCE_CELL_4,
+    SOURCE_CELL_8,
     NEIGHBOR_NW,
     NEIGHBOR_DN,
     NEIGHBOR_NE,
@@ -156,7 +161,7 @@ public class ArbiterScript : MonoBehaviour
     [SerializeField] GridManagerScript gridManager = null;
     [SerializeField] LayerStatusScript layerManager = null;
 
-    public Result[] TestRule(Coords coords, Rule rule)
+    public Result[] TestRule(Coords coords, Rule rule, NEIGHBORHOODS neighborhood)
     {
         Condition[] conditions = rule.conditions;
 
@@ -171,20 +176,33 @@ public class ArbiterScript : MonoBehaviour
             STATE inputState = STATE.NONE;
             bool inputWallAdjacent = false;
             bool inputIsDying = false;
+            CellState cellState = cellManager.GetCellStateAtCoords(coords);
 
-            switch(thisCondition.source)
+            switch (thisCondition.source)
             {
-                case SOURCE.LIVING_NEIGHBOR_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords);
+                case SOURCE.LIVING_NEIGHBOR_COUNT_8:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.MOORE_8, coords);
                     break;
-                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, cellManager.GetSpecies(coords));
+                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT_8:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.MOORE_8, coords, cellManager.GetSpecies(coords));
                     break;
-                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareSpeciesGroups);
+                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT_8:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.MOORE_8, coords, thisCondition.compareSpeciesGroups);
                     break;
-                case SOURCE.LIVING_NEIGHBORS_MATCHING_STATE_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareStates);
+                case SOURCE.LIVING_NEIGHBORS_MATCHING_STATE_COUNT_8:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.MOORE_8, coords, thisCondition.compareStates);
+                    break;
+                case SOURCE.LIVING_NEIGHBOR_COUNT_4:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.VON_NEUMANN_4, coords);
+                    break;
+                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT_4:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.VON_NEUMANN_4, coords, cellManager.GetSpecies(coords));
+                    break;
+                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT_4:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.VON_NEUMANN_4, coords, thisCondition.compareSpeciesGroups);
+                    break;
+                case SOURCE.LIVING_NEIGHBORS_MATCHING_STATE_COUNT_4:
+                    inputInt = cellManager.CountLivingNeighbors(NEIGHBORHOODS.VON_NEUMANN_4, coords, thisCondition.compareStates);
                     break;
                 case SOURCE.NEIGHBOR_DE:
                     AssignInputValuesBasedOnSpecificNeighbor(NEIGHBORS.DE);
@@ -210,8 +228,17 @@ public class ArbiterScript : MonoBehaviour
                 case SOURCE.NEIGHBOR_SW:
                     AssignInputValuesBasedOnSpecificNeighbor(NEIGHBORS.SW);
                     break;
-                case SOURCE.SOURCE_CELL:
-                    CellState cellState = cellManager.GetCellStateAtCoords(coords);
+                case SOURCE.SOURCE_CELL_8:
+                    inputSpecies = cellState.species;
+                    if (inputSpecies != null) {
+                        inputSpeciesGroups = cellState.species.speciesGroups;
+                    }
+                    inputState = cellState.state;
+                    inputAlive = cellState.alive;
+                    inputWallAdjacent = gridManager.CheckWallAdjacent(coords, NEIGHBORHOODS.MOORE_8);
+                    inputIsDying = CheckIsDying(cellState);
+                    break;
+                case SOURCE.SOURCE_CELL_4:
                     inputSpecies = cellState.species;
                     if(inputSpecies != null)
                     {
@@ -219,7 +246,7 @@ public class ArbiterScript : MonoBehaviour
                     }                    
                     inputState = cellState.state;
                     inputAlive = cellState.alive;
-                    inputWallAdjacent = gridManager.CheckWallAdjacent(coords);
+                    inputWallAdjacent = gridManager.CheckWallAdjacent(coords, NEIGHBORHOODS.VON_NEUMANN_4);
                     inputIsDying = CheckIsDying(cellState);
                     break;
                 case SOURCE.RANDOM_D6:
