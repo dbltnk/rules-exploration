@@ -41,7 +41,7 @@ public class GridManagerScript : MonoBehaviour
 
     [SerializeField] Camera sceneCamera = null;
     [Tooltip("If true, camera size adjusts on start depending on cell size and grid size.")]
-    bool autoAdjustCameraSize = false;
+    bool autoAdjustCameraSize = true;
 
     [SerializeField] GameObject cellPrefab = null;
 
