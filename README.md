@@ -38,6 +38,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * **P2** - Move to Species.
 * **P2 -** I need a "paint" mode.
 * **P2 -** "Drawing" cells is less comfortable now (but more flexible) 
+* **P2 -** I need to visualize play/pause again.
 * **P2 -** Cannot use different sprites for species anymore (but can be added easily)
 * **P2 -** Steps per second slider: You often select the Seed text box when using the slider (collider too big?)
 * **P2 -** Inspect the rules of a species at runtime (in the playscreen )(-> show when a cell is selected in the grid?)
