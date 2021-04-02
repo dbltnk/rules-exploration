@@ -4,6 +4,43 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 
 
+
+
+
+
+## Issues in New Version
+**P0-1**: Needs a fix by Tony ASAP
+**P2-3:** Alex will deal with this in the future (or just ignore it)
+
+* **P0** - Adding new Levels + Rules takes a lot of clicks since you have to manually add them to the Level/RuleBanks. Can the banks be auto-generated from the scriptable objects in certain folders? Also adding a new rule to the RuleBank triggers the following errors:
+  * IndexOutOfRangeException: Index was outside the bounds of the array.
+    SpeciesBank.DeserializeSpecies (System.String defaultName, System.Int32[] speciesGroups, System.Single[] color, System.Int32 startingPopulation, System.Int32 birthRuleIndex, System.Int32 deathRuleIndex) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:156)
+    SpeciesBank.InitializeSavedSpecies (SaveData saveData) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:55)
+    GameManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GameManagerScript.cs:39)
+    UnityEngine.Object:Instantiate(GameObject)
+    LevelSetupScript:Awake() (at Assets/Simple Attempt/Simple Scene Scripts/LevelSetupScript.cs:29)
+  * NullReferenceException: Object reference not set to an instance of an object
+    SpeciesBank.AddSpecies (Species[] speciesArray) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:187)
+    CellManagerScript.AssignLevel (Level level, GameManagerScript gameManager, SpeciesBank speciesBank) (at Assets/Simple Attempt/Simple Scene Scripts/CellManagerScript.cs:104)
+    GridManagerScript.AssignLevel (Level level) (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:69)
+    GridManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:64)
+
+* **P0 -** Can no longer create species within a pre-defined range, ProcGen only picks from manually created species (can be fixed by adding birth/death rules that randomly pick between ComparyInts.X and .Y)
+* **P1** - Grid zoom should automatically fit the screen when a level is loaded
+* **P?** - Should BorderType be in the level or in the species?
+* **P? -** Can no longer edit a species in play mode and/or see its rules (-> show when a cell is selected in the grid?)
+
+
+
+* **P2 -** "Drawing" cells is less comfortable now (but more flexible) 
+* **P2 -** Cannot use different sprites for species anymore (but can be added easily)
+* **P2 -** Steps per second slider: You often select the Seed text box when using the slider (collider too big?)
+* **P3 -** Dish background image is missing
+* **P3 -** Typing into the "Theory" text box still triggers hotkeys like "Fill Dish"
+
+
+
+
 ## Refactoring
 
 * P1 focus on prototyping iteration speed over everything else
