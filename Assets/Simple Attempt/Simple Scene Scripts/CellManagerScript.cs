@@ -152,6 +152,7 @@ public class CellManagerScript : MonoBehaviour
         for(int i = 0; i < amountOfNewSpeciesToGenerate; i++)
         {
             enabledSpecies[speciesIndex] = newSpeciesArray[i];
+            speciesIndex++;
         }
 
         gameManager.SaveGame();

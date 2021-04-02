@@ -132,6 +132,7 @@ public class SpeciesBank : MonoBehaviour
 
             string defaultName = string.Format("{0}_{1}_{2}_{3}", speciesGroup[0].ToString(), startingPopulation.ToString(), System.DateTime.Now.ToString(), i);
             Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, rulesBank.GetRandomBirthRule(), rulesBank.GetRandomDeathRule());
+            newSpeciesArray[i] = newSpecies;
         }
 
         AddSpecies(newSpeciesArray);

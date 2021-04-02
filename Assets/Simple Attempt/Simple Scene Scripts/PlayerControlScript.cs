@@ -148,7 +148,11 @@ public class PlayerControlScript : MonoBehaviour
         speciesRenameGameObject.SetActive(!speciesRenameGameObject.activeSelf);
         speciesRenameFieldOpen = !speciesRenameFieldOpen;
 
-        if(!speciesRenameFieldOpen)
+        if(speciesRenameGameObject)
+        {
+            speciesRenameInput.text = speciesBank.GetSpeciesName(selectedSpecies);
+        }
+        else
         {
             gameManager.SaveGame();
         }
@@ -157,8 +161,8 @@ public class PlayerControlScript : MonoBehaviour
     public void RenameSpecies()
     {
         string newName = speciesRenameInput.text;
-        speciesBank.SetSpeciesName(selectedSpecies, newName);
-        speciesNameReadout.text = newName;        
+        speciesBank.SetSpeciesName(selectedSpecies, newName);        
+        speciesNameReadout.text = newName;
     }
 
     public void PlayPausePressed()
