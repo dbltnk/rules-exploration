@@ -9,10 +9,10 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 
 ## Issues in New Version
-**P0-1**: Needs a fix by Tony ASAP
-**P2-3:** Alex will deal with this in the future (or just ignore it)
+**P0-1**: Needs a fix by Tony
 
-* **P0** - Adding new Levels + Rules takes a lot of clicks since you have to manually add them to the Level/RuleBanks. Can the banks be auto-generated from the scriptable objects in certain folders? 
+* **P0** - Adding new Levels + Rules takes a lot of clicks since you have to manually add them to the Level/RuleBanks. Can the banks be auto-generated from the scriptable objects in certain folders? Or at the press of a button in the editor? The same goes for SpeciesGroups in the Conditions. Can we pre-populate the dropdown with the existing species?
+
 * **P0 -** Adding a new rule to the RuleBank triggers the following errors (maybe also connected to saving species? went away after I deleted the save data):
   * IndexOutOfRangeException: Index was outside the bounds of the array.
     SpeciesBank.DeserializeSpecies (System.String defaultName, System.Int32[] speciesGroups, System.Single[] color, System.Int32 startingPopulation, System.Int32 birthRuleIndex, System.Int32 deathRuleIndex) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:156)
@@ -34,6 +34,8 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 * **P? -** Populations ranks do not update on Clear and Fill Dish, only after the next step after
 
 
+
+**P2-3:** Alex will deal with this in the future (or just ignore it)
 
 * **P2 -** "Drawing" cells is less comfortable now (but more flexible) 
 * **P2 -** Cannot use different sprites for species anymore (but can be added easily)
