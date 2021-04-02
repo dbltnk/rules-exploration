@@ -34,8 +34,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 **P2-3:** Alex will deal with this in the future (or just ignore it)
 
-* **P2** - BorderType: None or WildCard.
-* **P2** - Move to Species.
 * **P2 -** I need a "paint" mode.
 * **P2 -** "Drawing" cells is less comfortable now (but more flexible) 
 * **P2 -** I need to visualize play/pause again.

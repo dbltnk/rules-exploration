@@ -142,7 +142,7 @@ public class GridManagerScript : MonoBehaviour
         {
             Coords potentialNeighbor = GetSpecificNeighbor(baseCoords, (NEIGHBORS)i);
 
-            if(potentialNeighbor.x < 0)
+            if(potentialNeighbor.x < 0 || potentialNeighbor.y < 0)
             {
                 continue;
             }
