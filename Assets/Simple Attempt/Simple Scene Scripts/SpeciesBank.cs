@@ -57,7 +57,8 @@ public class SpeciesBank : MonoBehaviour
                 saveData.speciesColors[i],
                 saveData.startingPopulations[i],
                 saveData.birthRuleIndex[i],
-                saveData.deathRuleIndex[i]);
+                saveData.deathRuleIndex[i],
+                saveData.treatWallsAsAlive[i]);
             if(thisSpecies == null) { continue; }
 
             speciesBank[i] = thisSpecies;
@@ -131,7 +132,9 @@ public class SpeciesBank : MonoBehaviour
             SPECIES_STARTING_POPULATION startingPopulation = (SPECIES_STARTING_POPULATION)Random.Range(1, (int)SPECIES_STARTING_POPULATION.UBIQUITOUS + 1);
 
             string defaultName = string.Format("{0}_{1}_{2}_{3}", speciesGroup[0].ToString(), startingPopulation.ToString(), System.DateTime.Now.ToString(), i);
-            Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, rulesBank.GetRandomBirthRule(), rulesBank.GetRandomDeathRule());
+
+            bool treatWallsAsAlive = Random.Range(0, 2) > 0;
+            Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, rulesBank.GetRandomBirthRule(), rulesBank.GetRandomDeathRule(), treatWallsAsAlive);
             newSpeciesArray[i] = newSpecies;
         }
 
@@ -145,7 +148,7 @@ public class SpeciesBank : MonoBehaviour
         return new CurrentGameData(speciesBank, speciesCustomName);
     }
 
-    Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int birthRuleIndex, int deathRuleIndex)
+    Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int birthRuleIndex, int deathRuleIndex, bool treatWallsAsAlive)
     {
         List<SPECIES_GROUP> speciesGroupList = new List<SPECIES_GROUP>();
         for(int i = 0; i < speciesGroups.Length; i++)
@@ -154,7 +157,7 @@ public class SpeciesBank : MonoBehaviour
         }
 
         return new Species(defaultName, speciesGroupList, new Color(color[0], color[1], color[2], color[3]), (SPECIES_STARTING_POPULATION)startingPopulation,
-            rulesBank.GetBirthRule(birthRuleIndex), rulesBank.GetDeathRule(deathRuleIndex));
+            rulesBank.GetBirthRule(birthRuleIndex), rulesBank.GetDeathRule(deathRuleIndex), treatWallsAsAlive);
     }
 
     public void AddSpecies(Species[] speciesArray)

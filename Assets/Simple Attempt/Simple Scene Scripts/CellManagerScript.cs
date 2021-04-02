@@ -673,6 +673,13 @@ public class CellManagerScript : MonoBehaviour
             }
         }
 
+        // If we always treat walls as alive then we need to increase the living count by the number of walls.
+        if (GetSpecies(coords).treatWallsAsAlive) {
+            // TODO(azacherl): Replace this 8 when we support more than the Moore neighborhood.
+            int numberOfWalls = 8 - validNeighbors.Count;
+            livingCount += numberOfWalls;
+        }
+
         return livingCount;
     }
 }

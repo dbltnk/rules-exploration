@@ -18,8 +18,9 @@ public class SaveData
         startingPopulations = new int[speciesCount];
         birthRuleIndex = new int[speciesCount];
         deathRuleIndex = new int[speciesCount];
+        treatWallsAsAlive = new bool[speciesCount];
 
-        for(int i = 0; i < speciesCount; i++)
+        for (int i = 0; i < speciesCount; i++)
         {
             defaultNames[i] = serializedSpeciesArray[i].defaultName;
             customNames[i] = currentCustomNames[i];
@@ -28,6 +29,7 @@ public class SaveData
             startingPopulations[i] = serializedSpeciesArray[i].startingPopulation;
             birthRuleIndex[i] = serializedSpeciesArray[i].birthRuleIndex;
             deathRuleIndex[i] = serializedSpeciesArray[i].deathRuleIndex;
+            treatWallsAsAlive[i] = serializedSpeciesArray[i].treatWallsAsAlive;
         }
     }
 
@@ -38,11 +40,12 @@ public class SaveData
     public int[] startingPopulations;
     public int[] birthRuleIndex;
     public int[] deathRuleIndex;
+    public bool[] treatWallsAsAlive;
 }
 
 public class SerializedSpecies
 {
-    public SerializedSpecies(string defaultNameInc, List<SPECIES_GROUP> speciesGroupsInc, Color colorInc, SPECIES_STARTING_POPULATION startingPopulationInc, int birthRuleInc, int deathRuleInc)
+    public SerializedSpecies(string defaultNameInc, List<SPECIES_GROUP> speciesGroupsInc, Color colorInc, SPECIES_STARTING_POPULATION startingPopulationInc, int birthRuleInc, int deathRuleInc, bool treatWallsAsAliveInc)
     {
         defaultName = defaultNameInc;
         speciesGroups = new int[speciesGroupsInc.Count];
@@ -57,6 +60,7 @@ public class SerializedSpecies
         startingPopulation = (int)startingPopulationInc;
         birthRuleIndex = birthRuleInc;
         deathRuleIndex = deathRuleInc;
+        treatWallsAsAlive = treatWallsAsAliveInc;
     }
 
     public string defaultName;
@@ -65,6 +69,7 @@ public class SerializedSpecies
     public int startingPopulation;
     public int birthRuleIndex;
     public int deathRuleIndex;
+    public bool treatWallsAsAlive;
 }
 
 public static class SaveDataScript
@@ -73,7 +78,7 @@ public static class SaveDataScript
 
     public static SaveData LoadSaveData()
     {
-        if(File.Exists(filePath))
+        if (File.Exists(filePath))
         {
             BinaryFormatter bianaryFormatter = new BinaryFormatter();
             FileStream filestream = new FileStream(filePath, FileMode.Open);

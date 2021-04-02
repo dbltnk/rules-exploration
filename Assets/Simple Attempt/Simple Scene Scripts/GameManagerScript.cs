@@ -57,7 +57,7 @@ public class GameManagerScript : MonoBehaviour
         {
             Species thisSpecies = speciesArray[i];
             serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation,
-                rulesBank.GetIndexOfBirthRule(thisSpecies.birthRule), rulesBank.GetIndexOfDeathRule(thisSpecies.deathRule));
+                rulesBank.GetIndexOfBirthRule(thisSpecies.birthRule), rulesBank.GetIndexOfDeathRule(thisSpecies.deathRule), thisSpecies.treatWallsAsAlive);
         }
 
         currentSaveData = SaveDataScript.SaveGame(new SaveData(serializedSpecies, customNames));

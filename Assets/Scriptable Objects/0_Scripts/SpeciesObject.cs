@@ -22,4 +22,5 @@ public class SpeciesObject : ScriptableObject
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
     public Rule birthRule;
     public Rule deathRule;
+    public bool treatWallsAsAlive;
 }
