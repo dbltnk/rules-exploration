@@ -596,27 +596,27 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
-    public int CountLivingNeighbors(Coords coords)
+    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive)
     {
-        return CountLivingNeighbors(coords, null, null, null);
+        return CountLivingNeighbors(coords, wallsAreAlive, null, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, Species matchSpecies)
+    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, Species matchSpecies)
     {
-        return CountLivingNeighbors(coords, matchSpecies, null, null);
+        return CountLivingNeighbors(coords, wallsAreAlive, matchSpecies, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, List<STATE> matchState)
+    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, List<STATE> matchState)
     {
-        return CountLivingNeighbors(coords, null, matchState, null);
+        return CountLivingNeighbors(coords, wallsAreAlive, null, matchState, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, List<SPECIES_GROUP> matchSpeciesGroups)
+    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        return CountLivingNeighbors(coords, null, null, matchSpeciesGroups);
+        return CountLivingNeighbors(coords, wallsAreAlive, null, null, matchSpeciesGroups);
     }
 
-    int CountLivingNeighbors(Coords coords, Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
+    int CountLivingNeighbors(Coords coords, bool wallsAreAlive,  Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
     {
         List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
 
@@ -674,7 +674,7 @@ public class CellManagerScript : MonoBehaviour
         }
 
         // If we always treat walls as alive then we need to increase the living count by the number of walls.
-        if (GetSpecies(coords).treatWallsAsAlive) {
+        if (wallsAreAlive) {
             // TODO(azacherl): Replace this 8 when we support more than the Moore neighborhood.
             int numberOfWalls = 8 - validNeighbors.Count;
             livingCount += numberOfWalls;

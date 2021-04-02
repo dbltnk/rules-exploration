@@ -7,4 +7,5 @@ public class Rule : ScriptableObject
 {
     public Condition[] conditions;
     public Result[] results;
+    public bool wallsAreAlive;
 }

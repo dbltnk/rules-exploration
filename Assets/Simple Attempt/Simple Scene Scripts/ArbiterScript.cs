@@ -175,16 +175,16 @@ public class ArbiterScript : MonoBehaviour
             switch(thisCondition.source)
             {
                 case SOURCE.LIVING_NEIGHBOR_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords);
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive);
                     break;
                 case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, cellManager.GetSpecies(coords));
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive, cellManager.GetSpecies(coords));
                     break;
                 case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareSpeciesGroups);
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive, thisCondition.compareSpeciesGroups);
                     break;
                 case SOURCE.LIVING_NEIGHBORS_MATCHING_STATE_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareStates);
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive, thisCondition.compareStates);
                     break;
                 case SOURCE.NEIGHBOR_DE:
                     AssignInputValuesBasedOnSpecificNeighbor(NEIGHBORS.DE);
