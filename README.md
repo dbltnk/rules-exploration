@@ -27,8 +27,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     GridManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:64)
 * **P0 -** Can no longer create species within a pre-defined range, ProcGen only picks from manually created species (can be fixed by adding birth/death rules that randomly pick between ComparyInts.X and .Y)
 * **P1 -** It is quite hard to define different neighborhoods (for example the Von-Neumann vs the Moor neighborhood) - see branch different_neighborhoods. Is there an easier way?
-* **P1 -** Populations ranks do not update on Clear and Fill Dish, only after the next step after
-* **P1** - Remove all the old code
 
 
 
