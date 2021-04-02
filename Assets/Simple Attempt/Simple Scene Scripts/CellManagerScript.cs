@@ -13,7 +13,7 @@ public enum STATE
 public enum LIFE_EFFECT
 {
     NONE,
-    PROPIGATE,
+    PROPAGATE,
     KILL,
 }
 
@@ -489,7 +489,7 @@ public class CellManagerScript : MonoBehaviour
                     case LIFE_EFFECT.KILL:
                         affectedCellState.futureAlive = false;
                         break;
-                    case LIFE_EFFECT.PROPIGATE:
+                    case LIFE_EFFECT.PROPAGATE:
                         affectedCellState.futureAlive = true;
                         break;
                 }

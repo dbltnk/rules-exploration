@@ -378,7 +378,7 @@ public class ArbiterScript : MonoBehaviour
                     }
                     break;
                 default:
-                    Debug.LogError("CONDITION_TYPE of current rule has not yet been set up in the ArbinterScript.");
+                    Debug.LogError("CONDITION_TYPE of current rule has not yet been set up in the ArbiterScript.");
                     return null;
             }
         }
