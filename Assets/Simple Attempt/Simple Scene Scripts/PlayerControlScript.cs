@@ -212,7 +212,7 @@ public class PlayerControlScript : MonoBehaviour
     /// <summary>
     /// Sets the map to the exact condition it started.
     /// </summary>
-    public void ResetExperement()
+    public void ResetExperiment()
     {
         Random.InitState(gameManager.GetCurrentSeed());
         CallStopSimulating();
@@ -248,11 +248,11 @@ public class PlayerControlScript : MonoBehaviour
         gameManager.LoadScene(SCENE.LEVEL_SETUP);
     }
 
-    public void NewExperement()
+    public void NewExperiment()
     {
         Random.InitState(gameManager.GetCurrentSeed());
         gameManager.SetCurrentLevel(null);//Trying to load a null level will force a random roll.
-        gameManager.LoadScene(SCENE.EXPEREMENT);
+        gameManager.LoadScene(SCENE.EXPERIMENT);
     }
 
     bool inputCooling = false;
@@ -428,7 +428,7 @@ public class PlayerControlScript : MonoBehaviour
         }
         else if(Input.GetKeyDown(KeyCode.R))
         {
-            ResetExperement();
+            ResetExperiment();
             CallInputCooldown();
         }
         else if(Input.GetKeyDown(KeyCode.C))

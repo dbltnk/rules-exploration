@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public enum SCENE
 {
     LEVEL_SETUP = 14,//Values pulled from build settings.
-    EXPEREMENT = 15,//Values pulled from build settings.
+    EXPERIMENT = 15,//Values pulled from build settings.
 }
 
 public class GameManagerScript : MonoBehaviour
