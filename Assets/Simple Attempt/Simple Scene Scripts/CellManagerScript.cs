@@ -353,6 +353,8 @@ public class CellManagerScript : MonoBehaviour
             SetState(coords, STATE.NONE);
             SetAlive(coords, false);
         }
+
+        CountAndReportPopulation();
     }
 
     public void AllCellsLiving()
@@ -369,6 +371,8 @@ public class CellManagerScript : MonoBehaviour
 
             SetAlive(cellStateArray[i].coords, true);
         }
+
+        CountAndReportPopulation();
     }
 
     public struct BirthResult
@@ -385,13 +389,7 @@ public class CellManagerScript : MonoBehaviour
 
     public void IncrementTime()
     {
-        List<CellState> changingCells = new List<CellState>();
-        Dictionary<Species, int> speciesPopulationDictionary = new Dictionary<Species, int>();
-
-        for(int i = 0; i < enabledSpecies.Length; i++)
-        {
-            speciesPopulationDictionary[enabledSpecies[i]] = 0;
-        }
+        List<CellState> changingCells = new List<CellState>();        
 
         for(int i = 0; i < cellStateArray.Length; i++)
         {
@@ -538,7 +536,18 @@ public class CellManagerScript : MonoBehaviour
             }
         }
 
-        //Loop through one final time to get accurate counts
+        CountAndReportPopulation();
+    }
+
+    void CountAndReportPopulation()
+    {
+        Dictionary<Species, int> speciesPopulationDictionary = new Dictionary<Species, int>();
+
+        for(int i = 0; i < enabledSpecies.Length; i++)
+        {
+            speciesPopulationDictionary[enabledSpecies[i]] = 0;
+        }
+
         for(int i = 0; i < cellStateArray.Length; i++)
         {
             CellState thisCellState = cellStateArray[i];
