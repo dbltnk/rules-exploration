@@ -69,7 +69,7 @@ public class SerializedSpecies
 
 public static class SaveDataScript
 {
-    static string filePath = Application.persistentDataPath + "/connie.wie";
+    static string filePath = Application.persistentDataPath + "/connie.wei";
 
     public static SaveData LoadSaveData()
     {
