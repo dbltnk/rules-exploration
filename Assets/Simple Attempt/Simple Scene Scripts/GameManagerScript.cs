@@ -13,9 +13,10 @@ public class GameManagerScript : MonoBehaviour
 {
     Level currentLevel;
     [SerializeField] LevelBankScript levelBank = null;
-    [SerializeField] NameManagerScript nameManager = null;
+    [SerializeField] SpeciesBank speciesBank = null;
+    [SerializeField] RulesBank rulesBank = null;
 
-    public NameManagerScript GetNameManager() { return nameManager; }
+    public SpeciesBank GetSpeciesBank() { return speciesBank; }
 
     int currentSeed;
     public int GetCurrentSeed() { return currentSeed; }
@@ -27,12 +28,15 @@ public class GameManagerScript : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        currentSaveData = SaveDataScript.LoadSaveData();
+        currentSaveData = SaveDataScript.LoadSaveData();        
 
         if(currentSaveData == null)
         {
-            currentSaveData = new SaveData(new string[0], new string[0]);
-            SaveGame();
+            speciesBank.InitializeSpeciesData();
+        }
+        else
+        {
+            speciesBank.InitializeSavedSpecies(currentSaveData);
         }
 
         RollNewSeed();              
@@ -40,12 +44,23 @@ public class GameManagerScript : MonoBehaviour
 
     public void SaveGame()
     {
-        SaveDataScript.SaveGame(currentSaveData);
-    }
+        CurrentGameData currentGameData = speciesBank.GetCurrentGameDate();
 
-    public void SaveGame(SaveData saveData)
-    {
-        currentSaveData = SaveDataScript.SaveGame(saveData);
+        Species[] speciesArray = currentGameData.speciesInBank;
+        string[] customNames = currentGameData.customNames;
+
+        int speciesCount = speciesArray.Length;
+
+        SerializedSpecies[] serializedSpecies = new SerializedSpecies[speciesCount];
+
+        for(int i = 0; i < speciesCount; i++)
+        {
+            Species thisSpecies = speciesArray[i];
+            serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation,
+                rulesBank.GetIndexOfBirthRule(thisSpecies.birthRule), rulesBank.GetIndexOfDeathRule(thisSpecies.deathRule));
+        }
+
+        currentSaveData = SaveDataScript.SaveGame(new SaveData(serializedSpecies, customNames));
     }
 
     public int RollNewSeed()

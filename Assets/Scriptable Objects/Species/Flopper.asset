@@ -16,10 +16,5 @@ MonoBehaviour:
   speciesGroups: 02000000
   color: {r: 1, g: 1, b: 0.482, a: 1}
   startingPopulation: 2
-  propigationRules:
-  - {fileID: 11400000, guid: b85ec70a14a41b84b88672a6b30f0f2f, type: 2}
-  otherRules:
-  - {fileID: 11400000, guid: 057e150e3277d3e4fa45d3ae872d6dca, type: 2}
-  - {fileID: 11400000, guid: 053fac02f8bb35a41b07cc02fed7dfa1, type: 2}
-  - {fileID: 11400000, guid: c939d141bd8aaf74780aac9aa2354cd3, type: 2}
-  nameReferenceIndex: 1
+  birthRule: {fileID: 11400000, guid: de6f31446e31d9d4fa965697d4539509, type: 2}
+  deathRule: {fileID: 11400000, guid: ba5db5142cf014943a519583ed49b62e, type: 2}

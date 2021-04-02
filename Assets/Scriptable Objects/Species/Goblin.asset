@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: Goblin
   m_EditorClassIdentifier: 
   defaultName: Goblin
-  speciesGroups: 
+  speciesGroups: 03000000
   color: {r: 0.013472307, g: 0.7830189, b: 0, a: 1}
   startingPopulation: 5
-  propigationRules:
-  - {fileID: 11400000, guid: 71661a2cd9ee7304fbf7360299847c90, type: 2}
-  otherRules:
-  - {fileID: 11400000, guid: 59e7dc54c7169f142b6d7b9534382681, type: 2}
-  nameReferenceIndex: 2
+  birthRule: {fileID: 11400000, guid: 8963d85e3389ae04cb9868530545b117, type: 2}
+  deathRule: {fileID: 11400000, guid: ef7fc4ceabd6b5445b67dfb1a593e406, type: 2}

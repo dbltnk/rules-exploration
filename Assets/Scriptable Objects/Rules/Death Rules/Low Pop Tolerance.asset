@@ -10,17 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
-  m_Name: Standard Death Rule
+  m_Name: Low Pop Tolerance
   m_EditorClassIdentifier: 
   conditions:
   - source: 0
     condition: 1
-    compareInts: {x: 2, y: 3}
-    compareSpecies: []
+    compareInts: {x: 1, y: 3}
     compareSpeciesGroups: 
     compareStates: 
   results:
   - lifeEffect: 2
-    newSpecies: {fileID: 0}
     newState: 0
-  deathRule: 0

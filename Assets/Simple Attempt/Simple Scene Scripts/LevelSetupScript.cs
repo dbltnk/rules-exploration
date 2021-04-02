@@ -62,6 +62,12 @@ public class LevelSetupScript : MonoBehaviour
         selectedLevel = levelSelectDropdown.value;
     }
 
+    public void DeleteSaveData()
+    {
+        SaveDataScript.DeleteSaveData();
+        gameManager.GetSpeciesBank().InitializeSpeciesData();
+    }
+
     public void PlaySelectedLevel()
     {
         PlayLevel(selectedLevel);

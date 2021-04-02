@@ -14,18 +14,12 @@ public enum SPECIES_STARTING_POPULATION
 }
 
 [CreateAssetMenu(fileName = "New Species", menuName = "Species")]
-public class Species : ScriptableObject
+public class SpeciesObject : ScriptableObject
 {
     public string defaultName;
     public List<SPECIES_GROUP> speciesGroups;
     public Color color = Color.white;
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
-    public Rule[] propigationRules;
-    public Rule[] otherRules;
-    public int nameReferenceIndex;
-
-    private void OnEnable()
-    {
-        
-    }
+    public Rule birthRule;
+    public Rule deathRule;
 }

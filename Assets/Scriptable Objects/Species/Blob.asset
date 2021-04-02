@@ -13,10 +13,8 @@ MonoBehaviour:
   m_Name: Blob
   m_EditorClassIdentifier: 
   defaultName: Blob
-  speciesGroups: 
+  speciesGroups: 01000000
   color: {r: 0.56, g: 0.56, b: 0.894, a: 1}
   startingPopulation: 4
-  propigationRules:
-  - {fileID: 11400000, guid: 0bce6a2947b737744acf72fa98b9b73c, type: 2}
-  otherRules:
-  - {fileID: 11400000, guid: 057e150e3277d3e4fa45d3ae872d6dca, type: 2}
+  birthRule: {fileID: 11400000, guid: ee7ba4dcd6631ca478bc51adf1d13997, type: 2}
+  deathRule: {fileID: 11400000, guid: 15f84932226ea8a41b514c9ee2828b11, type: 2}

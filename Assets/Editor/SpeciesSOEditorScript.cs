@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Species))]
+[CustomEditor(typeof(SpeciesObject))]
 public class SpeciesSOEditorScript : Editor
 {
     public override void OnInspectorGUI()

@@ -15,7 +15,9 @@ MonoBehaviour:
   levelName: Rock Feast
   levelWidth: 10
   levelHeight: 10
-  species:
+  procgenSpeciesAmount: {x: 0, y: 1}
+  specificSpecies:
   - {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
   - {fileID: 11400000, guid: 786d829c6be9ab94e8a0742b73cbcd24, type: 2}
   rules: []
+  borderType: 0

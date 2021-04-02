@@ -23,6 +23,10 @@ public class LayerStatusScript : MonoBehaviour
 
     PopulationCount[] topThreePopulations;
 
+    SpeciesBank speciesBank;
+
+    public void AssignSpeciesBank(SpeciesBank speciesBank) { this.speciesBank = speciesBank; }
+
     private void Awake()
     {
         populationBySpecies = new Dictionary<Species, int>();
@@ -84,7 +88,7 @@ public class LayerStatusScript : MonoBehaviour
             }
             else
             {
-                topThreeReadout[i].text = string.Format("{0}: {1}", currentPopulationCount.species.name, currentPopulationCount.population);
+                topThreeReadout[i].text = string.Format("{0}: {1}", speciesBank.GetSpeciesName(currentPopulationCount.species), currentPopulationCount.population);
             }
         }
     }

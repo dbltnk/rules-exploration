@@ -36,7 +36,7 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] TMP_Text mouseModeReadout = null;
 
     GameManagerScript gameManager;
-    NameManagerScript nameManager;
+    SpeciesBank speciesBank;
 
     bool simulationRunning = true;
 
@@ -51,7 +51,7 @@ public class PlayerControlScript : MonoBehaviour
     {
         this.gameManager = gameManager;
         seedInput.text = gameManager.GetCurrentSeed().ToString();
-        nameManager = gameManager.GetNameManager();
+        speciesBank = gameManager.GetSpeciesBank();
     }
 
     private void Awake()
@@ -78,7 +78,7 @@ public class PlayerControlScript : MonoBehaviour
         }
         else
         {
-            speciesNameReadout.text = nameManager.GetSpeciesName(selectedSpecies);
+            speciesNameReadout.text = speciesBank.GetSpeciesName(selectedSpecies);
         }        
 
         mouseMode = MOUSE_MODE.CELL_SELECTED;
@@ -147,12 +147,17 @@ public class PlayerControlScript : MonoBehaviour
     {
         speciesRenameGameObject.SetActive(!speciesRenameGameObject.activeSelf);
         speciesRenameFieldOpen = !speciesRenameFieldOpen;
+
+        if(!speciesRenameFieldOpen)
+        {
+            gameManager.SaveGame();
+        }
     }
 
     public void RenameSpecies()
     {
         string newName = speciesRenameInput.text;
-        nameManager.NameSpecies(selectedSpecies, newName);
+        speciesBank.SetSpeciesName(selectedSpecies, newName);
         speciesNameReadout.text = newName;        
     }
 

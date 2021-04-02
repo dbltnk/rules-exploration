@@ -4,12 +4,11 @@ using UnityEngine;
 [System.Serializable]
 public class Condition
 {
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<Coords> compareCoords, List<Species> compareSpecies, List<SPECIES_GROUP> compareSpeciesGroups, List<STATE> compareStates)
+    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<SPECIES_GROUP> compareSpeciesGroups, List<STATE> compareStates)
     {
         this.source = source;
         this.condition = condition;
         this.compareInts = compareInts;
-        this.compareCoords = compareCoords;
         this.compareSpeciesGroups = compareSpeciesGroups;
         this.compareStates = compareStates;
     }
@@ -19,7 +18,6 @@ public class Condition
         this.source = source;
         this.condition = condition;
         this.compareInts = compareInts;
-        compareCoords = null;
         this.compareSpeciesGroups = compareSpeciesGroups;
         compareStates = null;
     }
@@ -29,7 +27,6 @@ public class Condition
         this.source = source;
         this.condition = condition;
         this.compareInts = compareInts;
-        compareCoords = null;
         compareSpeciesGroups = null;
         compareStates = null;
     }
@@ -40,7 +37,6 @@ public class Condition
         this.condition = condition;
         this.compareInts = compareInts;
         compareStates = new List<STATE> { compareState };
-        compareCoords = null;
         compareSpeciesGroups = null;
     }
 
@@ -50,7 +46,6 @@ public class Condition
         this.condition = condition;
         this.compareInts = compareInts;
         this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
-        compareCoords = null;
         compareStates = null;
     }
 
@@ -59,7 +54,6 @@ public class Condition
         this.source = source;
         this.condition = condition;
         compareStates = new List<STATE> { compareState };
-        compareCoords = null;
         compareSpeciesGroups = null;
     }
 
@@ -68,7 +62,6 @@ public class Condition
         this.source = source;
         this.condition = condition;
         this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
-        compareCoords = null;
         compareStates = null;
     }
 
@@ -76,7 +69,6 @@ public class Condition
     {
         this.source = source;
         this.condition = condition;
-        compareCoords = null;
         compareSpeciesGroups = null;
         compareStates = null;
     }
@@ -84,8 +76,6 @@ public class Condition
     public SOURCE source;
     public CONDITON condition;
     public Vector2Int compareInts;
-    public List<Coords> compareCoords;
-    public List<Species> compareSpecies;
     public List<SPECIES_GROUP> compareSpeciesGroups;
     public List<STATE> compareStates;
 }
@@ -93,28 +83,9 @@ public class Condition
 [System.Serializable]
 public class Result
 {
-    public Result(LIFE_EFFECT lifeEffect, Species newSpecies, STATE newState)
-    {
-        this.lifeEffect = lifeEffect;
-        this.newSpecies = newSpecies;
-        this.newState = newState;
-    }
-
-    public Result(LIFE_EFFECT lifeEffect, Species newSpecies)
-    {
-        this.lifeEffect = lifeEffect;
-        this.newSpecies = newSpecies;
-    }
-
     public Result(LIFE_EFFECT lifeEffect, STATE newState)
     {
         this.lifeEffect = lifeEffect;
-        this.newState = newState;
-    }
-
-    public Result(Species newSpecies, STATE newState)
-    {
-        this.newSpecies = newSpecies;
         this.newState = newState;
     }
 
@@ -123,24 +94,19 @@ public class Result
         this.lifeEffect = lifeEffect;
     }
 
-    public Result(Species newSpecies)
-    {
-        this.newSpecies = newSpecies;
-    }
-
     public Result(STATE newState)
     {
         this.newState = newState;
     }
 
     public LIFE_EFFECT lifeEffect;
-    public Species newSpecies;
     public STATE newState;
 }
 
 public enum SOURCE
 {
     LIVING_NEIGHBOR_COUNT,
+    LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT,
     LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT,
     LIVING_NEIGHBORS_MATCHING_STATE_COUNT,
     /// <summary>
@@ -156,7 +122,7 @@ public enum SOURCE
     NEIGHBOR_SW,
     NEIGHBOR_DW,
     RANDOM_D6,//Random roll of 1-6
-    TOP_SPECIES,//species withthe highest population.
+    TOP_SPECIES,//species with the highest population.
 }
 
 public enum CONDITON
@@ -210,6 +176,9 @@ public class ArbiterScript : MonoBehaviour
             {
                 case SOURCE.LIVING_NEIGHBOR_COUNT:
                     inputInt = cellManager.CountLivingNeighbors(coords);
+                    break;
+                case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT:
+                    inputInt = cellManager.CountLivingNeighbors(coords, cellManager.GetSpecies(coords));
                     break;
                 case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT:
                     inputInt = cellManager.CountLivingNeighbors(coords, thisCondition.compareSpeciesGroups);
@@ -315,19 +284,6 @@ public class ArbiterScript : MonoBehaviour
                 case CONDITON.VALUE_WITHIN_RANGE:
                     if(inputInt < thisCondition.compareInts.x ||
                         inputInt > thisCondition.compareInts.y)
-                    {
-                        return null;
-                    }
-                    break;
-                case CONDITON.MATCHES_SPECIES:
-                    if(!inputAlive) { return null; }
-                    if(!thisCondition.compareSpecies.Contains(inputSpecies))
-                    {
-                        return null;
-                    }
-                    break;
-                case CONDITON.DOES_NOT_MATCH_SPECIES:
-                    if(thisCondition.compareSpecies.Contains(inputSpecies))
                     {
                         return null;
                     }

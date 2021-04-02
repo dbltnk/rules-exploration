@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc3d6bf81c9912c4585d8f542aabec8d, type: 3}
-  m_Name: Zombie Rule Test
+  m_Name: Procgen Only
   m_EditorClassIdentifier: 
-  levelName: Zombie Rule Test
+  levelName: Level Name
   levelWidth: 15
   levelHeight: 10
-  species:
-  - {fileID: 11400000, guid: 5f86162e25b18454a9a15048e6472da7, type: 2}
-  - {fileID: 11400000, guid: 74ad62d8458c8654ab3d385476417f69, type: 2}
+  procgenSpeciesAmount: {x: 2, y: 4}
+  specificSpecies: []
   rules: []
+  borderType: 0

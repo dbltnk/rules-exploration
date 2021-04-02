@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2071066168707965564}
   - component: {fileID: 2071066168707965563}
   - component: {fileID: 1938720898285215112}
+  - component: {fileID: 5466050466424073618}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -49,7 +50,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f5f41e716a475b24eb7e660f06f094ed, type: 2}
   - {fileID: 11400000, guid: c59119fd022cb0e4697e9944b9464b3d, type: 2}
   - {fileID: 11400000, guid: 9b1d4564318139841825bf27c64c0ae1, type: 2}
-  - {fileID: 11400000, guid: 3026c360e25337c4d89067c97631cdf9, type: 2}
+  - {fileID: 11400000, guid: efd3787bf27715041ae5bfaea946f0e5, type: 2}
 --- !u!114 &2071066168707965563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +64,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelBank: {fileID: 2071066168707965564}
-  nameManager: {fileID: 1938720898285215112}
+  speciesBank: {fileID: 1938720898285215112}
+  rulesBank: {fileID: 5466050466424073618}
 --- !u!114 &1938720898285215112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +75,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 2071066168707965562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f33b20e25c709a14bb01169b3da7a8b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 29b1863b1980c4248a6fb10831e679f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rulesBank: {fileID: 5466050466424073618}
+--- !u!114 &5466050466424073618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071066168707965562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86df6ec7ecb922f40a0d75662c15ac3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 2071066168707965563}
+  birthRules:
+  - {fileID: 11400000, guid: 8963d85e3389ae04cb9868530545b117, type: 2}
+  - {fileID: 11400000, guid: de6f31446e31d9d4fa965697d4539509, type: 2}
+  - {fileID: 11400000, guid: 9ec991048c3feeb428cee9470bbb1a1b, type: 2}
+  - {fileID: 11400000, guid: ee7ba4dcd6631ca478bc51adf1d13997, type: 2}
+  deathRules:
+  - {fileID: 11400000, guid: ef7fc4ceabd6b5445b67dfb1a593e406, type: 2}
+  - {fileID: 11400000, guid: ba5db5142cf014943a519583ed49b62e, type: 2}
+  - {fileID: 11400000, guid: aa5d5947c01cb7749b87cd6dbc2af170, type: 2}
+  - {fileID: 11400000, guid: 15f84932226ea8a41b514c9ee2828b11, type: 2}

@@ -66,7 +66,7 @@ public class GridManagerScript : MonoBehaviour
 
     void AssignLevel(Level level)
     {
-        cellManager.AssignLevel(level);
+        cellManager.AssignLevel(level, gameManager,  gameManager.GetSpeciesBank());
 
         playerControl.AssignGameManager(gameManager);
 

@@ -10,18 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
-  m_Name: Blob Propigation
+  m_Name: Only Random
   m_EditorClassIdentifier: 
   conditions:
-  - source: 0
+  - source: 13
     condition: 0
-    compareInts: {x: 3, y: 3}
-    compareSpecies:
-    - {fileID: 0}
-    compareSpeciesGroups: 01000000
+    compareInts: {x: 1, y: 1}
+    compareSpeciesGroups: 
     compareStates: 
   results:
-  - lifeEffect: 1
-    newSpecies: {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
-    newState: 1
-  deathRule: 0
+  - lifeEffect: 2
+    newState: 0
