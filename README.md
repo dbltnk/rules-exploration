@@ -26,20 +26,26 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     GridManagerScript.AssignLevel (Level level) (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:69)
     GridManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:64)
 * **P0 -** Can no longer create species within a pre-defined range, ProcGen only picks from manually created species (can be fixed by adding birth/death rules that randomly pick between ComparyInts.X and .Y)
-* **P0 -** It is quite hard to define different neighborhoods (for example the Von-Neumann vs the Moor neighborhood) - see branch different_neighborhoods. Is there an easier way?
-* **P1** - Grid zoom should automatically fit the screen when a level is loaded (autoAdjustCameraSize = true is all it needs? disabled for a reason?)
-* **P1 -** Reroll seed button in level select has no functionality
-* **P?** - Should BorderType be in the level or in the species?
-* **P? -** Can no longer edit a species in play mode and/or see its rules (-> show when a cell is selected in the grid?)
-* **P? -** Populations ranks do not update on Clear and Fill Dish, only after the next step after
+* **P1 -** It is quite hard to define different neighborhoods (for example the Von-Neumann vs the Moor neighborhood) - see branch different_neighborhoods. Is there an easier way?
+* **P1 -** Populations ranks do not update on Clear and Fill Dish, only after the next step after
+* **P1** - Remove all the old code
 
 
 
 **P2-3:** Alex will deal with this in the future (or just ignore it)
 
+* **P2** - BorderType: None or WildCard.
+* **P2** - Move to Species.
+
+* **P2** - Grid zoom should automatically fit the screen when a level is loaded (autoAdjustCameraSize = true is all it needs? disabled for a reason?)
+
+* **P2 -** Reroll seed button in level select has no functionality
+
 * **P2 -** "Drawing" cells is less comfortable now (but more flexible) 
 * **P2 -** Cannot use different sprites for species anymore (but can be added easily)
 * **P2 -** Steps per second slider: You often select the Seed text box when using the slider (collider too big?)
+* **P2 -** Inspect the rules of a species at runtime (in the playscreen )(-> show when a cell is selected in the grid?)
+* **P3 -** Modify the rules of a species at runtime (in the playscreen )(-> show when a cell is selected in the grid?)
 * **P3 -** Dish background image is missing
 * **P3 -** Typing into the "Theory" text box still triggers hotkeys like "Fill Dish"
 
