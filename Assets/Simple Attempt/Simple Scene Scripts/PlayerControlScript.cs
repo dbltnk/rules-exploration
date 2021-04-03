@@ -38,7 +38,7 @@ public class PlayerControlScript : MonoBehaviour
     GameManagerScript gameManager;
     SpeciesBank speciesBank;
 
-    bool simulationRunning = true;
+    public bool simulationRunning = true;
 
     bool speciesRenameFieldOpen = false;
 
