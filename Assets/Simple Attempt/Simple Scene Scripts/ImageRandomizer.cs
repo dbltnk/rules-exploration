@@ -5,9 +5,11 @@ using UnityEngine;
 public class ImageRandomizer : MonoBehaviour
 {
     PlayerControlScript playerControlScript;
+    CellManagerScript cellManagerScript;
 
     void Start () {
         playerControlScript = FindObjectOfType<PlayerControlScript>();
+        cellManagerScript = FindObjectOfType<CellManagerScript>();
 
         float r = Random.Range(0f, 5f);
 
@@ -27,7 +29,7 @@ public class ImageRandomizer : MonoBehaviour
     }
 
     private void Update () {
-        float wiggleChance = 1f * Time.deltaTime;
+        float wiggleChance = 1f / cellManagerScript.updateRate * Time.deltaTime;
         if (Random.Range(0f, 1f) <= wiggleChance && playerControlScript.simulationRunning) {
 
             float tZ = transform.localScale.z;
