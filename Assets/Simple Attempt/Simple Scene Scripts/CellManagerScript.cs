@@ -68,7 +68,7 @@ public class CellManagerScript : MonoBehaviour
     /// </summary>
     List<Rule> rulesForTheDying;
 
-    float updateRate = 1f;
+    public float updateRate = 1f;
 
     [SerializeField] Color deadColor = Color.grey;
 
@@ -600,8 +600,8 @@ public class CellManagerScript : MonoBehaviour
 
     IEnumerator RunSimulation()
     {
-        yield return new WaitForSeconds(updateRate);
         IncrementTime();
+        yield return new WaitForSeconds(updateRate);
         StartCoroutine("RunSimulation");
     }
 
