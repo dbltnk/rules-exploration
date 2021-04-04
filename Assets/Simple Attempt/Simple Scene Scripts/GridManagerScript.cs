@@ -44,6 +44,7 @@ public class GridManagerScript : MonoBehaviour
     bool autoAdjustCameraSize = true;
 
     [SerializeField] GameObject cellPrefab = null;
+    [SerializeField] GameObject dishPrefab = null;
 
     Coords[] allCoords;
     public Coords[] GetAllCoords() { return allCoords; }
@@ -88,25 +89,37 @@ public class GridManagerScript : MonoBehaviour
         sceneCamera.gameObject.SetActive(false);
         sceneCamera.gameObject.SetActive(true);
 
+        float zoomOffset = 1.2f;
         float offset = 0f;
         float longerSide = Mathf.Max(gridWidth, gridHeight);
         if (longerSide % 2 == 0) offset = -0.5f;
         if (autoAdjustCameraSize)
         {
-            sceneCamera.orthographicSize = (cellSize * longerSide / 2);
+            sceneCamera.orthographicSize = (cellSize * longerSide / 2) * zoomOffset;
         }
-        sceneCamera.transform.position = new Vector3((gridWidth / 2) * cellSize + offset, (gridHeight / 2) * cellSize + offset, -10);
+        sceneCamera.transform.position = new Vector3((gridWidth / 2) * cellSize + offset, 
+                                                     (gridHeight / 2) * cellSize + offset, 
+                                                     -10);
 
         allCoords = new Coords[gridWidth * gridHeight];
         int cellIncrementor = 0;
+        GameObject GridRoot = new GameObject();
+        GridRoot.name = "Grid";
+        GameObject dish = Instantiate(dishPrefab);
+        float dishOffset = -0.5f;
+        dish.transform.position = new Vector3(GridRoot.transform.position.x + longerSide / 2 + dishOffset, 
+                                              GridRoot.transform.position.y + dishOffset + longerSide / 2, 
+                                              GridRoot.transform.position.z);
+        dish.transform.localScale *= longerSide;
 
-        for(int x = 0; x < gridWidth; x++)
+        for (int x = 0; x < gridWidth; x++)
         {
             for(int y = 0; y < gridHeight; y++)
             {
                 Coords currentCoords = new Coords(x, y);
                 Vector3 currentPosition = new Vector3(x * cellSize, y * cellSize, 0);
                 GameObject currentCell = Instantiate(cellPrefab, currentPosition, Quaternion.identity);
+                currentCell.transform.SetParent(GridRoot.transform, true);
                 CellObjectScript cellScript = currentCell.GetComponent<CellObjectScript>();
 
                 cellScript.SetCoords(currentCoords);
