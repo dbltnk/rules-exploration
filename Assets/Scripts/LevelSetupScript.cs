@@ -82,6 +82,6 @@ public class LevelSetupScript : MonoBehaviour
     {
         Random.InitState(gameManager.GetCurrentSeed());
         gameManager.SetCurrentLevel(levelBank.GetLevelByIndex(levelIndex));
-        gameManager.LoadScene(SCENE.EXPERIMENT);
+        gameManager.LoadScene(SCENE.PLAY_SCREEN);
     }
 }

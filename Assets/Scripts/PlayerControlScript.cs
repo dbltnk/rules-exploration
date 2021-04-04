@@ -252,7 +252,7 @@ public class PlayerControlScript : MonoBehaviour
     {
         Random.InitState(gameManager.GetCurrentSeed());
         gameManager.SetCurrentLevel(null);//Trying to load a null level will force a random roll.
-        gameManager.LoadScene(SCENE.EXPERIMENT);
+        gameManager.LoadScene(SCENE.PLAY_SCREEN);
     }
 
     bool inputCooling = false;
