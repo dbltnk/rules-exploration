@@ -51,7 +51,7 @@ public class GridManagerScript : MonoBehaviour
     Dictionary<Coords, Vector3> coordsToPosition;
     Dictionary<Coords, SpriteRenderer> coordsToSpriteRenderer;
 
-    Level currentLevel;
+    public Level currentLevel;
 
     private void Awake()
     {
@@ -84,12 +84,18 @@ public class GridManagerScript : MonoBehaviour
         coordsToPosition = new Dictionary<Coords, Vector3>();
         coordsToSpriteRenderer = new Dictionary<Coords, SpriteRenderer>();
 
-        if(autoAdjustCameraSize)
+        // Hack to make the grid cells show over the background when loading a level from the main menu. Unclear why I need this.
+        sceneCamera.gameObject.SetActive(false);
+        sceneCamera.gameObject.SetActive(true);
+
+        float offset = 0f;
+        float longerSide = Mathf.Max(gridWidth, gridHeight);
+        if (longerSide % 2 == 0) offset = -0.5f;
+        if (autoAdjustCameraSize)
         {
-            sceneCamera.orthographicSize = (cellSize * Mathf.Max(gridWidth, gridHeight) / 2);
+            sceneCamera.orthographicSize = (cellSize * longerSide / 2);
         }
-        
-        sceneCamera.transform.position = new Vector3((gridWidth / 2) * cellSize, (gridHeight / 2) * cellSize, -10);
+        sceneCamera.transform.position = new Vector3((gridWidth / 2) * cellSize + offset, (gridHeight / 2) * cellSize + offset, -10);
 
         allCoords = new Coords[gridWidth * gridHeight];
         int cellIncrementor = 0;

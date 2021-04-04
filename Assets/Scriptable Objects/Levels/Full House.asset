@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Full House
   levelWidth: 30
-  levelHeight: 20
+  levelHeight: 30
   procgenSpeciesAmount: {x: 2, y: 3}
   specificSpecies:
   - {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
@@ -22,4 +22,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 74ad62d8458c8654ab3d385476417f69, type: 2}
   - {fileID: 11400000, guid: 786d829c6be9ab94e8a0742b73cbcd24, type: 2}
   rules: []
-  borderType: 0

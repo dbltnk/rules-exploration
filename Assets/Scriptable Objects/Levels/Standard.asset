@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: Standard
   m_EditorClassIdentifier: 
   levelName: Standard
-  levelWidth: 15
-  levelHeight: 10
+  levelWidth: 12
+  levelHeight: 12
   procgenSpeciesAmount: {x: 0, y: 0}
   specificSpecies:
   - {fileID: 11400000, guid: a9ee21a3d78a63646b04a3a26cff13b8, type: 2}
   rules: []
-  borderType: 0

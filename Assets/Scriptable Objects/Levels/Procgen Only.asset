@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelName: Procgen Only
   levelWidth: 15
-  levelHeight: 10
+  levelHeight: 15
   procgenSpeciesAmount: {x: 2, y: 4}
   specificSpecies: []
   rules: []
-  borderType: 0
