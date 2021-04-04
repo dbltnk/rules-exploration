@@ -4,77 +4,77 @@ using UnityEngine;
 [System.Serializable]
 public class Condition
 {
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<SPECIES_GROUP> compareSpeciesGroups, List<STATE> compareStates)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts, List<SPECIES_GROUP> compareSpeciesGroups, List<STATE> compareStates)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         this.compareSpeciesGroups = compareSpeciesGroups;
         this.compareStates = compareStates;
     }
 
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, List<SPECIES_GROUP> compareSpeciesGroups)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts, List<SPECIES_GROUP> compareSpeciesGroups)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         this.compareSpeciesGroups = compareSpeciesGroups;
         compareStates = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         compareSpeciesGroups = null;
         compareStates = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, STATE compareState)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts, STATE compareState)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         compareStates = new List<STATE> { compareState };
         compareSpeciesGroups = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, Vector2Int compareInts, SPECIES_GROUP compareSpeciesGroups)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts, SPECIES_GROUP compareSpeciesGroups)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
         compareStates = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, STATE compareState)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, STATE compareState)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         compareStates = new List<STATE> { compareState };
         compareSpeciesGroups = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition, SPECIES_GROUP compareSpeciesGroups)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, SPECIES_GROUP compareSpeciesGroups)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
         compareStates = null;
     }
 
-    public Condition(SOURCE source, CONDITON condition)
+    public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter)
     {
         this.source = source;
-        this.condition = condition;
+        this.conditionParameter = conditionParameter;
         compareSpeciesGroups = null;
         compareStates = null;
     }
 
     public SOURCE source;
-    public CONDITON condition;
+    public CONDITON_PARAMETER conditionParameter;
     public Vector2Int compareInts;
     public List<SPECIES_GROUP> compareSpeciesGroups;
     public List<STATE> compareStates;
@@ -125,7 +125,7 @@ public enum SOURCE
     TOP_SPECIES,//species with the highest population.
 }
 
-public enum CONDITON
+public enum CONDITON_PARAMETER
 {
     /// <summary>
     /// Range defined as compareInts.x to compareInts.y, inclusive.
@@ -156,7 +156,7 @@ public class ArbiterScript : MonoBehaviour
     [SerializeField] GridManagerScript gridManager = null;
     [SerializeField] LayerStatusScript layerManager = null;
 
-    public Result[] TestRule(Coords coords, Rule rule)
+    public Result[] TestRule(Coords coords, RuleObject rule)
     {
         Condition[] conditions = rule.conditions;
 
@@ -272,23 +272,23 @@ public class ArbiterScript : MonoBehaviour
                 inputIsDying = CheckIsDying(cellState);
             }
 
-            switch(thisCondition.condition)
+            switch(thisCondition.conditionParameter)
             {
-                case CONDITON.VALUE_OUTSIDE_RANGE:
+                case CONDITON_PARAMETER.VALUE_OUTSIDE_RANGE:
                     if(inputInt >= thisCondition.compareInts.x &&
                         inputInt <= thisCondition.compareInts.y)
                     {
                         return null;
                     }
                     break;
-                case CONDITON.VALUE_WITHIN_RANGE:
+                case CONDITON_PARAMETER.VALUE_WITHIN_RANGE:
                     if(inputInt < thisCondition.compareInts.x ||
                         inputInt > thisCondition.compareInts.y)
                     {
                         return null;
                     }
                     break;
-                case CONDITON.CONTAINS_SPECIES_GROUP:
+                case CONDITON_PARAMETER.CONTAINS_SPECIES_GROUP:
                     if(thisCondition.compareSpeciesGroups == null)
                     {
                         return null;
@@ -318,7 +318,7 @@ public class ArbiterScript : MonoBehaviour
                         return null;
                     }
                     break;
-                case CONDITON.DOES_NOT_CONTAIN_SPECIES_GROUP:
+                case CONDITON_PARAMETER.DOES_NOT_CONTAIN_SPECIES_GROUP:
                     if(thisCondition.compareSpeciesGroups == null)
                     {
                         return null;
@@ -340,38 +340,38 @@ public class ArbiterScript : MonoBehaviour
                     }
 
                     break;
-                case CONDITON.IS_ALIVE:
+                case CONDITON_PARAMETER.IS_ALIVE:
                     if(!inputAlive)
                     {
                         return null;
                     }
                     break;
-                case CONDITON.IS_DEAD:
+                case CONDITON_PARAMETER.IS_DEAD:
                     if(inputAlive)
                     {
                         return null;
                     }
                     break;                
-                case CONDITON.MATCHES_STATE:
+                case CONDITON_PARAMETER.MATCHES_STATE:
                     if(!inputAlive) { return null; }
                     if(!thisCondition.compareStates.Contains(inputState))
                     {
                         return null;
                     }
                     break;
-                case CONDITON.DOES_NOT_MATCH_STATE:
+                case CONDITON_PARAMETER.DOES_NOT_MATCH_STATE:
                     if(thisCondition.compareStates.Contains(inputState))
                     {
                         return null;
                     }
                     break;
-                case CONDITON.IS_WALL_ADJACENT:
+                case CONDITON_PARAMETER.IS_WALL_ADJACENT:
                     if(!inputWallAdjacent)
                     {
                         return null;
                     }
                     break;
-                case CONDITON.IS_DYING:
+                case CONDITON_PARAMETER.IS_DYING:
                     if(!inputIsDying)
                     {
                         return null;

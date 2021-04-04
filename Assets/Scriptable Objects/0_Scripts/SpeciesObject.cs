@@ -20,7 +20,7 @@ public class SpeciesObject : ScriptableObject
     public List<SPECIES_GROUP> speciesGroups;
     public Color color = Color.white;
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
-    public Rule birthRule;
-    public Rule deathRule;
+    public RuleObject birthRule;
+    public RuleObject deathRule;
     public bool treatWallsAsAlive;
 }

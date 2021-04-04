@@ -6,30 +6,34 @@ public class RulesBank : MonoBehaviour
 {
     [SerializeField] GameManagerScript gameManager;
 
-    [SerializeField] Rule[] birthRules;
-    [SerializeField] Rule[] deathRules;
+    [SerializeField] RuleObject[] birthRules;
+    [SerializeField] RuleObject[] deathRules;
 
-    public Rule GetBirthRule(int index)
+    Rule[] rulesBank;
+
+    public Rule[] GetRulesBank() { return rulesBank; }
+
+    public RuleObject GetBirthRule(int index)
     {
         return birthRules[index];
     }
 
-    public Rule GetDeathRule(int index)
+    public RuleObject GetDeathRule(int index)
     {
         return deathRules[index];
     }
 
-    public Rule GetRandomBirthRule()
+    public RuleObject GetRandomBirthRule()
     {
         return birthRules[Random.Range(0, birthRules.Length)];
     }
 
-    public Rule GetRandomDeathRule()
+    public RuleObject GetRandomDeathRule()
     {
         return deathRules[Random.Range(0, deathRules.Length)];
     }
 
-    public int GetIndexOfBirthRule(Rule rule)
+    public int GetIndexOfBirthRule(RuleObject rule)
     {
         string ruleName = rule.name;
 
@@ -46,7 +50,7 @@ public class RulesBank : MonoBehaviour
         return -6;
     }
 
-    public int GetIndexOfDeathRule(Rule rule)
+    public int GetIndexOfDeathRule(RuleObject rule)
     {
         string ruleName = rule.name;
 

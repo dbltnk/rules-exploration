@@ -48,6 +48,7 @@ public class GameManagerScript : MonoBehaviour
 
         Species[] speciesArray = currentGameData.speciesInBank;
         string[] customNames = currentGameData.customNames;
+        Rule[] rulesArray = currentGameData.rulesInBank;
 
         int speciesCount = speciesArray.Length;
 
@@ -60,7 +61,18 @@ public class GameManagerScript : MonoBehaviour
                 rulesBank.GetIndexOfBirthRule(thisSpecies.birthRule), rulesBank.GetIndexOfDeathRule(thisSpecies.deathRule), thisSpecies.treatWallsAsAlive);
         }
 
-        currentSaveData = SaveDataScript.SaveGame(new SaveData(serializedSpecies, customNames));
+        int rulesCount = rulesArray.Length;
+
+        SerializedRule[] serializeRules = new SerializedRule[rulesCount];
+
+        for(int i = 0; i < rulesCount; i++)
+        {
+            Rule thisRule = rulesArray[i];
+
+            serializeRules[i] = new SerializedRule(rulesArray[i]);
+        }
+
+        currentSaveData = SaveDataScript.SaveGame(new SaveData(serializedSpecies, customNames, serializeRules));
     }
 
     public int RollNewSeed()

@@ -20,8 +20,8 @@ public class SpeciesData
     }
 
     public string speciesName;
-    public Rule[] speciesRules;
-    public Rule[] speciesPropigationRules;
+    public RuleObject[] speciesRules;
+    public RuleObject[] speciesPropigationRules;
     public Color speciesColor;
 }
 

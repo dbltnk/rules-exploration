@@ -62,11 +62,11 @@ public class CellManagerScript : MonoBehaviour
     Dictionary<Species, int> speciesWeightDictionary;
     int emptySpaceWeight = 3;
 
-    List<Rule> levelRules;
+    List<RuleObject> levelRules;
     /// <summary>
     /// Rules that only come into play for dying cells. These are referenced after the first round of rule application.
     /// </summary>
-    List<Rule> rulesForTheDying;
+    List<RuleObject> rulesForTheDying;
 
     float updateRate = 1f;
 
@@ -83,9 +83,9 @@ public class CellManagerScript : MonoBehaviour
     {
         layerStatus.AssignSpeciesBank(speciesBank);
 
-        levelRules = new List<Rule>();
+        levelRules = new List<RuleObject>();
         
-        Rule[] rules = level.rules;
+        RuleObject[] rules = level.rules;
 
         for(int i = 0; i < rules.Length; i++)
         {
@@ -404,7 +404,7 @@ public class CellManagerScript : MonoBehaviour
                 }
             }
 
-            Rule speciesDeathRule = null;
+            RuleObject speciesDeathRule = null;
 
             if(cellState.species != null)
             {
@@ -436,7 +436,7 @@ public class CellManagerScript : MonoBehaviour
 
                 for(int s = 0; s < enabledSpecies.Length; s++)
                 {
-                    Rule birthRule = enabledSpecies[s].birthRule;
+                    RuleObject birthRule = enabledSpecies[s].birthRule;
 
                     if(birthRule != null)
                     {

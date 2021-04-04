@@ -14,14 +14,16 @@ public enum SPECIES_GROUP
 
 public struct CurrentGameData
 {
-    public CurrentGameData(Species[] speciesInBank, string[] customNames)
+    public CurrentGameData(Species[] speciesInBank, string[] customNames, Rule[] rulesInBank)
     {
         this.speciesInBank = speciesInBank;
         this.customNames = customNames;
+        this.rulesInBank = rulesInBank;
     }
 
     public Species[] speciesInBank;
     public string[] customNames;
+    public Rule[] rulesInBank;
 }
 
 public class SpeciesBank : MonoBehaviour
@@ -145,7 +147,7 @@ public class SpeciesBank : MonoBehaviour
 
     public CurrentGameData GetCurrentGameDate()
     {
-        return new CurrentGameData(speciesBank, speciesCustomName);
+        return new CurrentGameData(speciesBank, speciesCustomName, rulesBank.GetRulesBank());
     }
 
     Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int birthRuleIndex, int deathRuleIndex, bool treatWallsAsAlive)

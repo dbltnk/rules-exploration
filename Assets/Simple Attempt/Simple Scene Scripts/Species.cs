@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Species
 {
-    public Species(string defaultName, List<SPECIES_GROUP> speciesGroups, Color color, SPECIES_STARTING_POPULATION startingPopulation, Rule birthRule, Rule deathRule, bool treatWallsAsAlive)
+    public Species(string defaultName, List<SPECIES_GROUP> speciesGroups, Color color, SPECIES_STARTING_POPULATION startingPopulation, RuleObject birthRule, RuleObject deathRule, bool treatWallsAsAlive)
     {
         this.defaultName = defaultName;
         this.speciesGroups = speciesGroups;
@@ -30,7 +30,7 @@ public class Species
     public List<SPECIES_GROUP> speciesGroups;
     public Color color = Color.white;
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
-    public Rule birthRule;
-    public Rule deathRule;
+    public RuleObject birthRule;
+    public RuleObject deathRule;
     public bool treatWallsAsAlive;
 }
