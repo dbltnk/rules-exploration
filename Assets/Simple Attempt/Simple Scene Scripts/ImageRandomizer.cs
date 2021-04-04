@@ -6,10 +6,12 @@ public class ImageRandomizer : MonoBehaviour
 {
     PlayerControlScript playerControlScript;
     CellManagerScript cellManagerScript;
+    CellObjectScript cellObjectScript;
 
     void Start () {
         playerControlScript = FindObjectOfType<PlayerControlScript>();
         cellManagerScript = FindObjectOfType<CellManagerScript>();
+        cellObjectScript = GetComponentInParent<CellObjectScript>();
 
         float r = Random.Range(0f, 5f);
 
@@ -29,8 +31,9 @@ public class ImageRandomizer : MonoBehaviour
     }
 
     private void Update () {
+        bool isAlive = cellManagerScript.GetCellStateAtCoords(cellObjectScript.GetCoords()).alive;
         float wiggleChance = 1f / cellManagerScript.updateRate * Time.deltaTime;
-        if (Random.Range(0f, 1f) <= wiggleChance && playerControlScript.simulationRunning) {
+        if (Random.Range(0f, 1f) <= wiggleChance && playerControlScript.simulationRunning && isAlive) {
 
             float tZ = transform.localScale.z;
             if (Random.Range(0f, 1f) < 0.5f) {
