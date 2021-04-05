@@ -159,7 +159,7 @@ public class SpeciesBank : MonoBehaviour
         }
 
         return new Species(defaultName, speciesGroupList, new Color(color[0], color[1], color[2], color[3]), (SPECIES_STARTING_POPULATION)startingPopulation,
-            rulesBank.GetBirthRule(birthRuleIndex), rulesBank.GetDeathRule(deathRuleIndex), treatWallsAsAlive);
+            rulesBank.GetRule(birthRuleIndex), rulesBank.GetRule(deathRuleIndex), treatWallsAsAlive);
     }
 
     public void AddSpecies(Species[] speciesArray)

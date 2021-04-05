@@ -62,11 +62,11 @@ public class CellManagerScript : MonoBehaviour
     Dictionary<Species, int> speciesWeightDictionary;
     int emptySpaceWeight = 3;
 
-    List<RuleObject> levelRules;
+    List<Rule> levelRules;
     /// <summary>
     /// Rules that only come into play for dying cells. These are referenced after the first round of rule application.
     /// </summary>
-    List<RuleObject> rulesForTheDying;
+    List<Rule> rulesForTheDying;
 
     float updateRate = 1f;
 
@@ -83,13 +83,13 @@ public class CellManagerScript : MonoBehaviour
     {
         layerStatus.AssignSpeciesBank(speciesBank);
 
-        levelRules = new List<RuleObject>();
+        levelRules = new List<Rule>();
         
-        RuleObject[] rules = level.rules;
+        RuleObject[] ruleObjects = level.ruleObjects;
 
-        for(int i = 0; i < rules.Length; i++)
+        for(int i = 0; i < ruleObjects.Length; i++)
         {
-            levelRules.Add(rules[i]);
+            levelRules.Add(new Rule(ruleObjects[i]));
         }
 
         SpeciesObject[] specificSpecies = level.specificSpecies;
@@ -404,7 +404,7 @@ public class CellManagerScript : MonoBehaviour
                 }
             }
 
-            RuleObject speciesDeathRule = null;
+            Rule speciesDeathRule = null;
 
             if(cellState.species != null)
             {
@@ -436,7 +436,7 @@ public class CellManagerScript : MonoBehaviour
 
                 for(int s = 0; s < enabledSpecies.Length; s++)
                 {
-                    RuleObject birthRule = enabledSpecies[s].birthRule;
+                    Rule birthRule = enabledSpecies[s].birthRule;
 
                     if(birthRule != null)
                     {
@@ -605,29 +605,29 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, null, null, null);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, null, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, Species matchSpecies)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive, Species matchSpecies)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, matchSpecies, null, null);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, matchSpecies, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, List<STATE> matchState)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive, List<STATE> matchState)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, null, matchState, null);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, null, matchState, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, List<SPECIES_GROUP> matchSpeciesGroups)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, null, null, matchSpeciesGroups);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, null, null, matchSpeciesGroups);
     }
 
-    int CountLivingNeighbors(Coords coords, bool wallsAreAlive,  Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
+    int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive,  Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
+        List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords, neighborStyle);
 
         int livingCount = 0;
 

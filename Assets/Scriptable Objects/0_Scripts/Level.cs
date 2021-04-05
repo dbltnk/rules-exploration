@@ -14,5 +14,5 @@ public class Level : ScriptableObject
 
     public SpeciesObject[] specificSpecies;
 
-    public RuleObject[] rules;
+    public RuleObject[] ruleObjects;
 }

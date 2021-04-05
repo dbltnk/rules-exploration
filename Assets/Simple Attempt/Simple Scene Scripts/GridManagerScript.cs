@@ -126,7 +126,7 @@ public class GridManagerScript : MonoBehaviour
 
     public bool CheckWallAdjacent(Coords coords)
     {
-        if(GetAllValidNeighbors(coords).Count < 8)
+        if(GetAllValidNeighbors(coords, NEIGHBOR_STYLE.ALL).Count < 8)
         {
             return true;
         }
@@ -134,12 +134,30 @@ public class GridManagerScript : MonoBehaviour
         return false;
     }
 
-    public List<Coords> GetAllValidNeighbors(Coords baseCoords)
+    public List<Coords> GetAllValidNeighbors(Coords baseCoords, NEIGHBOR_STYLE neighborStyle)
     {
         List<Coords> validNeighbors = new List<Coords>();
+        List<int> excludedDirections = new List<int>();
+
+        switch(neighborStyle)
+        {
+            case NEIGHBOR_STYLE.CARDINAL_ONLY:
+                excludedDirections.Add((int)NEIGHBORS.NE);
+                excludedDirections.Add((int)NEIGHBORS.NW);
+                excludedDirections.Add((int)NEIGHBORS.SE);
+                excludedDirections.Add((int)NEIGHBORS.SW);
+                break;
+            case NEIGHBOR_STYLE.DIAGONAL_ONLY:
+                excludedDirections.Add((int)NEIGHBORS.DE);
+                excludedDirections.Add((int)NEIGHBORS.DN);
+                excludedDirections.Add((int)NEIGHBORS.DS);
+                excludedDirections.Add((int)NEIGHBORS.DW);
+                break;
+        }
 
         for(int i = 0; i < 8; i++)
         {
+            if(excludedDirections.Contains(i)) { continue; }//Skips over excluded directions.
             Coords potentialNeighbor = GetSpecificNeighbor(baseCoords, (NEIGHBORS)i);
 
             if(potentialNeighbor.x < 0)

@@ -156,7 +156,7 @@ public class ArbiterScript : MonoBehaviour
     [SerializeField] GridManagerScript gridManager = null;
     [SerializeField] LayerStatusScript layerManager = null;
 
-    public Result[] TestRule(Coords coords, RuleObject rule)
+    public Result[] TestRule(Coords coords, Rule rule)
     {
         Condition[] conditions = rule.conditions;
 
@@ -175,16 +175,16 @@ public class ArbiterScript : MonoBehaviour
             switch(thisCondition.source)
             {
                 case SOURCE.LIVING_NEIGHBOR_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive);
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.neighborStyle, rule.wallsAreAlive);
                     break;
                 case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive, cellManager.GetSpecies(coords));
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.neighborStyle, rule.wallsAreAlive, cellManager.GetSpecies(coords));
                     break;
                 case SOURCE.LIVING_NEIGHBOR_MATCHING_SPECIES_GROUP_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive, thisCondition.compareSpeciesGroups);
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.neighborStyle, rule.wallsAreAlive, thisCondition.compareSpeciesGroups);
                     break;
                 case SOURCE.LIVING_NEIGHBORS_MATCHING_STATE_COUNT:
-                    inputInt = cellManager.CountLivingNeighbors(coords, rule.wallsAreAlive, thisCondition.compareStates);
+                    inputInt = cellManager.CountLivingNeighbors(coords, rule.neighborStyle, rule.wallsAreAlive, thisCondition.compareStates);
                     break;
                 case SOURCE.NEIGHBOR_DE:
                     AssignInputValuesBasedOnSpecificNeighbor(NEIGHBORS.DE);
