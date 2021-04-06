@@ -156,7 +156,7 @@ public class ArbiterScript : MonoBehaviour
     [SerializeField] GridManagerScript gridManager = null;
     [SerializeField] LayerStatusScript layerManager = null;
 
-    public Result[] TestRule(Coords coords, Rule rule)
+    public Result TestRule(Coords coords, Rule rule)
     {
         Condition[] conditions = rule.conditions;
 
@@ -383,6 +383,6 @@ public class ArbiterScript : MonoBehaviour
             }
         }
 
-        return rule.results;
+        return rule.result;
     }
 }

@@ -6,16 +6,42 @@ public class RulesBank : MonoBehaviour
 {
     [SerializeField] GameManagerScript gameManager;
 
-    RuleObject[] ruleObjectArray;
+    [SerializeField] RuleObject[] ruleObjectArray;
 
-    Rule[] rulesBank;
+    Rule[] rulesBank;//This holds the actual rules that are used in the game.
 
-    List<Rule> birthRules;
-    List<Rule> deathRules;
+    //These hold rules objects from which rules area created.
+    List<RuleObject> birthRuleObjects;
+    List<RuleObject> deathRuleObjects;
 
-    private void Awake()
+    public void AssignRuleObjectArray(RuleObject[] ruleObjectArray)
     {
-        
+        this.ruleObjectArray = ruleObjectArray;
+    }
+
+    void Awake()
+    {
+        InitializeBirthAndDeathRuleBases();
+    }
+
+    void InitializeBirthAndDeathRuleBases()
+    {
+        birthRuleObjects = new List<RuleObject>();
+        deathRuleObjects = new List<RuleObject>();
+
+        for(int i = 0; i < ruleObjectArray.Length; i++)
+        {
+            RuleObject thisRuleObject = ruleObjectArray[i];
+            switch(thisRuleObject.classification)
+            {
+                case RULE_CLASSIFICATION.BIRTH:
+                    birthRuleObjects.Add(thisRuleObject);
+                    break;
+                case RULE_CLASSIFICATION.DEATH:
+                    deathRuleObjects.Add(thisRuleObject);
+                    break;
+            }
+        }
     }
 
     /// <summary>
@@ -31,41 +57,54 @@ public class RulesBank : MonoBehaviour
         {
             Debug.Log("Converting a rule object to a rule.");
 
-            rulesBank[i] = new Rule(ruleObjectArray[i]);
-        }
-
-        for(int i = 0; i < rulesBank.Length; i++)
-        {
-            Rule thisRule = rulesBank[i];
-            switch(thisRule.classification)
-            {
-                case RULE_CLASSIFICATION.BIRTH:
-                    birthRules.Add(thisRule);
-                    break;
-                case RULE_CLASSIFICATION.DEATH:
-                    deathRules.Add(thisRule);
-                    break;
-            }
-        }
+            rulesBank[i] = new Rule(ruleObjectArray[i], i);
+        }        
     }
 
-    Rule DeserializeRule(string ruleName, int ruleClassification, bool wallsAreAlive, int[] conditionSource, int[] conditionParameters, int[][] compareInts, int[][] compareSpeciesGroups,
-        int[][] compareStates, int[] lifeEffects, int[] newStates)
+    Rule DeserializeRule(int ruleIndex, int ruleClassification, int neighborStyle, bool wallsAreAlive, int[] conditionSource, int[] conditionParameters, int[][] compareInts, int[][] compareSpeciesGroups,
+        int[][] compareStates, int lifeEffect, int newState)
     {
-        Condition[] conditions;
-        Result[] results;
+        int conditionAmount = conditionSource.Length;
 
-        return new Rule(ruleName, conditions, results, (NEIGHBOR_STYLE)neighborStyle, wallsAreAlive, (RULE_CLASSIFICATION)ruleClassification);
+        Condition[] conditions = new Condition[conditionAmount];   
+
+        for(int i = 0; i < conditionAmount; i++)
+        {
+            List<SPECIES_GROUP> compareSpeciesGroupList = new List<SPECIES_GROUP>();
+
+            int[] compareSpeciesIntArray = compareSpeciesGroups[i];
+
+            for(int c = 0; c < compareSpeciesIntArray.Length; c++)
+            {
+                compareSpeciesGroupList.Add((SPECIES_GROUP)compareSpeciesIntArray[c]);
+            }
+
+            conditions[i] = new Condition((SOURCE)conditionSource[i], (CONDITON_PARAMETER)conditionParameters[i], new Vector2Int(compareInts[i][0], compareInts[i][1]), compareSpeciesGroupList);
+        }
+
+        Result result = new Result((LIFE_EFFECT)lifeEffect, (STATE)newState);
+
+        return new Rule(ruleIndex, conditions, result, (NEIGHBOR_STYLE)neighborStyle, wallsAreAlive, (RULE_CLASSIFICATION)ruleClassification);
     }
 
     public void LoadSavedRuleBank(SaveData saveData)
     {
+        if(saveData.ruleIndexes == null)
+        {
+            gameManager.CreateNewGameSave();
+            return;
+        }        
 
-    }
+        int ruleAmount = saveData.ruleIndexes.Length;
 
-    public void AssignRuleObjects(RuleObject[] ruleObjectArray)
-    {
-        this.ruleObjectArray = ruleObjectArray;
+        rulesBank = new Rule[ruleAmount];
+
+        for(int i = 0; i < ruleAmount; i++)
+        {
+            rulesBank[i] = DeserializeRule(saveData.ruleIndexes[i], saveData.ruleClassifications[i], saveData.ruleNeighborStyle[i], saveData.ruleWallsAreAlive[i], saveData.ruleConditionSource[i],
+                saveData.ruleConditionParameters[i], saveData.ruleCompareInts[i], saveData.ruleCompareSpeciesGroups[i], saveData.ruleCompareStates[i],
+                saveData.ruleResultLifeEffect[i], saveData.ruleResultNewState[i]);
+        }
     }
 
     public Rule[] GetRulesBank() { return rulesBank; }
@@ -77,28 +116,33 @@ public class RulesBank : MonoBehaviour
 
     public Rule GetRandomBirthRule()
     {
-        return birthRules[Random.Range(0, birthRules.Count)];
+        return new Rule(birthRuleObjects[Random.Range(0, birthRuleObjects.Count)], rulesBank.Length);
     }
 
     public Rule GetRandomDeathRule()
     {
-        return deathRules[Random.Range(0, deathRules.Count)];
+        return new Rule(deathRuleObjects[Random.Range(0, deathRuleObjects.Count)], rulesBank.Length);
     }
 
-    public int GetIndexOfRule(Rule rule)
-    {
-        string ruleName = rule.ruleName;
+    public Rule CreateNewRule(RuleObject ruleObjectBase)
+    {   
+        int ruleBankLength = rulesBank.Length;
 
-        for(int i = 0; i < rulesBank.Length; i++)
+        Rule newRule = new Rule(ruleObjectBase, ruleBankLength);
+
+        Rule[] newRuleBank = new Rule[rulesBank.Length + 1];
+
+        for(int i = 0; i < ruleBankLength; i++)
         {
-            if(ruleName == rulesBank[i].ruleName)
-            {
-                return i;
-            }
+            newRuleBank[i] = rulesBank[i];
         }
 
-        Debug.LogError("The given rule was not found within the rules bank.");
+        newRuleBank[newRuleBank.Length - 1] = newRule;
 
-        return -6;
+        rulesBank = newRuleBank;
+
+        gameManager.SaveGame();
+
+        return newRule;
     }
 }

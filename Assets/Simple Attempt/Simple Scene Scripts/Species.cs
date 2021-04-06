@@ -21,8 +21,8 @@ public class Species
         speciesGroups = speciesObject.speciesGroups;
         color = speciesObject.color;
         startingPopulation = speciesObject.startingPopulation;
-        birthRule = new Rule(speciesObject.birthRuleObject);
-        deathRule = new Rule(speciesObject.deathRuleObject);
+        birthRule = new Rule(speciesObject.birthRuleObject, -6);
+        deathRule = new Rule(speciesObject.deathRuleObject, -6);
         treatWallsAsAlive = speciesObject.treatWallsAsAlive;
     }
 

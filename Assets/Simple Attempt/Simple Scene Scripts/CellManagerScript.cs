@@ -89,7 +89,7 @@ public class CellManagerScript : MonoBehaviour
 
         for(int i = 0; i < ruleObjects.Length; i++)
         {
-            levelRules.Add(new Rule(ruleObjects[i]));
+            levelRules.Add(new Rule(ruleObjects[i], -1));
         }
 
         SpeciesObject[] specificSpecies = level.specificSpecies;
@@ -377,14 +377,14 @@ public class CellManagerScript : MonoBehaviour
 
     public struct BirthResult
     {
-        public BirthResult(Species species, Result[] results)
+        public BirthResult(Species species, Result result)
         {
             this.species = species;
-            this.results = results;
+            this.result = result;
         }
 
         public Species species;
-        public Result[] results;
+        public Result result;
     }
 
     public void IncrementTime()
@@ -397,10 +397,10 @@ public class CellManagerScript : MonoBehaviour
 
             for(int r = 0; r < levelRules.Count; r++)
             {
-                Result[] results = arbiter.TestRule(cellState.coords, levelRules[r]);
-                if(results != null)
+                Result result = arbiter.TestRule(cellState.coords, levelRules[r]);
+                if(result != null)
                 {
-                    ApplyResults(results);
+                    ApplySimpleResult(result);
                 }
             }
 
@@ -413,10 +413,10 @@ public class CellManagerScript : MonoBehaviour
 
             if(speciesDeathRule != null)
             {
-                Result[] results = arbiter.TestRule(cellState.coords, speciesDeathRule);
-                if(results != null)
+                Result result = arbiter.TestRule(cellState.coords, speciesDeathRule);
+                if(result != null)
                 {
-                    ApplyResults(results);
+                    ApplySimpleResult(result);
                 }
             }
 
@@ -440,35 +440,29 @@ public class CellManagerScript : MonoBehaviour
 
                     if(birthRule != null)
                     {
-                        Result[] theseResults = arbiter.TestRule(cellState.coords, birthRule);
+                        Result thisResult = arbiter.TestRule(cellState.coords, birthRule);
 
-                        if(theseResults != null)
+                        if(thisResult != null)
                         {
-                            successfulResults.Add(new BirthResult(enabledSpecies[s], theseResults));
+                            successfulResults.Add(new BirthResult(enabledSpecies[s], thisResult));
                         }
                     }
                 }
 
                 if(successfulResults.Count > 0)
                 {
-                    ApplyBirthResults(successfulResults[Random.Range(0, successfulResults.Count)]);
+                    ApplyBirthResult(successfulResults[Random.Range(0, successfulResults.Count)]);
                 }
             }
 
-            void ApplyBirthResults(BirthResult results)
+            void ApplyBirthResult(BirthResult results)
             {
-                for(int t = 0; t < results.results.Length; t++)
-                {
-                    ApplyResult(results.results[t], results.species);
-                }
+                ApplyResult(results.result, results.species);
             }
 
-            void ApplyResults(Result[] results)
+            void ApplySimpleResult(Result result)
             {
-                for(int t = 0; t < results.Length; t++)
-                {
-                    ApplyResult(results[t], null);
-                }
+                ApplyResult(result, null);
             }
 
             void ApplyResult(Result result, Species newSpecies)

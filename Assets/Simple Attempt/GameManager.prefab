@@ -92,16 +92,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 2071066168707965563}
-  birthRules:
+  ruleObjectArray:
   - {fileID: 11400000, guid: 8963d85e3389ae04cb9868530545b117, type: 2}
   - {fileID: 11400000, guid: de6f31446e31d9d4fa965697d4539509, type: 2}
+  - {fileID: 11400000, guid: aad4b718a565f2d4ebbb9496e4a0f68b, type: 2}
   - {fileID: 11400000, guid: 9ec991048c3feeb428cee9470bbb1a1b, type: 2}
   - {fileID: 11400000, guid: ee7ba4dcd6631ca478bc51adf1d13997, type: 2}
-  - {fileID: 11400000, guid: aad4b718a565f2d4ebbb9496e4a0f68b, type: 2}
-  deathRules:
+  - {fileID: 11400000, guid: a253d5ddd78284941b97740746ccffc7, type: 2}
   - {fileID: 11400000, guid: ef7fc4ceabd6b5445b67dfb1a593e406, type: 2}
+  - {fileID: 11400000, guid: 74fa7e7434ca71b439c5366c10d5132b, type: 2}
   - {fileID: 11400000, guid: ba5db5142cf014943a519583ed49b62e, type: 2}
   - {fileID: 11400000, guid: aa5d5947c01cb7749b87cd6dbc2af170, type: 2}
   - {fileID: 11400000, guid: 15f84932226ea8a41b514c9ee2828b11, type: 2}
-  - {fileID: 11400000, guid: 74fa7e7434ca71b439c5366c10d5132b, type: 2}
-  - {fileID: 11400000, guid: a253d5ddd78284941b97740746ccffc7, type: 2}

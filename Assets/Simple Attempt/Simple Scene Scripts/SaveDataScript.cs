@@ -34,7 +34,7 @@ public class SaveData
 
         int ruleCount = serializedRulesArray.Length;
 
-        ruleNames = new string[ruleCount];
+        ruleIndexes = new int[ruleCount];
         ruleClassifications = new int[ruleCount];
         ruleWallsAreAlive = new bool[ruleCount];
         ruleConditionSource = new int[ruleCount][];
@@ -42,17 +42,17 @@ public class SaveData
         ruleCompareInts = new int[ruleCount][][];
         ruleCompareSpeciesGroups = new int[ruleCount][][];
         ruleCompareStates = new int[ruleCount][][];
-        ruleResultLifeEffects = new int[ruleCount][];
-        ruleResultNewStates = new int[ruleCount][];
+        ruleResultLifeEffect = new int[ruleCount];
+        ruleResultNewState = new int[ruleCount];
 
         for(int i = 0; i < ruleCount; i++)
         {
             SerializedRule thisRule = serializedRulesArray[i];
             int conditionsCount = thisRule.conditions.Length;
-            int resultsCount = thisRule.results.Length;
 
-            ruleNames[i] = thisRule.ruleName;
+            ruleIndexes[i] = thisRule.ruleIndex;
             ruleClassifications[i] = thisRule.classification;
+            ruleNeighborStyle[i] = thisRule.neighborStyle;
             ruleWallsAreAlive[i] = thisRule.wallsAreAlive;
             ruleConditionSource[i] = new int[conditionsCount];
             for(int c = 0; c < conditionsCount; c++)
@@ -79,16 +79,8 @@ public class SaveData
             {
                 ruleCompareStates[i][c] = thisRule.conditions[c].compareStates;
             }
-            ruleResultLifeEffects[i] = new int[resultsCount];
-            for(int r = 0; r < conditionsCount; r++)
-            {
-                ruleResultLifeEffects[i][r] = thisRule.results[r].lifeEffect;
-            }
-            ruleResultNewStates[i] = new int[resultsCount];
-            for(int r = 0; r < conditionsCount; r++)
-            {
-                ruleResultNewStates[i][r] = thisRule.results[r].newState;
-            }
+            ruleResultLifeEffect[i] = thisRule.result.lifeEffect;
+            ruleResultNewState[i] = thisRule.result.newState;
         }
     }
 
@@ -103,16 +95,17 @@ public class SaveData
     public bool[] treatWallsAsAlive;
 
     //Rules Data
-    public string[] ruleNames;
+    public int[] ruleIndexes;
     public int[] ruleClassifications;
+    public int[] ruleNeighborStyle;
     public bool[] ruleWallsAreAlive;
     public int[][] ruleConditionSource;
     public int[][] ruleConditionParameters;
     public int[][][] ruleCompareInts;
     public int[][][] ruleCompareSpeciesGroups;
     public int[][][] ruleCompareStates;
-    public int[][] ruleResultLifeEffects;
-    public int[][] ruleResultNewStates;
+    public int[] ruleResultLifeEffect;
+    public int[] ruleResultNewState;
 }
 
 public enum RULE_CLASSIFICATION
@@ -126,25 +119,23 @@ public class SerializedRule
 {
     public SerializedRule(Rule rule)
     {
-        ruleName = rule.ruleName;
+        ruleIndex = rule.ruleIndex;
         conditions = new SerializedCondition[rule.conditions.Length];
         for(int i = 0; i < conditions.Length; i++)
         {
             conditions[i] = new SerializedCondition(rule.conditions[i]);
         }
-        results = new SerializedResult[rule.results.Length];
-        for(int i = 0; i < results.Length; i++)
-        {
-            results[i] = new SerializedResult(rule.results[i]);
-        }
+        result = new SerializedResult(rule.result);
         classification = (int)rule.classification;
+        neighborStyle = (int)rule.neighborStyle;
         wallsAreAlive = rule.wallsAreAlive;
     }
 
-    public string ruleName;
+    public int ruleIndex;
     public SerializedCondition[] conditions;
-    public SerializedResult[] results;
+    public SerializedResult result;
     public int classification;
+    public int neighborStyle;
     public bool wallsAreAlive;
 }
 

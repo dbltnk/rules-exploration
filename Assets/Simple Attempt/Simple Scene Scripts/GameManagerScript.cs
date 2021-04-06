@@ -32,16 +32,26 @@ public class GameManagerScript : MonoBehaviour
 
         if(currentSaveData == null)
         {
-            rulesBank.InitializeNewRulesBank();
-            speciesBank.InitializeSpeciesData();
+            CreateNewGameSave();
         }
         else
         {
-            rulesBank.LoadSavedRuleBank(currentSaveData);
-            speciesBank.InitializeSavedSpecies(currentSaveData);
+            LoadSavedGame();   
         }
 
         RollNewSeed();              
+    }
+
+    public void LoadSavedGame()
+    {
+        rulesBank.LoadSavedRuleBank(currentSaveData);
+        speciesBank.InitializeSavedSpecies(currentSaveData);
+    }
+
+    public void CreateNewGameSave()
+    {
+        rulesBank.InitializeNewRulesBank();
+        speciesBank.InitializeSpeciesData();
     }
 
     public void SaveGame()
@@ -60,7 +70,7 @@ public class GameManagerScript : MonoBehaviour
         {
             Species thisSpecies = speciesArray[i];
             serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation,
-                rulesBank.GetIndexOfRule(thisSpecies.birthRule), rulesBank.GetIndexOfRule(thisSpecies.deathRule), thisSpecies.treatWallsAsAlive);
+                thisSpecies.birthRule.ruleIndex, thisSpecies.deathRule.ruleIndex, thisSpecies.treatWallsAsAlive);
         }
 
         int rulesCount = rulesArray.Length;
