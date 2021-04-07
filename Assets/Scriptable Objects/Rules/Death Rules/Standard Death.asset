@@ -12,12 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
   m_Name: Standard Death
   m_EditorClassIdentifier: 
-  conditions:
+  possibleConditionAmounts: {x: 1, y: 1}
+  matchMySpeciesGroups: 1
+  addRandomSpeciesGroups: 0
+  randomizeCompareInts: 0
+  compareIntsRandomMinRange: {x: 0, y: 3}
+  compareIntsRandomMaxRange: {x: 3, y: 8}
+  possibleConditions:
   - source: 0
-    condition: 1
+    conditionParameter: 1
     compareInts: {x: 2, y: 3}
     compareSpeciesGroups: 
     compareStates: 
-  results:
+  possibleResults:
   - lifeEffect: 2
     newState: 0
+  neighborStyle: 0
+  wallsAreAlive: 0
+  classification: 2

@@ -16,6 +16,8 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] SpeciesBank speciesBank = null;
     [SerializeField] RulesBank rulesBank = null;
 
+    [SerializeField] bool DEBUG_ALWAYS_DELETE_SAVE_DATA = false;
+
     public SpeciesBank GetSpeciesBank() { return speciesBank; }
 
     int currentSeed;
@@ -30,16 +32,29 @@ public class GameManagerScript : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         currentSaveData = SaveDataScript.LoadSaveData();        
 
-        if(currentSaveData == null)
+        if(currentSaveData == null ||
+            DEBUG_ALWAYS_DELETE_SAVE_DATA)
         {
-            speciesBank.InitializeSpeciesData();
+            CreateNewGameSave();
         }
         else
         {
-            speciesBank.InitializeSavedSpecies(currentSaveData);
+            LoadSavedGame();   
         }
 
         RollNewSeed();              
+    }
+
+    public void LoadSavedGame()
+    {
+        rulesBank.LoadSavedRuleBank(currentSaveData);
+        speciesBank.InitializeSavedSpecies(currentSaveData);
+    }
+
+    public void CreateNewGameSave()
+    {
+        rulesBank.InitializeNewRulesBank();
+        speciesBank.InitializeSpeciesData();
     }
 
     public void SaveGame()
@@ -48,19 +63,31 @@ public class GameManagerScript : MonoBehaviour
 
         Species[] speciesArray = currentGameData.speciesInBank;
         string[] customNames = currentGameData.customNames;
+        Rule[] rulesArray = currentGameData.rulesInBank;
 
         int speciesCount = speciesArray.Length;
 
         SerializedSpecies[] serializedSpecies = new SerializedSpecies[speciesCount];
 
         for(int i = 0; i < speciesCount; i++)
-        {
+        {            
             Species thisSpecies = speciesArray[i];
             serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation,
-                rulesBank.GetIndexOfBirthRule(thisSpecies.birthRule), rulesBank.GetIndexOfDeathRule(thisSpecies.deathRule), thisSpecies.treatWallsAsAlive);
+                thisSpecies.birthRule.ruleIndex, thisSpecies.deathRule.ruleIndex, thisSpecies.otherRules);
         }
 
-        currentSaveData = SaveDataScript.SaveGame(new SaveData(serializedSpecies, customNames));
+        int rulesCount = rulesArray.Length;
+
+        SerializedRule[] serializeRules = new SerializedRule[rulesCount];
+
+        for(int i = 0; i < rulesCount; i++)
+        {
+            Rule thisRule = rulesArray[i];
+
+            serializeRules[i] = new SerializedRule(rulesArray[i]);
+        }
+
+        currentSaveData = SaveDataScript.SaveGame(new SaveData(serializedSpecies, customNames, serializeRules));
     }
 
     public int RollNewSeed()

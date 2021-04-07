@@ -9,15 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
-  m_Name: Neverborn
+  m_Script: {fileID: 11500000, guid: cc3d6bf81c9912c4585d8f542aabec8d, type: 3}
+  m_Name: Another Level
   m_EditorClassIdentifier: 
-  conditions:
-  - source: 0
-    condition: 0
-    compareInts: {x: 9, y: 9}
-    compareSpeciesGroups: 
-    compareStates: 
-  results:
-  - lifeEffect: 0
-    newState: 0
+  levelName: Another Level
+  levelWidth: 5
+  levelHeight: 20
+  procgenSpeciesAmount: {x: 1, y: 2}
+  specificSpecies: []
+  ruleObjects: []

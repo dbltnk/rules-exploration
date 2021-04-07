@@ -63,10 +63,6 @@ public class CellManagerScript : MonoBehaviour
     int emptySpaceWeight = 3;
 
     List<Rule> levelRules;
-    /// <summary>
-    /// Rules that only come into play for dying cells. These are referenced after the first round of rule application.
-    /// </summary>
-    List<Rule> rulesForTheDying;
 
     public float updateRate = 1f;
 
@@ -79,17 +75,19 @@ public class CellManagerScript : MonoBehaviour
 
     Dictionary<Coords, CellState> startingConditions;
 
-    public void AssignLevel(Level level, GameManagerScript  gameManager, SpeciesBank speciesBank)
+    public void AssignLevel(Level level, GameManagerScript gameManager, SpeciesBank speciesBank)
     {
         layerStatus.AssignSpeciesBank(speciesBank);
 
         levelRules = new List<Rule>();
         
-        Rule[] rules = level.rules;
+        RuleObject[] ruleObjects = level.ruleObjects;
 
-        for(int i = 0; i < rules.Length; i++)
+        RulesBank rulesBank = gameManager.GetComponent<RulesBank>();
+
+        for(int i = 0; i < ruleObjects.Length; i++)
         {
-            levelRules.Add(rules[i]);
+            levelRules.Add(rulesBank.GetRuleFromRuleObjectAtRuntime(ruleObjects[i], null));
         }
 
         SpeciesObject[] specificSpecies = level.specificSpecies;
@@ -98,7 +96,7 @@ public class CellManagerScript : MonoBehaviour
 
         for(int i = 0; i < specificSpecies.Length; i++)
         {
-            specificSpeciesConverted[i] = new Species(specificSpecies[i]);
+            specificSpeciesConverted[i] = new Species(specificSpecies[i], rulesBank);
         }
 
         speciesBank.AddSpecies(specificSpeciesConverted);
@@ -377,14 +375,14 @@ public class CellManagerScript : MonoBehaviour
 
     public struct BirthResult
     {
-        public BirthResult(Species species, Result[] results)
+        public BirthResult(Species species, Result result)
         {
             this.species = species;
-            this.results = results;
+            this.result = result;
         }
 
         public Species species;
-        public Result[] results;
+        public Result result;
     }
 
     public void IncrementTime()
@@ -397,37 +395,47 @@ public class CellManagerScript : MonoBehaviour
 
             for(int r = 0; r < levelRules.Count; r++)
             {
-                Result[] results = arbiter.TestRule(cellState.coords, levelRules[r]);
-                if(results != null)
+                Result result = arbiter.TestRule(cellState.coords, levelRules[r]);
+                if(result != null)
                 {
-                    ApplyResults(results);
+                    ApplySimpleResult(result);
                 }
             }
 
             Rule speciesDeathRule = null;
+            Rule[] otherRules = null;
+
+            bool applyDeathRule = false;
 
             if(cellState.species != null)
-            {
+            {                
                 speciesDeathRule = cellState.species.deathRule;
+                applyDeathRule = !speciesDeathRule.nullRule;
+                otherRules = cellState.species.otherRules;
             }
 
-            if(speciesDeathRule != null)
+            if(applyDeathRule)
             {
-                Result[] results = arbiter.TestRule(cellState.coords, speciesDeathRule);
-                if(results != null)
+                Result result = arbiter.TestRule(cellState.coords, speciesDeathRule);
+                if(result != null)
                 {
-                    ApplyResults(results);
+                    ApplySimpleResult(result);
                 }
             }
 
-            //for(int r = 0; r < rulesForTheDying.Count; r++)
-            //{
-            //    Result[] results = arbiter.TestRule(cellState.coords, rulesForTheDying[r]);
-            //    if(results != null)
-            //    {
-            //        ApplyResults(results);
-            //    }
-            //}
+            //Debug.Log(otherRules);
+
+            if(otherRules != null)
+            {
+                for(int r = 0; r < otherRules.Length; r++)
+                {
+                    Result result = arbiter.TestRule(cellState.coords, otherRules[r]);
+                    if(result != null)
+                    {
+                        ApplySimpleResult(result);
+                    }
+                }
+            }            
 
             if(!cellState.alive &&
                 !cellState.futureAlive)
@@ -438,37 +446,31 @@ public class CellManagerScript : MonoBehaviour
                 {
                     Rule birthRule = enabledSpecies[s].birthRule;
 
-                    if(birthRule != null)
+                    if(!birthRule.nullRule)
                     {
-                        Result[] theseResults = arbiter.TestRule(cellState.coords, birthRule);
+                        Result thisResult = arbiter.TestRule(cellState.coords, birthRule);
 
-                        if(theseResults != null)
+                        if(thisResult != null)
                         {
-                            successfulResults.Add(new BirthResult(enabledSpecies[s], theseResults));
+                            successfulResults.Add(new BirthResult(enabledSpecies[s], thisResult));
                         }
                     }
                 }
 
                 if(successfulResults.Count > 0)
                 {
-                    ApplyBirthResults(successfulResults[Random.Range(0, successfulResults.Count)]);
+                    ApplyBirthResult(successfulResults[Random.Range(0, successfulResults.Count)]);
                 }
             }
 
-            void ApplyBirthResults(BirthResult results)
+            void ApplyBirthResult(BirthResult results)
             {
-                for(int t = 0; t < results.results.Length; t++)
-                {
-                    ApplyResult(results.results[t], results.species);
-                }
+                ApplyResult(results.result, results.species);
             }
 
-            void ApplyResults(Result[] results)
+            void ApplySimpleResult(Result result)
             {
-                for(int t = 0; t < results.Length; t++)
-                {
-                    ApplyResult(results[t], null);
-                }
+                ApplyResult(result, null);
             }
 
             void ApplyResult(Result result, Species newSpecies)
@@ -605,29 +607,29 @@ public class CellManagerScript : MonoBehaviour
         StartCoroutine("RunSimulation");
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, null, null, null);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, null, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, Species matchSpecies)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive, Species matchSpecies)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, matchSpecies, null, null);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, matchSpecies, null, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, List<STATE> matchState)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive, List<STATE> matchState)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, null, matchState, null);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, null, matchState, null);
     }
 
-    public int CountLivingNeighbors(Coords coords, bool wallsAreAlive, List<SPECIES_GROUP> matchSpeciesGroups)
+    public int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        return CountLivingNeighbors(coords, wallsAreAlive, null, null, matchSpeciesGroups);
+        return CountLivingNeighbors(coords, neighborStyle, wallsAreAlive, null, null, matchSpeciesGroups);
     }
 
-    int CountLivingNeighbors(Coords coords, bool wallsAreAlive,  Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
+    int CountLivingNeighbors(Coords coords, NEIGHBOR_STYLE neighborStyle, bool wallsAreAlive,  Species matchSpecies, List<STATE> matchState, List<SPECIES_GROUP> matchSpeciesGroups)
     {
-        List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords);
+        List<Coords> validNeighbors = gridManager.GetAllValidNeighbors(coords, neighborStyle);
 
         int livingCount = 0;
 

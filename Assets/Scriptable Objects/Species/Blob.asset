@@ -16,5 +16,9 @@ MonoBehaviour:
   speciesGroups: 01000000
   color: {r: 0.56, g: 0.56, b: 0.894, a: 1}
   startingPopulation: 4
-  birthRule: {fileID: 11400000, guid: ee7ba4dcd6631ca478bc51adf1d13997, type: 2}
-  deathRule: {fileID: 11400000, guid: 15f84932226ea8a41b514c9ee2828b11, type: 2}
+  ignoreBirthRule: 0
+  birthRuleObject: {fileID: 11400000, guid: ee7ba4dcd6631ca478bc51adf1d13997, type: 2}
+  ignoreDeathRule: 0
+  deathRuleObject: {fileID: 11400000, guid: 15f84932226ea8a41b514c9ee2828b11, type: 2}
+  randomOtherRulesAmountRange: {x: 0, y: 0}
+  otherRules: []

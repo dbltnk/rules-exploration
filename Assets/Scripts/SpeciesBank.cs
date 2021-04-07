@@ -2,26 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum SPECIES_GROUP
-{
-    NONE,
-    BLOB,
-    FLOPPER,
-    GOBLIN,
-    ROCK,
-    FINAL_ENTRY_DO_NOT_REPLACE,
-}
-
 public struct CurrentGameData
 {
-    public CurrentGameData(Species[] speciesInBank, string[] customNames)
+    public CurrentGameData(Species[] speciesInBank, string[] customNames, Rule[] rulesInBank)
     {
         this.speciesInBank = speciesInBank;
         this.customNames = customNames;
+        this.rulesInBank = rulesInBank;
     }
 
     public Species[] speciesInBank;
     public string[] customNames;
+    public Rule[] rulesInBank;
 }
 
 public class SpeciesBank : MonoBehaviour
@@ -58,7 +50,7 @@ public class SpeciesBank : MonoBehaviour
                 saveData.startingPopulations[i],
                 saveData.birthRuleIndex[i],
                 saveData.deathRuleIndex[i],
-                saveData.treatWallsAsAlive[i]);
+                saveData.otherRulesIndexes[i]);
             if(thisSpecies == null) { continue; }
 
             speciesBank[i] = thisSpecies;
@@ -132,9 +124,9 @@ public class SpeciesBank : MonoBehaviour
             SPECIES_STARTING_POPULATION startingPopulation = (SPECIES_STARTING_POPULATION)Random.Range(1, (int)SPECIES_STARTING_POPULATION.UBIQUITOUS + 1);
 
             string defaultName = string.Format("{0}_{1}_{2}_{3}", speciesGroup[0].ToString(), startingPopulation.ToString(), System.DateTime.Now.ToString(), i);
-
-            bool treatWallsAsAlive = Random.Range(0, 2) > 0;
-            Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, rulesBank.GetRandomBirthRule(), rulesBank.GetRandomDeathRule(), treatWallsAsAlive);
+            int randomOtherRulesAmount = Random.Range(0, 4);
+            Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, rulesBank.GetRandomBirthRule(speciesGroup), rulesBank.GetRandomDeathRule(speciesGroup),
+                rulesBank.GetRandomOtherRules(speciesGroup, randomOtherRulesAmount));
             newSpeciesArray[i] = newSpecies;
         }
 
@@ -145,10 +137,10 @@ public class SpeciesBank : MonoBehaviour
 
     public CurrentGameData GetCurrentGameDate()
     {
-        return new CurrentGameData(speciesBank, speciesCustomName);
+        return new CurrentGameData(speciesBank, speciesCustomName, rulesBank.GetRulesBank());
     }
 
-    Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int birthRuleIndex, int deathRuleIndex, bool treatWallsAsAlive)
+    Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int birthRuleIndex, int deathRuleIndex, int[] otherRulesIndexes)
     {
         List<SPECIES_GROUP> speciesGroupList = new List<SPECIES_GROUP>();
         for(int i = 0; i < speciesGroups.Length; i++)
@@ -156,8 +148,15 @@ public class SpeciesBank : MonoBehaviour
             speciesGroupList.Add((SPECIES_GROUP)speciesGroups[i]);
         }
 
+        Rule[] otherRulesArray = new Rule[otherRulesIndexes.Length];
+
+        for(int i = 0; i < otherRulesArray.Length; i++)
+        {
+            otherRulesArray[i] = rulesBank.GetRule(otherRulesIndexes[i]);
+        }
+
         return new Species(defaultName, speciesGroupList, new Color(color[0], color[1], color[2], color[3]), (SPECIES_STARTING_POPULATION)startingPopulation,
-            rulesBank.GetBirthRule(birthRuleIndex), rulesBank.GetDeathRule(deathRuleIndex), treatWallsAsAlive);
+            rulesBank.GetRule(birthRuleIndex), rulesBank.GetRule(deathRuleIndex), otherRulesArray);
     }
 
     public void AddSpecies(Species[] speciesArray)

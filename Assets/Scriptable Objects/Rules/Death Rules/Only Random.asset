@@ -12,12 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
   m_Name: Only Random
   m_EditorClassIdentifier: 
-  conditions:
+  possibleConditionAmounts: {x: 1, y: 2}
+  matchMySpeciesGroups: 1
+  addRandomSpeciesGroups: 0
+  randomizeCompareInts: 1
+  compareIntsRandomMinRange: {x: 1, y: 2}
+  compareIntsRandomMaxRange: {x: 1, y: 3}
+  possibleConditions:
   - source: 13
-    condition: 0
-    compareInts: {x: 1, y: 1}
+    conditionParameter: 0
+    compareInts: {x: 0, y: 0}
     compareSpeciesGroups: 
     compareStates: 
-  results:
+  - source: 13
+    conditionParameter: 0
+    compareInts: {x: 0, y: 0}
+    compareSpeciesGroups: 
+    compareStates: 
+  possibleResults:
   - lifeEffect: 2
     newState: 0
+  neighborStyle: 0
+  wallsAreAlive: 0
+  classification: 2
