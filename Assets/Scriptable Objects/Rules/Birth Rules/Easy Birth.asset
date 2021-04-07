@@ -12,17 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
   m_Name: Easy Birth
   m_EditorClassIdentifier: 
-  possibleConditionAmounts: {x: 0, y: 0}
-  randomizeCompareInts: 0
-  compareIntsRandomMinRange: {x: 0, y: 3}
-  compareIntsRandomMaxRange: {x: 3, y: 8}
+  possibleConditionAmounts: {x: 1, y: 1}
+  matchMySpeciesGroups: 1
+  addRandomSpeciesGroups: 1
+  randomizeCompareInts: 1
+  compareIntsRandomMinRange: {x: 0, y: 2}
+  compareIntsRandomMaxRange: {x: 4, y: 8}
   possibleConditions:
-  - source: 0
+  - source: 2
     conditionParameter: 0
     compareInts: {x: 0, y: 0}
     compareSpeciesGroups: 
     compareStates: 
   possibleResults: []
-  neighborStyle: 0
-  wallsAreAlive: 0
-  classification: 0
+  neighborStyle: 3
+  wallsAreAlive: 2
+  classification: 1

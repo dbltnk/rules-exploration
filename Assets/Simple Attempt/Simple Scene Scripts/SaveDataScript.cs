@@ -18,7 +18,7 @@ public class SaveData
         startingPopulations = new int[speciesCount];
         birthRuleIndex = new int[speciesCount];
         deathRuleIndex = new int[speciesCount];
-        treatWallsAsAlive = new bool[speciesCount];
+        otherRulesIndexes = new int[speciesCount][];
 
         for (int i = 0; i < speciesCount; i++)
         {
@@ -29,7 +29,7 @@ public class SaveData
             startingPopulations[i] = serializedSpeciesArray[i].startingPopulation;
             birthRuleIndex[i] = serializedSpeciesArray[i].birthRuleIndex;
             deathRuleIndex[i] = serializedSpeciesArray[i].deathRuleIndex;
-            treatWallsAsAlive[i] = serializedSpeciesArray[i].treatWallsAsAlive;
+            otherRulesIndexes[i] = serializedSpeciesArray[i].otherRulesIndexes;
         }
 
         int ruleCount = serializedRulesArray.Length;
@@ -44,6 +44,8 @@ public class SaveData
         ruleCompareStates = new int[ruleCount][][];
         ruleResultLifeEffect = new int[ruleCount];
         ruleResultNewState = new int[ruleCount];
+        ruleNeighborStyle = new int[ruleCount];
+        ruleNullRule = new bool[ruleCount];
 
         for(int i = 0; i < ruleCount; i++)
         {
@@ -81,6 +83,7 @@ public class SaveData
             }
             ruleResultLifeEffect[i] = thisRule.result.lifeEffect;
             ruleResultNewState[i] = thisRule.result.newState;
+            ruleNullRule[i] = thisRule.nullRule;
         }
     }
 
@@ -92,7 +95,7 @@ public class SaveData
     public int[] startingPopulations;
     public int[] birthRuleIndex;
     public int[] deathRuleIndex;
-    public bool[] treatWallsAsAlive;
+    public int[][] otherRulesIndexes;
 
     //Rules Data
     public int[] ruleIndexes;
@@ -106,6 +109,7 @@ public class SaveData
     public int[][][] ruleCompareStates;
     public int[] ruleResultLifeEffect;
     public int[] ruleResultNewState;
+    public bool[] ruleNullRule;
 }
 
 public enum RULE_CLASSIFICATION
@@ -129,6 +133,7 @@ public class SerializedRule
         classification = (int)rule.classification;
         neighborStyle = (int)rule.neighborStyle;
         wallsAreAlive = rule.wallsAreAlive;
+        nullRule = rule.nullRule;
     }
 
     public int ruleIndex;
@@ -137,6 +142,7 @@ public class SerializedRule
     public int classification;
     public int neighborStyle;
     public bool wallsAreAlive;
+    public bool nullRule;
 }
 
 public class SerializedCondition
@@ -169,8 +175,16 @@ public class SerializedResult
 {
     public SerializedResult(Result result)
     {
-        lifeEffect = (int)result.lifeEffect;
-        newState = (int)result.newState;
+        if(result == null)
+        {
+            lifeEffect = (int)LIFE_EFFECT.NONE;
+            newState = (int)STATE.NONE;
+        }
+        else
+        {
+            lifeEffect = (int)result.lifeEffect;
+            newState = (int)result.newState;
+        }        
     }
 
     public int lifeEffect;
@@ -179,7 +193,7 @@ public class SerializedResult
 
 public class SerializedSpecies
 {
-    public SerializedSpecies(string defaultNameInc, List<SPECIES_GROUP> speciesGroupsInc, Color colorInc, SPECIES_STARTING_POPULATION startingPopulationInc, int birthRuleInc, int deathRuleInc, bool treatWallsAsAliveInc)
+    public SerializedSpecies(string defaultNameInc, List<SPECIES_GROUP> speciesGroupsInc, Color colorInc, SPECIES_STARTING_POPULATION startingPopulationInc, int birthRuleInc, int deathRuleInc, Rule[] otherRulesIndexesInc)
     {
         defaultName = defaultNameInc;
         speciesGroups = new int[speciesGroupsInc.Count];
@@ -194,7 +208,22 @@ public class SerializedSpecies
         startingPopulation = (int)startingPopulationInc;
         birthRuleIndex = birthRuleInc;
         deathRuleIndex = deathRuleInc;
-        treatWallsAsAlive = treatWallsAsAliveInc;
+        if(otherRulesIndexesInc == null)
+        {
+            otherRulesIndexes = new int[0];
+        }
+        else
+        {
+            otherRulesIndexes = new int[otherRulesIndexesInc.Length];
+
+            if(otherRulesIndexesInc.Length > 0)
+            {
+                for(int i = 0; i < otherRulesIndexes.Length; i++)
+                {
+                    otherRulesIndexes[i] = otherRulesIndexesInc[i].ruleIndex;
+                }
+            }
+        }              
     }
 
     public string defaultName;
@@ -203,7 +232,7 @@ public class SerializedSpecies
     public int startingPopulation;
     public int birthRuleIndex;
     public int deathRuleIndex;
-    public bool treatWallsAsAlive;
+    public int[] otherRulesIndexes;
 }
 
 public static class SaveDataScript

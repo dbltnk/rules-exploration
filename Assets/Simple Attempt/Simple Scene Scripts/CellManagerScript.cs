@@ -63,10 +63,6 @@ public class CellManagerScript : MonoBehaviour
     int emptySpaceWeight = 3;
 
     List<Rule> levelRules;
-    /// <summary>
-    /// Rules that only come into play for dying cells. These are referenced after the first round of rule application.
-    /// </summary>
-    List<Rule> rulesForTheDying;
 
     float updateRate = 1f;
 
@@ -79,7 +75,7 @@ public class CellManagerScript : MonoBehaviour
 
     Dictionary<Coords, CellState> startingConditions;
 
-    public void AssignLevel(Level level, GameManagerScript  gameManager, SpeciesBank speciesBank)
+    public void AssignLevel(Level level, GameManagerScript gameManager, SpeciesBank speciesBank)
     {
         layerStatus.AssignSpeciesBank(speciesBank);
 
@@ -87,9 +83,11 @@ public class CellManagerScript : MonoBehaviour
         
         RuleObject[] ruleObjects = level.ruleObjects;
 
+        RulesBank rulesBank = gameManager.GetComponent<RulesBank>();
+
         for(int i = 0; i < ruleObjects.Length; i++)
         {
-            levelRules.Add(new Rule(ruleObjects[i], -1));
+            levelRules.Add(rulesBank.GetRuleFromRuleObjectAtRuntime(ruleObjects[i], null));
         }
 
         SpeciesObject[] specificSpecies = level.specificSpecies;
@@ -98,7 +96,7 @@ public class CellManagerScript : MonoBehaviour
 
         for(int i = 0; i < specificSpecies.Length; i++)
         {
-            specificSpeciesConverted[i] = new Species(specificSpecies[i]);
+            specificSpeciesConverted[i] = new Species(specificSpecies[i], rulesBank);
         }
 
         speciesBank.AddSpecies(specificSpeciesConverted);
@@ -405,13 +403,18 @@ public class CellManagerScript : MonoBehaviour
             }
 
             Rule speciesDeathRule = null;
+            Rule[] otherRules = null;
+
+            bool applyDeathRule = false;
 
             if(cellState.species != null)
-            {
+            {                
                 speciesDeathRule = cellState.species.deathRule;
+                applyDeathRule = !speciesDeathRule.nullRule;
+                otherRules = cellState.species.otherRules;
             }
 
-            if(speciesDeathRule != null)
+            if(applyDeathRule)
             {
                 Result result = arbiter.TestRule(cellState.coords, speciesDeathRule);
                 if(result != null)
@@ -420,14 +423,19 @@ public class CellManagerScript : MonoBehaviour
                 }
             }
 
-            //for(int r = 0; r < rulesForTheDying.Count; r++)
-            //{
-            //    Result[] results = arbiter.TestRule(cellState.coords, rulesForTheDying[r]);
-            //    if(results != null)
-            //    {
-            //        ApplyResults(results);
-            //    }
-            //}
+            //Debug.Log(otherRules);
+
+            if(otherRules != null)
+            {
+                for(int r = 0; r < otherRules.Length; r++)
+                {
+                    Result result = arbiter.TestRule(cellState.coords, otherRules[r]);
+                    if(result != null)
+                    {
+                        ApplySimpleResult(result);
+                    }
+                }
+            }            
 
             if(!cellState.alive &&
                 !cellState.futureAlive)
@@ -438,7 +446,7 @@ public class CellManagerScript : MonoBehaviour
                 {
                     Rule birthRule = enabledSpecies[s].birthRule;
 
-                    if(birthRule != null)
+                    if(!birthRule.nullRule)
                     {
                         Result thisResult = arbiter.TestRule(cellState.coords, birthRule);
 

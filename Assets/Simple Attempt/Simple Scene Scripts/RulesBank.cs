@@ -13,6 +13,7 @@ public class RulesBank : MonoBehaviour
     //These hold rules objects from which rules area created.
     List<RuleObject> birthRuleObjects;
     List<RuleObject> deathRuleObjects;
+    List<RuleObject> otherRuleObjects;
 
     public void AssignRuleObjectArray(RuleObject[] ruleObjectArray)
     {
@@ -28,6 +29,7 @@ public class RulesBank : MonoBehaviour
     {
         birthRuleObjects = new List<RuleObject>();
         deathRuleObjects = new List<RuleObject>();
+        otherRuleObjects = new List<RuleObject>();
 
         for(int i = 0; i < ruleObjectArray.Length; i++)
         {
@@ -40,6 +42,9 @@ public class RulesBank : MonoBehaviour
                 case RULE_CLASSIFICATION.DEATH:
                     deathRuleObjects.Add(thisRuleObject);
                     break;
+                default:
+                    otherRuleObjects.Add(thisRuleObject);
+                    break;
             }
         }
     }
@@ -49,20 +54,11 @@ public class RulesBank : MonoBehaviour
     /// </summary>
     public void InitializeNewRulesBank()
     {
-        int rulesCount = ruleObjectArray.Length;
-
-        rulesBank = new Rule[rulesCount];
-
-        for(int i = 0; i < rulesCount; i++)
-        {
-            Debug.Log("Converting a rule object to a rule.");
-
-            rulesBank[i] = new Rule(ruleObjectArray[i], i);
-        }        
+        rulesBank = new Rule[0];    
     }
 
     Rule DeserializeRule(int ruleIndex, int ruleClassification, int neighborStyle, bool wallsAreAlive, int[] conditionSource, int[] conditionParameters, int[][] compareInts, int[][] compareSpeciesGroups,
-        int[][] compareStates, int lifeEffect, int newState)
+        int[][] compareStates, int lifeEffect, int newState, bool nullRule)
     {
         int conditionAmount = conditionSource.Length;
 
@@ -84,7 +80,7 @@ public class RulesBank : MonoBehaviour
 
         Result result = new Result((LIFE_EFFECT)lifeEffect, (STATE)newState);
 
-        return new Rule(ruleIndex, conditions, result, (NEIGHBOR_STYLE)neighborStyle, wallsAreAlive, (RULE_CLASSIFICATION)ruleClassification);
+        return new Rule(ruleIndex, conditions, result, (NEIGHBOR_STYLE)neighborStyle, wallsAreAlive, (RULE_CLASSIFICATION)ruleClassification, nullRule);
     }
 
     public void LoadSavedRuleBank(SaveData saveData)
@@ -103,7 +99,7 @@ public class RulesBank : MonoBehaviour
         {
             rulesBank[i] = DeserializeRule(saveData.ruleIndexes[i], saveData.ruleClassifications[i], saveData.ruleNeighborStyle[i], saveData.ruleWallsAreAlive[i], saveData.ruleConditionSource[i],
                 saveData.ruleConditionParameters[i], saveData.ruleCompareInts[i], saveData.ruleCompareSpeciesGroups[i], saveData.ruleCompareStates[i],
-                saveData.ruleResultLifeEffect[i], saveData.ruleResultNewState[i]);
+                saveData.ruleResultLifeEffect[i], saveData.ruleResultNewState[i], saveData.ruleNullRule[i]);
         }
     }
 
@@ -114,23 +110,53 @@ public class RulesBank : MonoBehaviour
         return rulesBank[index];
     }
 
-    public Rule GetRandomBirthRule()
+    public Rule GetRandomBirthRule(List<SPECIES_GROUP> speciesGroups)
     {
-        return new Rule(birthRuleObjects[Random.Range(0, birthRuleObjects.Count)], rulesBank.Length);
+        Rule newRule = new Rule(birthRuleObjects[Random.Range(0, birthRuleObjects.Count)], rulesBank.Length, speciesGroups);
+        RegisterNewRule(newRule);
+        return newRule;
     }
 
-    public Rule GetRandomDeathRule()
+    public Rule GetRandomDeathRule(List<SPECIES_GROUP> speciesGroups)
     {
-        return new Rule(deathRuleObjects[Random.Range(0, deathRuleObjects.Count)], rulesBank.Length);
+        Rule newRule = new Rule(deathRuleObjects[Random.Range(0, deathRuleObjects.Count)], rulesBank.Length, speciesGroups);
+        RegisterNewRule(newRule);
+        return newRule;
     }
 
-    public Rule CreateNewRule(RuleObject ruleObjectBase)
-    {   
+    public Rule[] GetRandomOtherRules(List<SPECIES_GROUP> speciesGroups, int amount)
+    {
+        if(amount < 1) { return new Rule[0]; }
+        if(amount < 1) { return new Rule[0]; }
+
+        Rule[] newRuleArray = new Rule[amount];
+
+        for(int i = 0; i < amount; i++)
+        {
+            Rule newRule = new Rule(otherRuleObjects[Random.Range(0, otherRuleObjects.Count)], rulesBank.Length, speciesGroups);
+            RegisterNewRule(newRule);
+            newRuleArray[i] = newRule;
+        }        
+
+        return newRuleArray;
+    }
+
+    public Rule GetRuleFromRuleObjectAtRuntime(RuleObject ruleObject, List<SPECIES_GROUP> speciesGroups)
+    {
+        Rule newRule = new Rule(ruleObject, rulesBank.Length, speciesGroups);
+
+        RegisterNewRule(newRule);
+
+        return newRule;
+    }
+
+    void RegisterNewRule(Rule newRule)
+    {
+        int ruleIndex = newRule.ruleIndex;
+
         int ruleBankLength = rulesBank.Length;
 
-        Rule newRule = new Rule(ruleObjectBase, ruleBankLength);
-
-        Rule[] newRuleBank = new Rule[rulesBank.Length + 1];
+        Rule[] newRuleBank = new Rule[ruleBankLength + 1];
 
         for(int i = 0; i < ruleBankLength; i++)
         {
@@ -142,7 +168,5 @@ public class RulesBank : MonoBehaviour
         rulesBank = newRuleBank;
 
         gameManager.SaveGame();
-
-        return newRule;
     }
 }

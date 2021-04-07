@@ -72,6 +72,8 @@ public class PlayerControlScript : MonoBehaviour
 
         selectedSpecies = cellManager.GetSpecies(cellObjectScript.GetCoords());
 
+        if(!cellManager.IsAlive(cellObjectScript.GetCoords())) { selectedSpecies = null; }
+
         if(selectedSpecies == null)
         {
             SetSelectedSpeciesReadoutToNone();

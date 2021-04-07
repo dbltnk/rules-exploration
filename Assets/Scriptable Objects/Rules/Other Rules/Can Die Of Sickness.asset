@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
-  m_Name: Low Pop Tolerance
+  m_Name: Can Die Of Sickness
   m_EditorClassIdentifier: 
-  possibleConditionAmounts: {x: 1, y: 2}
+  possibleConditionAmounts: {x: 2, y: 2}
   matchMySpeciesGroups: 0
-  addRandomSpeciesGroups: 1
-  randomizeCompareInts: 1
-  compareIntsRandomMinRange: {x: 1, y: 2}
-  compareIntsRandomMaxRange: {x: 2, y: 3}
+  addRandomSpeciesGroups: 0
+  randomizeCompareInts: 0
+  compareIntsRandomMinRange: {x: 0, y: 3}
+  compareIntsRandomMaxRange: {x: 3, y: 8}
   possibleConditions:
-  - source: 0
-    conditionParameter: 1
+  - source: 4
+    conditionParameter: 6
     compareInts: {x: 0, y: 0}
     compareSpeciesGroups: 
-    compareStates: 
-  - source: 2
-    conditionParameter: 1
-    compareInts: {x: 0, y: 0}
+    compareStates: 02000000
+  - source: 13
+    conditionParameter: 0
+    compareInts: {x: 1, y: 1}
     compareSpeciesGroups: 
-    compareStates: 
+    compareStates: 02000000
   possibleResults:
   - lifeEffect: 2
     newState: 0
-  neighborStyle: 3
-  wallsAreAlive: 2
-  classification: 2
+  neighborStyle: 0
+  wallsAreAlive: 0
+  classification: 0

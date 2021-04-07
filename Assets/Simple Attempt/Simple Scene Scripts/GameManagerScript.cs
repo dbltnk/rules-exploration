@@ -16,6 +16,8 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] SpeciesBank speciesBank = null;
     [SerializeField] RulesBank rulesBank = null;
 
+    [SerializeField] bool DEBUG_ALWAYS_DELETE_SAVE_DATA = false;
+
     public SpeciesBank GetSpeciesBank() { return speciesBank; }
 
     int currentSeed;
@@ -30,7 +32,8 @@ public class GameManagerScript : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         currentSaveData = SaveDataScript.LoadSaveData();        
 
-        if(currentSaveData == null)
+        if(currentSaveData == null ||
+            DEBUG_ALWAYS_DELETE_SAVE_DATA)
         {
             CreateNewGameSave();
         }
@@ -67,10 +70,10 @@ public class GameManagerScript : MonoBehaviour
         SerializedSpecies[] serializedSpecies = new SerializedSpecies[speciesCount];
 
         for(int i = 0; i < speciesCount; i++)
-        {
+        {            
             Species thisSpecies = speciesArray[i];
             serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation,
-                thisSpecies.birthRule.ruleIndex, thisSpecies.deathRule.ruleIndex, thisSpecies.treatWallsAsAlive);
+                thisSpecies.birthRule.ruleIndex, thisSpecies.deathRule.ruleIndex, thisSpecies.otherRules);
         }
 
         int rulesCount = rulesArray.Length;

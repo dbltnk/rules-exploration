@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
   m_Name: Lonely Birth
   m_EditorClassIdentifier: 
-  conditions:
+  possibleConditionAmounts: {x: 1, y: 1}
+  matchMySpeciesGroups: 1
+  addRandomSpeciesGroups: 0
+  randomizeCompareInts: 1
+  compareIntsRandomMinRange: {x: 1, y: 2}
+  compareIntsRandomMaxRange: {x: 1, y: 2}
+  possibleConditions:
   - source: 1
-    condition: 0
-    compareInts: {x: 1, y: 1}
+    conditionParameter: 0
+    compareInts: {x: 0, y: 0}
     compareSpeciesGroups: 
     compareStates: 
-  results:
-  - lifeEffect: 1
-    newState: 1
+  possibleResults: []
+  neighborStyle: 3
+  wallsAreAlive: 2
+  classification: 1

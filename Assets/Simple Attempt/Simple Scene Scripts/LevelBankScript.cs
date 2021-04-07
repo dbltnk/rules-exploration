@@ -6,6 +6,11 @@ public class LevelBankScript : MonoBehaviour
 {
     [SerializeField] Level[] allLevels = null;
 
+    public void AssignLevels(Level[] levelArray)
+    {
+        allLevels = levelArray;
+    }
+
     public Level[] GetLevels()
     {
         return allLevels;

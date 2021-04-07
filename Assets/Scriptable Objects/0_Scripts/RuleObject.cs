@@ -20,7 +20,9 @@ public enum RO_WALLS_ALIVE
 [CreateAssetMenu(fileName = "New Rule Object", menuName = "Rule Object")]
 public class RuleObject : ScriptableObject
 {
-    public Vector2Int possibleConditionAmounts = new Vector2Int(1, 2);
+    public Vector2Int possibleConditionAmounts = new Vector2Int(1, 1);
+    public bool matchMySpeciesGroups = true;
+    public bool addRandomSpeciesGroups = false;
     public bool randomizeCompareInts = false;
     public Vector2Int compareIntsRandomMinRange = new Vector2Int(0, 3);
     public Vector2Int compareIntsRandomMaxRange = new Vector2Int(3, 8);

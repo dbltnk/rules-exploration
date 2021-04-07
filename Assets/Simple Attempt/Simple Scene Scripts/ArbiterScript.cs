@@ -19,7 +19,7 @@ public class Condition
         this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         this.compareSpeciesGroups = compareSpeciesGroups;
-        compareStates = null;
+        compareStates = new List<STATE>();
     }
 
     public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts)
@@ -27,8 +27,8 @@ public class Condition
         this.source = source;
         this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
-        compareSpeciesGroups = null;
-        compareStates = null;
+        compareSpeciesGroups = new List<SPECIES_GROUP>();
+        compareStates = new List<STATE>();
     }
 
     public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts, STATE compareState)
@@ -37,7 +37,7 @@ public class Condition
         this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         compareStates = new List<STATE> { compareState };
-        compareSpeciesGroups = null;
+        compareSpeciesGroups = new List<SPECIES_GROUP>();
     }
 
     public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, Vector2Int compareInts, SPECIES_GROUP compareSpeciesGroups)
@@ -46,7 +46,7 @@ public class Condition
         this.conditionParameter = conditionParameter;
         this.compareInts = compareInts;
         this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
-        compareStates = null;
+        compareStates = new List<STATE>();
     }
 
     public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, STATE compareState)
@@ -54,7 +54,7 @@ public class Condition
         this.source = source;
         this.conditionParameter = conditionParameter;
         compareStates = new List<STATE> { compareState };
-        compareSpeciesGroups = null;
+        compareSpeciesGroups = new List<SPECIES_GROUP>();
     }
 
     public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter, SPECIES_GROUP compareSpeciesGroups)
@@ -62,15 +62,15 @@ public class Condition
         this.source = source;
         this.conditionParameter = conditionParameter;
         this.compareSpeciesGroups = new List<SPECIES_GROUP> { compareSpeciesGroups };
-        compareStates = null;
+        compareStates = new List<STATE>();
     }
 
     public Condition(SOURCE source, CONDITON_PARAMETER conditionParameter)
     {
         this.source = source;
         this.conditionParameter = conditionParameter;
-        compareSpeciesGroups = null;
-        compareStates = null;
+        compareSpeciesGroups = new List<SPECIES_GROUP>();
+        compareStates = new List<STATE>();
     }
 
     public SOURCE source;
