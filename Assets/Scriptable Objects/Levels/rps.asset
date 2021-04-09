@@ -18,4 +18,6 @@ MonoBehaviour:
   procgenSpeciesAmount: {x: 0, y: 0}
   specificSpecies:
   - {fileID: 11400000, guid: 786d829c6be9ab94e8a0742b73cbcd24, type: 2}
+  - {fileID: 11400000, guid: 62b6e3968c457e141be83fa53b6af848, type: 2}
+  - {fileID: 11400000, guid: 98aa5356a9548a0499156566ba1c4397, type: 2}
   ruleObjects: []

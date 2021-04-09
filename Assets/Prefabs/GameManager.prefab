@@ -66,7 +66,10 @@ MonoBehaviour:
   gameManager: {fileID: 2071066168707965563}
   ruleObjectArray:
   - {fileID: 11400000, guid: 51029519aeeb40441b51d2338b593d3b, type: 2}
+  - {fileID: 11400000, guid: b6001d6bc9823de4fbcdb4910f969e72, type: 2}
+  - {fileID: 11400000, guid: bab2f1ca3642cd74b9031808d35dc0c0, type: 2}
   - {fileID: 11400000, guid: eb75c974c09b4004584ad6aa82a7b9c7, type: 2}
+  - {fileID: 11400000, guid: 195d44c5679e2954d85d2d30513d4957, type: 2}
   - {fileID: 11400000, guid: 362663cba6da1854aa56d40855ff9b65, type: 2}
   - {fileID: 11400000, guid: e415104c2a3cf3a42be978a4552e4487, type: 2}
   - {fileID: 11400000, guid: 95bef49d2e7149c4589dfba8fa2337d3, type: 2}
