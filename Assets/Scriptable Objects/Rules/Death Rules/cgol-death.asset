@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: cgol-death
   m_EditorClassIdentifier: 
   possibleConditionAmounts: {x: 1, y: 1}
-  matchMySpeciesGroups: 1
+  matchMySpeciesGroups: 0
   addRandomSpeciesGroups: 0
   randomizeCompareInts: 0
   compareIntsRandomMinRange: {x: 0, y: 3}
@@ -22,9 +22,11 @@ MonoBehaviour:
   - source: 0
     conditionParameter: 1
     compareInts: {x: 2, y: 3}
-    compareSpeciesGroups: 
+    compareSpeciesGroups: 0000000000000000010000000100000001000000
     compareStates: 
-  possibleResults: []
+  possibleResults:
+  - lifeEffect: 2
+    newState: 0
   neighborStyle: 0
   wallsAreAlive: 0
   classification: 2
