@@ -50,7 +50,7 @@ public class BackgroundGradient : MonoBehaviour
         img = GetComponent<RawImage>();
         backgroundTexture = new Texture2D(2, 2);
         backgroundTexture.wrapMode = TextureWrapMode.Clamp;
-        backgroundTexture.filterMode = FilterMode.Bilinear;
+        backgroundTexture.filterMode = FilterMode.Trilinear;
         SetColor(colors[0], colors[1], colors[2], colors[3]);
     }
     private void Update () {
