@@ -155,10 +155,12 @@ public class PlayerControlScript : MonoBehaviour
 
         if(speciesRenameGameObject)
         {
+            Debug.Log("Rename button, speciesRenameGameObject is true");
             speciesRenameInput.text = speciesBank.GetSpeciesName(selectedSpecies);
         }
         else
         {
+            Debug.Log("Rename button, speciesRenameGameObject is false");
             gameManager.SaveGame();
         }
     }

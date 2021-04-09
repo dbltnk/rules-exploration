@@ -6,9 +6,10 @@ public class SpeciesSOEditorScript : Editor
 {
     public override void OnInspectorGUI()
     {
-        //Species species = (Species)target;
+        SpeciesObject species = (SpeciesObject)target;
 
         base.OnInspectorGUI();
 
+        species.defaultName = target.name;
     }
 }

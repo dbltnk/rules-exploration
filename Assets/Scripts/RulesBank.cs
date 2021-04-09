@@ -127,7 +127,7 @@ public class RulesBank : MonoBehaviour
     public Rule[] GetRandomOtherRules(List<SPECIES_GROUP> speciesGroups, int amount)
     {
         if(amount < 1) { return new Rule[0]; }
-        if(amount < 1) { return new Rule[0]; }
+        if(otherRuleObjects.Count < 1) { return new Rule[0]; }
 
         Rule[] newRuleArray = new Rule[amount];
 
