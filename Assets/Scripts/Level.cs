@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "New Level", menuName = "Level")]
 public class Level : ScriptableObject
@@ -15,4 +16,30 @@ public class Level : ScriptableObject
     public SpeciesObject[] specificSpecies;
 
     public RuleObject[] ruleObjects;
+
+    private LevelBankScript bankScript; 
+
+    public void Awake () {
+        bankScript = Resources.FindObjectsOfTypeAll<LevelBankScript>().FirstOrDefault();
+        List<Level> gatheredLevels = new List<Level>();
+        gatheredLevels.AddRange(bankScript.GetLevels());
+        bool found = false;
+        foreach (Level l in gatheredLevels) {
+            if (l == this) found = true;
+        }
+        if (!found) gatheredLevels.Add(this);
+        bankScript.AssignLevels(gatheredLevels.ToArray());
+        EditorUtility.SetDirty(bankScript.gameObject);
+    }
+
+    [ExecuteInEditMode]
+    public void OnDestroy () {
+        List<Level> gatheredLevels = new List<Level>();
+        gatheredLevels.AddRange(bankScript.GetLevels());
+        for (int i = 0; i < gatheredLevels.Count; i++) {
+            if (gatheredLevels[i] == this) gatheredLevels.Remove(gatheredLevels[i]);
+        }
+        bankScript.AssignLevels(gatheredLevels.ToArray());
+        EditorUtility.SetDirty(bankScript.gameObject);
+    }
 }
