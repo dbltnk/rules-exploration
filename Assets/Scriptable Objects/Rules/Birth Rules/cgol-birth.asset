@@ -9,22 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 166ce52323bb9234c977faf6aea1ddff, type: 3}
-  m_Name: Easy Birth
+  m_Script: {fileID: 11500000, guid: 7cf00b354e3a6d84da3533db5426ad43, type: 3}
+  m_Name: cgol-birth
   m_EditorClassIdentifier: 
   possibleConditionAmounts: {x: 1, y: 1}
   matchMySpeciesGroups: 1
-  addRandomSpeciesGroups: 1
-  randomizeCompareInts: 1
-  compareIntsRandomMinRange: {x: 0, y: 2}
-  compareIntsRandomMaxRange: {x: 4, y: 8}
+  addRandomSpeciesGroups: 0
+  randomizeCompareInts: 0
+  compareIntsRandomMinRange: {x: 0, y: 3}
+  compareIntsRandomMaxRange: {x: 3, y: 8}
   possibleConditions:
-  - source: 2
+  - source: 0
     conditionParameter: 0
-    compareInts: {x: 0, y: 0}
+    compareInts: {x: 3, y: 3}
     compareSpeciesGroups: 
     compareStates: 
   possibleResults: []
-  neighborStyle: 3
-  wallsAreAlive: 2
+  neighborStyle: 0
+  wallsAreAlive: 0
   classification: 1
