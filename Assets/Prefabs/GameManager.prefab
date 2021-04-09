@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allLevels:
   - {fileID: 11400000, guid: 8cf47e8c8c0ad5148b48e81fd3507622, type: 2}
+  - {fileID: 11400000, guid: 6e55d41afa7d7584bad370b6c501c2ee, type: 2}
 --- !u!114 &5466050466424073618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +64,9 @@ MonoBehaviour:
   gameManager: {fileID: 2071066168707965563}
   ruleObjectArray:
   - {fileID: 11400000, guid: 51029519aeeb40441b51d2338b593d3b, type: 2}
+  - {fileID: 11400000, guid: eb75c974c09b4004584ad6aa82a7b9c7, type: 2}
   - {fileID: 11400000, guid: 362663cba6da1854aa56d40855ff9b65, type: 2}
+  - {fileID: 11400000, guid: e415104c2a3cf3a42be978a4552e4487, type: 2}
 --- !u!114 &2071066168707965563
 MonoBehaviour:
   m_ObjectHideFlags: 0
