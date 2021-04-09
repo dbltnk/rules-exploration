@@ -32,7 +32,7 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] GameObject speciesRenameGameObject = null;
     [SerializeField] TMP_InputField speciesRenameInput = null;
     [SerializeField] TMP_Text speciesNameReadout = null;
-
+    [SerializeField] TMP_Text cellStateReadout = null;
     [SerializeField] TMP_Text mouseModeReadout = null;
 
     GameManagerScript gameManager;
@@ -77,11 +77,14 @@ public class PlayerControlScript : MonoBehaviour
         if(selectedSpecies == null)
         {
             SetSelectedSpeciesReadoutToNone();
+            cellStateReadout.text = "";
         }
         else
         {
             speciesNameReadout.text = speciesBank.GetSpeciesName(selectedSpecies);
-        }        
+            cellStateReadout.text = cellManager.GetCellStateAtCoords(cellObjectScript.GetCoords()).ToString();
+        }
+
 
         mouseMode = MOUSE_MODE.CELL_SELECTED;
         UpdateMouseModeReadout();

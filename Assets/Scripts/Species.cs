@@ -87,4 +87,8 @@ public class Species
     public Rule birthRule;
     public Rule deathRule;
     public Rule[] otherRules;
+
+    public override string ToString () {
+        return defaultName;
+    }
 }

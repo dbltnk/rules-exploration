@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc3d6bf81c9912c4585d8f542aabec8d, type: 3}
+  m_Name: cgol
+  m_EditorClassIdentifier: 
+  levelName: Conway's Game of Life
+  levelWidth: 12
+  levelHeight: 12
+  procgenSpeciesAmount: {x: 0, y: 0}
+  specificSpecies:
+  - {fileID: 11400000, guid: fb349bae08c4b0a4691729a381d9e023, type: 2}
+  ruleObjects: []
