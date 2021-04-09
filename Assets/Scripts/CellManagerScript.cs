@@ -43,6 +43,11 @@ public class CellState
     {
         return new CellState(coords, state, species, alive);
     }
+
+    public override string ToString() {
+        string a = alive ? "alive" : "dead";
+        return string.Format("Pos {0}: {1} ({2}) is {3}", coords.ToString(), species.ToString(), state.ToString(), a);
+    }
 }
 
 public class CellManagerScript : MonoBehaviour
