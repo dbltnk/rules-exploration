@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class ImageRandomizer : MonoBehaviour
 {
+    public Sprite cellMoore;
+    public Sprite cellVonNeumann;
+
     PlayerControlScript playerControlScript;
     CellManagerScript cellManagerScript;
     CellObjectScript cellObjectScript;
+    SpriteRenderer rend;
 
     void Start () {
         playerControlScript = FindObjectOfType<PlayerControlScript>();
         cellManagerScript = FindObjectOfType<CellManagerScript>();
         cellObjectScript = GetComponentInParent<CellObjectScript>();
+        rend = GetComponent<SpriteRenderer>();
 
         float r = Random.Range(0f, 5f);
 
@@ -31,6 +36,21 @@ public class ImageRandomizer : MonoBehaviour
     }
 
     private void Update () {
+        Species thisSpecies = cellManagerScript.GetSpecies(cellObjectScript.GetCoords());
+        bool isVonNeumann4 = false;
+        List<SPECIES_GROUP> groups = new List<SPECIES_GROUP>();
+        if (thisSpecies != null) {
+            groups = thisSpecies.speciesGroups;
+        }
+        if (groups.Contains(SPECIES_GROUP.VON_NEUMANN_4)) isVonNeumann4 = true;
+
+        if (isVonNeumann4) {
+            rend.sprite = cellVonNeumann;
+        }
+        else {
+            rend.sprite = cellMoore;
+        }
+
         bool isAlive = cellManagerScript.GetCellStateAtCoords(cellObjectScript.GetCoords()).alive;
         float wiggleChance = 1f / cellManagerScript.updateRate * Time.deltaTime;
         if (Random.Range(0f, 1f) <= wiggleChance && playerControlScript.simulationRunning && isAlive) {

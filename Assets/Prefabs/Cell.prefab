@@ -95,6 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54256ab77e8bf3e4db85dc68ddec04d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cellMoore: {fileID: 21300000, guid: d0fb7cbe7e3b7bb469b480d9989e75d5, type: 3}
+  cellVonNeumann: {fileID: 21300000, guid: 66d48e20bd669664aa891ff55ab06399, type: 3}
 --- !u!1 &7834420745860804714
 GameObject:
   m_ObjectHideFlags: 0
