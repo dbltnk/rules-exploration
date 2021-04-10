@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf00b354e3a6d84da3533db5426ad43, type: 3}
+  m_Name: vonneumann-4-death
+  m_EditorClassIdentifier: 
+  possibleConditionAmounts: {x: 1, y: 1}
+  matchMySpeciesGroups: 0
+  addRandomSpeciesGroups: 0
+  randomizeCompareInts: 0
+  compareIntsRandomMinRange: {x: 0, y: 3}
+  compareIntsRandomMaxRange: {x: 3, y: 8}
+  possibleConditions:
+  - source: 0
+    conditionParameter: 1
+    compareInts: {x: 2, y: 3}
+    compareSpeciesGroups: 
+    compareStates: 
+  possibleResults:
+  - lifeEffect: 2
+    newState: 0
+  neighborStyle: 1
+  wallsAreAlive: 0
+  classification: 2

@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class RulesBank : MonoBehaviour
 {
@@ -15,13 +15,9 @@ public class RulesBank : MonoBehaviour
     List<RuleObject> deathRuleObjects;
     List<RuleObject> otherRuleObjects;
 
-    public void AssignRuleObjectArray(RuleObject[] ruleObjectArray)
-    {
-        this.ruleObjectArray = ruleObjectArray;
-    }
-
     void Awake()
     {
+        ruleObjectArray = Resources.LoadAll("Rules", typeof(RuleObject)).Cast<RuleObject>().ToArray();
         InitializeBirthAndDeathRuleBases();
     }
 
