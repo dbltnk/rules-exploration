@@ -46,11 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6412360eaf69d0b4cacb5afe0408e70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allLevels:
-  - {fileID: 11400000, guid: 8cf47e8c8c0ad5148b48e81fd3507622, type: 2}
-  - {fileID: 11400000, guid: 6e55d41afa7d7584bad370b6c501c2ee, type: 2}
-  - {fileID: 11400000, guid: c079f0df8e8130042971637b1ce60fe0, type: 2}
-  - {fileID: 11400000, guid: a231a8f129b386442864366392f86159, type: 2}
+  allLevels: []
 --- !u!114 &5466050466424073618
 MonoBehaviour:
   m_ObjectHideFlags: 0
