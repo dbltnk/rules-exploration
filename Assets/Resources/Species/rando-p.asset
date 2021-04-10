@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8ffc88d72eb14fa0359e5faee2571, type: 3}
   m_Name: rando-p
   m_EditorClassIdentifier: 
-  defaultName: rando-p
-  speciesGroups: 
+  speciesGroups: 0200000004000000
   color: {r: 1, g: 0, b: 0.67914677, a: 1}
   startingPopulation: 4
   ignoreBirthRule: 0

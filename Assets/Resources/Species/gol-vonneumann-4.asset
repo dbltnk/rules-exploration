@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8ffc88d72eb14fa0359e5faee2571, type: 3}
   m_Name: gol-vonneumann-4
   m_EditorClassIdentifier: 
-  defaultName: gol-vonneumann-4
-  speciesGroups: 
+  speciesGroups: 0100000003000000
   color: {r: 0.2584905, g: 0.32843274, b: 1, a: 1}
   startingPopulation: 4
   ignoreBirthRule: 0

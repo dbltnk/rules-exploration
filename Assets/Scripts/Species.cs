@@ -4,10 +4,10 @@ using UnityEngine;
 public enum SPECIES_GROUP
 {
     NONE,
-    BLOB,
-    FLOPPER,
-    GOBLIN,
-    ROCK,
+    VON_NEUMANN_4,
+    MOORE_8,
+    FIXED_RULES,
+    RANDOM_RULES,
     FINAL_ENTRY_DO_NOT_REPLACE,
 }
 

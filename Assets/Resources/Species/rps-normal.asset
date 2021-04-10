@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc8ffc88d72eb14fa0359e5faee2571, type: 3}
   m_Name: rps-normal
   m_EditorClassIdentifier: 
-  defaultName: rps-normal
-  speciesGroups: 
+  speciesGroups: 0200000003000000
   color: {r: 1, g: 1, b: 1, a: 1}
   startingPopulation: 6
   ignoreBirthRule: 0
