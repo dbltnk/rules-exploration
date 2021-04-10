@@ -73,7 +73,7 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] Color deadColor = Color.grey;
 
-    Species[] enabledSpecies;
+    public Species[] enabledSpecies;
 
     Dictionary<Coords, CellState> coordsToCellState;
     CellState[] cellStateArray;
@@ -310,7 +310,13 @@ public class CellManagerScript : MonoBehaviour
     Species GetRandomSpecies()
     {
         return enabledSpecies[Random.Range(0, enabledSpecies.Length)];
-    }    
+    }
+
+    public void SetSpeciesAndStateOnCell (Coords destination, Species species, STATE state, bool alive) {
+        SetSpecies(destination, species);
+        SetState(destination, state);
+        SetAlive(destination, alive);
+    }
 
     public void CopyCellStateOntoNewCell(Coords source, Coords destination)
     {

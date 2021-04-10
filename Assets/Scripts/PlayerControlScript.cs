@@ -10,6 +10,7 @@ public enum MOUSE_MODE
     CELL_SELECTED,
     CLONE,
     DELETE,
+    DRAW
 }
 
 public class PlayerControlScript : MonoBehaviour
@@ -35,6 +36,7 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] TMP_Text mouseModeReadout = null;
 
     GameManagerScript gameManager;
+    GridManagerScript gridManager;
     SpeciesBank speciesBank;
 
     public bool simulationRunning = true;
@@ -51,6 +53,7 @@ public class PlayerControlScript : MonoBehaviour
         this.gameManager = gameManager;
         seedInput.text = gameManager.GetCurrentSeed().ToString();
         speciesBank = gameManager.GetSpeciesBank();
+        gridManager = gameManager.GetComponent<GridManagerScript>();
     }
 
     private void Awake()
@@ -139,6 +142,11 @@ public class PlayerControlScript : MonoBehaviour
     public void MouseModeDelete()
     {
         mouseMode = MOUSE_MODE.DELETE;
+        UpdateMouseModeReadout();
+    }
+
+    public void MouseModeDraw () {
+        mouseMode = MOUSE_MODE.DRAW;
         UpdateMouseModeReadout();
     }
 
@@ -395,12 +403,21 @@ public class PlayerControlScript : MonoBehaviour
             case MOUSE_MODE.DELETE:
                 Delete(cellScriptToSelect.GetCoords());
                 break;
+            case MOUSE_MODE.DRAW:
+                Draw(cellScriptToSelect.GetCoords());
+                break;
         }
     }
 
     void Clone(Coords destination)
     {
         cellManager.CopyCellStateOntoNewCell(selectedCellObjectScript.GetCoords(), destination);
+    }
+
+    void Draw(Coords destination) {
+        //Species species = gameManager.GetSpeciesBank().speciesBank[0];
+        Species species = cellManager.enabledSpecies[0];
+        cellManager.SetSpeciesAndStateOnCell(destination, species, STATE.NONE, true);
     }
 
     void Delete(Coords coords)

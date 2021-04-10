@@ -19,7 +19,7 @@ public class SpeciesBank : MonoBehaviour
 {
     [SerializeField] RulesBank rulesBank = null;
 
-    Species[] speciesBank;
+    public Species[] speciesBank;
 
     string[] speciesCustomName;
 
