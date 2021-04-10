@@ -13,7 +13,7 @@ public enum SPECIES_GROUP
 
 public class Species
 {
-    public Species(string defaultName, List<SPECIES_GROUP> speciesGroups, Color color, SPECIES_STARTING_POPULATION startingPopulation, Rule birthRule, Rule deathRule, Rule[] otherRules)
+    public Species(string defaultName, List<SPECIES_GROUP> speciesGroups, Color color, SPECIES_STARTING_POPULATION startingPopulation, STATE initialState, Rule birthRule, Rule deathRule, Rule[] otherRules)
     {
         this.defaultName = defaultName;
         this.speciesGroups = speciesGroups;
@@ -30,6 +30,7 @@ public class Species
         speciesGroups = speciesObject.speciesGroups;
         color = speciesObject.color;
         startingPopulation = speciesObject.startingPopulation;
+        initialState = speciesObject.initialState;
         if(speciesObject.ignoreBirthRule)
         {
             birthRule = rulesBank.GetRuleFromRuleObjectAtRuntime(null, null);
@@ -83,6 +84,7 @@ public class Species
     public List<SPECIES_GROUP> speciesGroups;
     public Color color = Color.white;
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
+    public STATE initialState;
     public Rule birthRule;
     public Rule deathRule;
     public Rule[] otherRules;

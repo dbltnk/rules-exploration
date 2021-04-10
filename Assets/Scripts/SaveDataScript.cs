@@ -16,6 +16,7 @@ public class SaveData
         speciesGroups = new int[speciesCount][];
         speciesColors = new float[speciesCount][];
         startingPopulations = new int[speciesCount];
+        initialStates = new int[speciesCount];
         birthRuleIndex = new int[speciesCount];
         deathRuleIndex = new int[speciesCount];
         otherRulesIndexes = new int[speciesCount][];
@@ -27,6 +28,7 @@ public class SaveData
             speciesGroups[i] = serializedSpeciesArray[i].speciesGroups;
             speciesColors[i] = serializedSpeciesArray[i].color;
             startingPopulations[i] = serializedSpeciesArray[i].startingPopulation;
+            initialStates[i] = serializedSpeciesArray[i].initialState;
             birthRuleIndex[i] = serializedSpeciesArray[i].birthRuleIndex;
             deathRuleIndex[i] = serializedSpeciesArray[i].deathRuleIndex;
             otherRulesIndexes[i] = serializedSpeciesArray[i].otherRulesIndexes;
@@ -93,6 +95,7 @@ public class SaveData
     public int[][] speciesGroups;
     public float[][] speciesColors;
     public int[] startingPopulations;
+    public int[] initialStates;
     public int[] birthRuleIndex;
     public int[] deathRuleIndex;
     public int[][] otherRulesIndexes;
@@ -193,7 +196,8 @@ public class SerializedResult
 
 public class SerializedSpecies
 {
-    public SerializedSpecies(string defaultNameInc, List<SPECIES_GROUP> speciesGroupsInc, Color colorInc, SPECIES_STARTING_POPULATION startingPopulationInc, int birthRuleInc, int deathRuleInc, Rule[] otherRulesIndexesInc)
+    public SerializedSpecies(string defaultNameInc, List<SPECIES_GROUP> speciesGroupsInc, Color colorInc, SPECIES_STARTING_POPULATION startingPopulationInc, STATE initialStateInc,
+        int birthRuleInc, int deathRuleInc, Rule[] otherRulesIndexesInc)
     {
         defaultName = defaultNameInc;
         speciesGroups = new int[speciesGroupsInc.Count];
@@ -206,6 +210,7 @@ public class SerializedSpecies
             colorInc.r, colorInc.g, colorInc.b, colorInc.a
         };
         startingPopulation = (int)startingPopulationInc;
+        initialState = (int)initialStateInc;
         birthRuleIndex = birthRuleInc;
         deathRuleIndex = deathRuleInc;
         if(otherRulesIndexesInc == null)
@@ -230,6 +235,7 @@ public class SerializedSpecies
     public int[] speciesGroups;
     public float[] color;
     public int startingPopulation;
+    public int initialState;
     public int birthRuleIndex;
     public int deathRuleIndex;
     public int[] otherRulesIndexes;

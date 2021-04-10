@@ -47,6 +47,7 @@ public class SpeciesBank : MonoBehaviour
                 saveData.speciesGroups[i],
                 saveData.speciesColors[i],
                 saveData.startingPopulations[i],
+                saveData.initialStates[i],
                 saveData.birthRuleIndex[i],
                 saveData.deathRuleIndex[i],
                 saveData.otherRulesIndexes[i]);
@@ -121,10 +122,11 @@ public class SpeciesBank : MonoBehaviour
             Color color = new Color(Random.Range(0f, 1.0f), Random.Range(0f, 1.0f), Random.Range(0f, 1.0f), 1);
 
             SPECIES_STARTING_POPULATION startingPopulation = (SPECIES_STARTING_POPULATION)Random.Range(1, (int)SPECIES_STARTING_POPULATION.UBIQUITOUS + 1);
+            STATE initialState = (STATE)Random.Range((int)STATE.NORMAL, (int)STATE.RANDOM);
 
             string defaultName = string.Format("{0}_{1}_{2}_{3}", speciesGroup[0].ToString(), startingPopulation.ToString(), System.DateTime.Now.ToString(), i);
             int randomOtherRulesAmount = Random.Range(0, 4);
-            Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, rulesBank.GetRandomBirthRule(speciesGroup), rulesBank.GetRandomDeathRule(speciesGroup),
+            Species newSpecies = new Species(defaultName, speciesGroup, color, startingPopulation, initialState, rulesBank.GetRandomBirthRule(speciesGroup), rulesBank.GetRandomDeathRule(speciesGroup),
                 rulesBank.GetRandomOtherRules(speciesGroup, randomOtherRulesAmount));
             newSpeciesArray[i] = newSpecies;
         }
@@ -139,7 +141,7 @@ public class SpeciesBank : MonoBehaviour
         return new CurrentGameData(speciesBank, speciesCustomName, rulesBank.GetRulesBank());
     }
 
-    Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int birthRuleIndex, int deathRuleIndex, int[] otherRulesIndexes)
+    Species DeserializeSpecies(string defaultName, int[] speciesGroups, float[] color, int startingPopulation, int initialState, int birthRuleIndex, int deathRuleIndex, int[] otherRulesIndexes)
     {
         List<SPECIES_GROUP> speciesGroupList = new List<SPECIES_GROUP>();
         for(int i = 0; i < speciesGroups.Length; i++)
@@ -154,7 +156,7 @@ public class SpeciesBank : MonoBehaviour
             otherRulesArray[i] = rulesBank.GetRule(otherRulesIndexes[i]);
         }
 
-        return new Species(defaultName, speciesGroupList, new Color(color[0], color[1], color[2], color[3]), (SPECIES_STARTING_POPULATION)startingPopulation,
+        return new Species(defaultName, speciesGroupList, new Color(color[0], color[1], color[2], color[3]), (SPECIES_STARTING_POPULATION)startingPopulation, (STATE)initialState,
             rulesBank.GetRule(birthRuleIndex), rulesBank.GetRule(deathRuleIndex), otherRulesArray);
     }
 

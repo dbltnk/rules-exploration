@@ -8,6 +8,7 @@ public enum STATE
     NORMAL,
     SICKLY,
     HAPPY,
+    RANDOM,//This must be the last entry in this list.
 }
 
 public enum LIFE_EFFECT
@@ -234,6 +235,10 @@ public class CellManagerScript : MonoBehaviour
             Species thisSpecies = speciesPool[Random.Range(0, speciesPool.Count)];
 
             SetSpecies(currentCoords, thisSpecies);
+            if(thisSpecies != null)
+            {
+                SetState(currentCoords, thisSpecies.initialState);
+            }            
 
             if(thisSpecies == null)
             {
@@ -286,6 +291,10 @@ public class CellManagerScript : MonoBehaviour
 
     void SetState(Coords coords, STATE newState)
     {
+        if(newState == STATE.RANDOM)
+        {
+            newState = (STATE)Random.Range((int)STATE.NORMAL, (int)STATE.RANDOM);
+        }
         coordsToCellState[coords].state = newState;
     }
 

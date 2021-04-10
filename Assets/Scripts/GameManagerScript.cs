@@ -70,7 +70,7 @@ public class GameManagerScript : MonoBehaviour
         for(int i = 0; i < speciesCount; i++)
         {            
             Species thisSpecies = speciesArray[i];
-            serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation,
+            serializedSpecies[i] = new SerializedSpecies(thisSpecies.defaultName, thisSpecies.speciesGroups, thisSpecies.color, thisSpecies.startingPopulation, thisSpecies.initialState,
                 thisSpecies.birthRule.ruleIndex, thisSpecies.deathRule.ruleIndex, thisSpecies.otherRules);
         }
 

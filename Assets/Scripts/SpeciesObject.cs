@@ -20,6 +20,10 @@ public class SpeciesObject : ScriptableObject
     public Color color = Color.white;
     public SPECIES_STARTING_POPULATION startingPopulation = SPECIES_STARTING_POPULATION.COMMON;
     /// <summary>
+    /// For level initialization ONLY.
+    /// </summary>
+    public STATE initialState = STATE.NORMAL;
+    /// <summary>
     /// The species will not gain a birth rule.
     /// </summary>
     public bool ignoreBirthRule = false;
