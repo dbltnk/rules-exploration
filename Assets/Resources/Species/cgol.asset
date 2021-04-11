@@ -20,5 +20,5 @@ MonoBehaviour:
   birthRuleObject: {fileID: 11400000, guid: 51029519aeeb40441b51d2338b593d3b, type: 2}
   ignoreDeathRule: 0
   deathRuleObject: {fileID: 11400000, guid: 362663cba6da1854aa56d40855ff9b65, type: 2}
-  randomOtherRulesAmountRange: {x: 0, y: 1}
+  randomOtherRulesAmountRange: {x: 0, y: 0}
   otherRules: []

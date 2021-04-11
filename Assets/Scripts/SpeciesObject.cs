@@ -42,7 +42,7 @@ public class SpeciesObject : ScriptableObject
     /// <summary>
     /// If Other Rules arrau is null, generate an amount of other rules between these amount.
     /// </summary>
-    public Vector2Int randomOtherRulesAmountRange = new Vector2Int(0, 1);
+    public Vector2Int randomOtherRulesAmountRange = new Vector2Int(0, 0);
     /// <summary>
     /// Leave empty for random other rules.
     /// </summary>
