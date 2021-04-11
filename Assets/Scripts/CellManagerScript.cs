@@ -356,6 +356,11 @@ public class CellManagerScript : MonoBehaviour
         }
     }
 
+    public void SetStateToInitialForSpecies (Coords coords) {
+        CellState thisCellState = coordsToCellState[coords];
+        thisCellState.state = thisCellState.species.initialState;
+    }
+
     public void ClearAllLife()
     {
         for(int i = 0; i < cellStateArray.Length; i ++)
@@ -388,6 +393,7 @@ public class CellManagerScript : MonoBehaviour
             }
 
             SetAlive(cellStateArray[i].coords, true);
+            SetStateToInitialForSpecies(cellStateArray[i].coords);
         }
 
         CountAndReportPopulation();
