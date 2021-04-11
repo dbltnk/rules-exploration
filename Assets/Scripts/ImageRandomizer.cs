@@ -7,16 +7,22 @@ public class ImageRandomizer : MonoBehaviour
     public Sprite cellMoore;
     public Sprite cellVonNeumann;
 
+    public Sprite stateNormal;
+    public Sprite stateHappy;
+    public Sprite stateSickly;
+
     PlayerControlScript playerControlScript;
     CellManagerScript cellManagerScript;
     CellObjectScript cellObjectScript;
-    SpriteRenderer rend;
+    SpriteRenderer rendCell;
+    SpriteRenderer rendState;
 
     void Start () {
         playerControlScript = FindObjectOfType<PlayerControlScript>();
         cellManagerScript = FindObjectOfType<CellManagerScript>();
         cellObjectScript = GetComponentInParent<CellObjectScript>();
-        rend = GetComponent<SpriteRenderer>();
+        rendCell = GetComponent<SpriteRenderer>();
+        rendState = transform.parent.GetComponent<SpriteRenderer>();
 
         float r = Random.Range(0f, 5f);
 
@@ -45,13 +51,33 @@ public class ImageRandomizer : MonoBehaviour
         if (groups.Contains(SPECIES_GROUP.VON_NEUMANN_4)) isVonNeumann4 = true;
 
         if (isVonNeumann4) {
-            rend.sprite = cellVonNeumann;
+            rendCell.sprite = cellVonNeumann;
         }
         else {
-            rend.sprite = cellMoore;
+            rendCell.sprite = cellMoore;
         }
 
-        bool isAlive = cellManagerScript.GetCellStateAtCoords(cellObjectScript.GetCoords()).alive;
+        CellState thisState = cellManagerScript.GetCellStateAtCoords(cellObjectScript.GetCoords());
+
+        switch (thisState.state) {
+            case STATE.NONE:
+                rendState.sprite = null;
+                break;
+            case STATE.NORMAL:
+                rendState.sprite = stateNormal;
+                break;
+            case STATE.HAPPY:
+                rendState.sprite = stateHappy;
+                break;
+            case STATE.SICKLY:
+                rendState.sprite = stateSickly;
+                break;
+            default:
+                Debug.LogError("unexpected cell state");
+                break;
+        }
+
+        bool isAlive = thisState.alive;
         float wiggleChance = 1f / cellManagerScript.updateRate * Time.deltaTime;
         if (Random.Range(0f, 1f) <= wiggleChance && playerControlScript.simulationRunning && isAlive) {
 

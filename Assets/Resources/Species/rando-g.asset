@@ -15,6 +15,7 @@ MonoBehaviour:
   speciesGroups: 0200000004000000
   color: {r: 0.3102857, g: 1, b: 0.22075468, a: 1}
   startingPopulation: 4
+  initialState: 0
   ignoreBirthRule: 0
   birthRuleObject: {fileID: 11400000, guid: eb75c974c09b4004584ad6aa82a7b9c7, type: 2}
   ignoreDeathRule: 0

@@ -130,7 +130,7 @@ public class GridManagerScript : MonoBehaviour
 
                 coordsToGameObject[currentCoords] = currentCell;
                 coordsToPosition[currentCoords] = currentPosition;
-                coordsToSpriteRenderer[currentCoords] = currentCell.GetComponentInChildren<SpriteRenderer>();
+                coordsToSpriteRenderer[currentCoords] = currentCell.transform.GetChild(0).GetComponent<SpriteRenderer>();
 
                 currentCell.name = string.Format("{0}, {1}", x, y);
 

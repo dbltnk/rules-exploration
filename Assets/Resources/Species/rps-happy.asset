@@ -16,12 +16,9 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 1}
   startingPopulation: 6
   initialState: 3
-  ignoreBirthRule: 0
-  birthRuleObject: {fileID: 11400000, guid: b6001d6bc9823de4fbcdb4910f969e72, type: 2}
+  ignoreBirthRule: 1
+  birthRuleObject: {fileID: 0}
   ignoreDeathRule: 1
   deathRuleObject: {fileID: 0}
   randomOtherRulesAmountRange: {x: 0, y: 1}
-  otherRules:
-  - {fileID: 11400000, guid: 8c846be3232ff13499f3c8b630e00248, type: 2}
-  - {fileID: 11400000, guid: 65b6d9f9ad85aa643b128b89eeb4c0a8, type: 2}
-  - {fileID: 11400000, guid: 95bef49d2e7149c4589dfba8fa2337d3, type: 2}
+  otherRules: []
