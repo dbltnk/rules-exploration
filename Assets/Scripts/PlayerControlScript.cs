@@ -432,8 +432,10 @@ public class PlayerControlScript : MonoBehaviour
 
     void Draw(Coords destination) {
         //Species species = gameManager.GetSpeciesBank().speciesBank[0];
-        Species species = cellManager.enabledSpecies[0];
-        cellManager.SetSpeciesAndStateOnCell(destination, species, STATE.NONE, true);
+        Species species = cellManager.enabledSpecies[dropdownDrawSpecies.value];
+        STATE state = (STATE)dropdownDrawState.value;
+        bool alive = dropdownDrawAlive.value == 0 ? true : false;
+        cellManager.SetSpeciesAndStateOnCell(destination, species, state, alive);
     }
 
     void Delete(Coords coords)
