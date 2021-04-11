@@ -296,6 +296,7 @@ public class CellManagerScript : MonoBehaviour
             newState = (STATE)Random.Range((int)STATE.NORMAL, (int)STATE.RANDOM);
         }
         coordsToCellState[coords].state = newState;
+        coordsToCellState[coords].futureState = newState;
     }
 
     public Species GetSpecies(Coords coords) { return coordsToCellState[coords].species; }
@@ -345,6 +346,7 @@ public class CellManagerScript : MonoBehaviour
         bool wasAlreadyAlive = thisCellState.alive;
 
         thisCellState.alive = alive;
+        thisCellState.futureAlive = alive;
         
         if(alive)
         {
@@ -390,10 +392,11 @@ public class CellManagerScript : MonoBehaviour
                 !thisCellState.alive)
             {
                 thisCellState.species = GetRandomSpecies();
+                SetState(thisCellState.coords, thisCellState.species.initialState);
             }
 
             SetAlive(cellStateArray[i].coords, true);
-            SetStateToInitialForSpecies(cellStateArray[i].coords);
+            //SetStateToInitialForSpecies(cellStateArray[i].coords);
         }
 
         CountAndReportPopulation();
@@ -508,19 +511,23 @@ public class CellManagerScript : MonoBehaviour
                 if(newSpecies != null)
                 {
                     affectedCellState.futureSpecies = newSpecies;
-                }
+                }                
 
                 switch(result.lifeEffect)
                 {
                     case LIFE_EFFECT.KILL:
+                        Debug.LogFormat("Applying kill result: {0}, {1}.", result.newState, result.lifeEffect);
                         affectedCellState.futureAlive = false;
                         break;
                     case LIFE_EFFECT.PROPAGATE:
+                        Debug.LogFormat("Applying birth result: {0}, {1}.", result.newState, result.lifeEffect);
                         affectedCellState.futureAlive = true;
                         break;
                 }
 
-                if(result.newState != STATE.NONE)
+                if(result.newState != STATE.NONE &&
+                    result.newState != affectedCellState.state &&
+                    affectedCellState.futureAlive)
                 {
                     affectedCellState.futureState = result.newState;
                 }

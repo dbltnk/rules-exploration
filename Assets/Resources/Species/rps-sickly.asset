@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: rps-sickly
   m_EditorClassIdentifier: 
   speciesGroups: 0200000003000000
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.4167463, g: 0.8113208, b: 0.27171594, a: 1}
   startingPopulation: 6
   initialState: 2
   ignoreBirthRule: 1

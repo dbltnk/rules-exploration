@@ -24,6 +24,11 @@ MonoBehaviour:
     compareInts: {x: 4, y: 8}
     compareSpeciesGroups: 
     compareStates: 02000000
+  - source: 4
+    conditionParameter: 8
+    compareInts: {x: 4, y: 8}
+    compareSpeciesGroups: 
+    compareStates: 02000000
   possibleResults:
   - lifeEffect: 0
     newState: 2

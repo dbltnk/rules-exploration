@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: rps-happy
   m_EditorClassIdentifier: 
   speciesGroups: 0200000003000000
-  color: {r: 1, g: 1, b: 1, a: 1}
+  color: {r: 0.9433962, g: 0.76735044, b: 0.31594875, a: 1}
   startingPopulation: 6
   initialState: 3
   ignoreBirthRule: 1
