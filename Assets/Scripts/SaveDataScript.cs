@@ -247,7 +247,7 @@ public static class SaveDataScript
 
     public static SaveData LoadSaveData()
     {
-        Debug.Log("Loading data.");
+        //Debug.Log("Loading data.");
         if (File.Exists(filePath))
         {
             BinaryFormatter bianaryFormatter = new BinaryFormatter();
@@ -257,18 +257,18 @@ public static class SaveDataScript
 
             filestream.Close();
 
-            Debug.Log("Data found.");
+            //Debug.Log("Data found.");
 
             return saveData;
         }
 
-        Debug.Log("No data found.");
+        //Debug.Log("No data found.");
         return null;
     }
 
     public static SaveData SaveGame(SaveData saveData)
     {
-        Debug.Log("Saving game.");
+        //Debug.Log("Saving game.");
         BinaryFormatter bianaryFormatter = new BinaryFormatter();
         FileStream filestream = new FileStream(filePath, FileMode.Create);
 

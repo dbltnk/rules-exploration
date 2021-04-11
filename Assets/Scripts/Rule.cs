@@ -12,6 +12,7 @@ public class Rule
         this.neighborStyle = neighborStyle;
         this.wallsAreAlive = wallsAreAlive;
         this.classification = classification;
+        this.nullRule = nullRule;
     }
 
     public Rule(RuleObject ruleObject, int ruleIndex, List<SPECIES_GROUP> speciesGroups)

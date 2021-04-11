@@ -245,6 +245,8 @@ public class PlayerControlScript : MonoBehaviour
         Random.InitState(gameManager.GetCurrentSeed());
         CallStopSimulating();
         cellManager.ReInitializeAllCells();
+
+        //gameManager.LoadScene(SCENE.PLAY_SCREEN);
     }
 
     /// <summary>

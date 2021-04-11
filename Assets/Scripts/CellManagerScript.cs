@@ -627,9 +627,9 @@ public class CellManagerScript : MonoBehaviour
     }
 
     IEnumerator RunSimulation()
-    {
-        IncrementTime();
+    {        
         yield return new WaitForSeconds(updateRate);
+        IncrementTime();
         StartCoroutine("RunSimulation");
     }
 
