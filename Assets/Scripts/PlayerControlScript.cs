@@ -74,7 +74,7 @@ public class PlayerControlScript : MonoBehaviour
 
         selectedSpecies = cellManager.GetSpecies(cellObjectScript.GetCoords());
 
-        if(!cellManager.IsAlive(cellObjectScript.GetCoords())) { selectedSpecies = null; }
+        //if(!cellManager.IsAlive(cellObjectScript.GetCoords())) { selectedSpecies = null; }
 
         if(selectedSpecies == null)
         {
@@ -298,7 +298,7 @@ public class PlayerControlScript : MonoBehaviour
         {
             if(!isAlive)
             {
-                SetSelectedSpeciesReadoutToNone();
+                //SetSelectedSpeciesReadoutToNone();
             }
             else if(currentSpecies != SCpreviousSpecies)
             {
