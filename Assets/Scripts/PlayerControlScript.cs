@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -35,6 +36,10 @@ public class PlayerControlScript : MonoBehaviour
     [SerializeField] TMP_Text cellStateReadout = null;
     [SerializeField] TMP_Text mouseModeReadout = null;
 
+    [SerializeField] TMP_Dropdown dropdownDrawSpecies = null;
+    [SerializeField] TMP_Dropdown dropdownDrawState = null;
+    [SerializeField] TMP_Dropdown dropdownDrawAlive = null;
+
     GameManagerScript gameManager;
     GridManagerScript gridManager;
     SpeciesBank speciesBank;
@@ -54,6 +59,17 @@ public class PlayerControlScript : MonoBehaviour
         seedInput.text = gameManager.GetCurrentSeed().ToString();
         speciesBank = gameManager.GetSpeciesBank();
         gridManager = gameManager.GetComponent<GridManagerScript>();
+
+        List<string> speciesNames = new List<string>();
+        foreach (Species s in cellManager.enabledSpecies) speciesNames.Add(s.defaultName);
+        dropdownDrawSpecies.AddOptions(speciesNames);
+        var states = System.Enum.GetValues(typeof (STATE));
+        List<string> statesList = new List<string>();
+        foreach (STATE s in states) {
+            statesList.Add(s.ToString());
+        }
+        dropdownDrawState.AddOptions(statesList);
+        dropdownDrawAlive.AddOptions(new List<string>() { "alive", "dead" });
     }
 
     private void Awake()
