@@ -429,7 +429,7 @@ public class PlayerControlScript : MonoBehaviour
 
     void Clone(Coords destination)
     {
-        cellManager.CopyCellStateOntoNewCell(selectedCellObjectScript.GetCoords(), destination);
+        if (selectedCellObjectScript) cellManager.CopyCellStateOntoNewCell(selectedCellObjectScript.GetCoords(), destination);
     }
 
     void Draw(Coords destination) {
