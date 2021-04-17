@@ -17,7 +17,7 @@ public class SpeciesCollection : MonoBehaviour
 
     Level[] levels;
 
-    string[] KnownSpeciesNames;
+    SaveData saveData;
 
     int selectedSpecies = 0;
 
@@ -38,16 +38,20 @@ public class SpeciesCollection : MonoBehaviour
 
         levels = levelBank.GetLevels();
 
-        KnownSpeciesNames = SaveDataScript.LoadSaveData().customNames;
+        saveData = SaveDataScript.LoadSaveData();
 
         List<TMP_Dropdown.OptionData> optionsDataList = new List<TMP_Dropdown.OptionData>();
 
-        foreach (string name in KnownSpeciesNames) {
-            bool isUnknown = name == "Unknown";
+        foreach (Species species in gameManager.GetSpeciesBank().speciesBank) {
+            string customName = "";
+            for (int i = 0; i < saveData.customNames.Length; i++) {
+                if (species.defaultName == saveData.defaultNames[i]) customName = saveData.customNames[i];
+            }
+            bool isUnknown = customName == "Unknown";
             if (isUnknown && toggleHideUnknown.isOn) {
                 continue;
             }
-            optionsDataList.Add(new TMP_Dropdown.OptionData(name));
+            optionsDataList.Add(new TMP_Dropdown.OptionData(customName));
         }
 
         levelSelectDropdown.AddOptions(optionsDataList);
@@ -80,8 +84,16 @@ public class SpeciesCollection : MonoBehaviour
         Level level = ScriptableObject.CreateInstance(typeof (Level)) as Level;
         level.levelWidth = 10;
         level.levelHeight = 10;
-        //level.specificSpecies = ;
-        //level.ruleObjects = ;
+        string customName = levelSelectDropdown.itemText.text;
+        List<Species> speciesFound = new List<Species>();
+
+        foreach (Species species in gameManager.GetSpeciesBank().speciesBank) {
+            for (int i = 0; i < saveData.customNames.Length; i++) {
+                if (customName == saveData.customNames[i]) speciesFound.Add(species);
+            }
+        }
+        level.specificSpecies = speciesFound.ToArray(); // Species != SpeciesObject
+        level.ruleObjects = speciesFound[0].birthRule + speciesFound[0].deathRule + speciesFound[0].otherRules; // Rule != RulesObject ... and of course this is now how you concatenate an array
         PlayLevel(level);
     }
 
