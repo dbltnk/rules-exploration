@@ -25,9 +25,12 @@ public class LayerStatusScript : MonoBehaviour
 
     SpeciesBank speciesBank;
     CellManagerScript cellManager;
+    GridManagerScript gridManager;
 
     DD_DataDiagram diagram;
     List<GameObject> lines = new List<GameObject>();
+
+    int numberOfCells;
 
     public void AssignSpeciesBank(SpeciesBank speciesBank) { this.speciesBank = speciesBank; }
 
@@ -45,13 +48,17 @@ public class LayerStatusScript : MonoBehaviour
     private void Start () {
         diagram = FindObjectOfType<DD_DataDiagram>();
         cellManager = FindObjectOfType<CellManagerScript>();
+        gridManager = FindObjectOfType<GridManagerScript>();
+
+        // CentimeterPerCoordUnitY = 1.0f -> around 7.5 cells max
+        numberOfCells = gridManager.NumberOfCells;
+        float scalingFactor = 1f / (numberOfCells / 7.5f);
+        diagram.m_CentimeterPerCoordUnitY = scalingFactor;
 
         foreach (Species species in cellManager.enabledSpecies) {
             GameObject line = diagram.AddLine(species.defaultName, species.color);
             lines.Add(line);
         }
-
-        // TODO Make the Y axis scale with the number of cells in the grid.
     }
 
     public void UpdateSpeciesPopulation(List<PopulationCount> populationReport, Dictionary<Species, int> populationDictionary)

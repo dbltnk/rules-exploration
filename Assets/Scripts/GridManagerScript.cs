@@ -57,6 +57,7 @@ public class GridManagerScript : MonoBehaviour
     Dictionary<Coords, SpriteRenderer> coordsToSpriteRenderer;
 
     public Level currentLevel;
+    public int NumberOfCells => gridWidth * gridHeight;
 
     private void Awake()
     {
