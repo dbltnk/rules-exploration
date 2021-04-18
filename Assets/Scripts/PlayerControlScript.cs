@@ -267,7 +267,7 @@ public class PlayerControlScript : MonoBehaviour
 
     public void SetSimulationSpeed()
     {
-        float stepsPerSecond = simulationSpeedSlider.value;
+        float stepsPerSecond = Mathf.Pow(2, simulationSpeedSlider.value - 1);
 
         simulationSpeedReadout.SetText(string.Format("Steps per Second: {0}", stepsPerSecond));
         cellManager.SetSimulationSpeed(stepsPerSecond);
