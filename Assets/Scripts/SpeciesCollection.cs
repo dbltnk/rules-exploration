@@ -92,8 +92,8 @@ public class SpeciesCollection : MonoBehaviour
                 if (customName == saveData.customNames[i]) speciesFound.Add(species);
             }
         }
-        level.specificSpecies = speciesFound.ToArray(); // Species != SpeciesObject
-        level.ruleObjects = speciesFound[0].birthRule + speciesFound[0].deathRule + speciesFound[0].otherRules; // Rule != RulesObject ... and of course this is now how you concatenate an array
+        //level.specificSpecies = speciesFound.ToArray(); // Species != SpeciesObject
+        //level.ruleObjects = speciesFound[0].birthRule + speciesFound[0].deathRule + speciesFound[0].otherRules; // Rule != RulesObject ... and of course this is now how you concatenate an array
         PlayLevel(level);
     }
 
