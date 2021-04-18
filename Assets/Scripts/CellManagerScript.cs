@@ -59,6 +59,8 @@ public class CellManagerScript : MonoBehaviour
 
     [SerializeField] LayerStatusScript layerStatus = null;
 
+    [SerializeField] AudioManager audioManager = null;
+
     Dictionary<Coords, CellObjectScript> coordsToCellManager = new Dictionary<Coords, CellObjectScript>();
 
     /// <summary>
@@ -637,6 +639,7 @@ public class CellManagerScript : MonoBehaviour
     {        
         yield return new WaitForSeconds(updateRate);
         IncrementTime();
+        audioManager.Tick(updateRate);
         StartCoroutine("RunSimulation");
     }
 
