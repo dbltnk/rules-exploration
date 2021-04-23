@@ -157,11 +157,13 @@ public class PlayerControlScript : MonoBehaviour
 
     public void MouseModeDelete()
     {
+        ClearMouseMode();
         mouseMode = MOUSE_MODE.DELETE;
         UpdateMouseModeReadout();
     }
 
     public void MouseModeDraw () {
+        ClearMouseMode();
         mouseMode = MOUSE_MODE.DRAW;
         UpdateMouseModeReadout();
     }
@@ -335,7 +337,7 @@ public class PlayerControlScript : MonoBehaviour
     }
 
     Vector2 mouseDownPosition;//Point where the mouse was clicked. Used to calculate dragging.
-    bool mouseHeld = false;
+    bool rightMouseHeld = false;
 
     Vector2 oldMousePosition;
 
@@ -350,10 +352,10 @@ public class PlayerControlScript : MonoBehaviour
 
         if(Input.GetMouseButtonUp(1))
         {
-            mouseHeld = false;
+            rightMouseHeld = false;
         }
 
-        if(mouseHeld)
+        if(rightMouseHeld)
         {
             Vector2 currentMousePostion = Input.mousePosition;
 
@@ -374,11 +376,18 @@ public class PlayerControlScript : MonoBehaviour
             mouseDownPosition = theCamera.ScreenToWorldPoint(Input.mousePosition);
             oldMousePosition = Input.mousePosition;
 
-            mouseHeld = true;
+            rightMouseHeld = true;
         }
-        else if(Input.GetMouseButtonDown(0))
-        {
-            ParseClickColliders();
+        else {
+            if (mouseMode == MOUSE_MODE.NONE || mouseMode == MOUSE_MODE.CELL_SELECTED) {
+                if (Input.GetMouseButtonDown(0)) {
+                    ParseClickColliders();
+                }
+            } else {
+                if (Input.GetMouseButton(0)) {
+                    ParseClickColliders();
+                }
+            }
         }
     }
 

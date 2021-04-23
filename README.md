@@ -133,7 +133,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## Usability Improvements
 
-* **P2 -** I need a "paint-as-you-go" mode again, "drawing" cells is less comfortable now (but more flexible) 
 * Pattern stamps (1-9 blocks)
 * Visualize more cell properties in sprite (walls alive/dead)
 
