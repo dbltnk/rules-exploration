@@ -716,6 +716,7 @@ MonoBehaviour:
     type: 3}
   seedInputField: {fileID: 1750488236}
   toggleHideUnknown: {fileID: 2066073251}
+  LevelEmpty: {fileID: 11400000, guid: 5de4f26310995874eb8c26a93b4d4b64, type: 2}
 --- !u!1 &463807242
 GameObject:
   m_ObjectHideFlags: 0

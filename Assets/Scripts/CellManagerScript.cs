@@ -107,9 +107,14 @@ public class CellManagerScript : MonoBehaviour
             specificSpeciesConverted[i] = new Species(specificSpecies[i], rulesBank);
         }
 
+        if (gameManager.SpeciesFromCollection != null) {
+            Species[] fromCollection = new Species[] { gameManager.SpeciesFromCollection };
+            specificSpeciesConverted = fromCollection;
+        }
+
         speciesBank.AddSpecies(specificSpeciesConverted);
 
-        int speciesAmount = specificSpecies.Length;
+        int speciesAmount = specificSpeciesConverted.Length;
 
         int procgenSpeciesAmount = Random.Range(level.procgenSpeciesAmount.x, level.procgenSpeciesAmount.y + 1);
 
@@ -122,7 +127,12 @@ public class CellManagerScript : MonoBehaviour
         for(int i = 0; i < specificSpeciesConverted.Length; i++)
         {
             enabledSpecies[i] = specificSpeciesConverted[i];
-            usedNames.Add(level.specificSpecies[i].defaultName);
+            if (gameManager.SpeciesFromCollection != null) {
+                usedNames.Add(gameManager.SpeciesFromCollection.defaultName);
+            }
+            else {
+                usedNames.Add(level.specificSpecies[i].defaultName);
+            }
         }
 
         int amountOfOldSpeciesToUse = 0;

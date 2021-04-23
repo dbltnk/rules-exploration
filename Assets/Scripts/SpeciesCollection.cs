@@ -23,6 +23,8 @@ public class SpeciesCollection : MonoBehaviour
 
     GameManagerScript gameManager;
 
+    [SerializeField] Level LevelEmpty = null;
+
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManagerScript>();
@@ -81,20 +83,18 @@ public class SpeciesCollection : MonoBehaviour
     public void PlayLevelWithSelectedSpecies()
     {
         SaveData data = SaveDataScript.LoadSaveData();
-        Level level = ScriptableObject.CreateInstance(typeof (Level)) as Level;
-        level.levelWidth = 10;
-        level.levelHeight = 10;
-        string customName = levelSelectDropdown.itemText.text;
-        List<Species> speciesFound = new List<Species>();
-
+        string customName = levelSelectDropdown.captionText.text;
+        Species speciesFound = null;
         foreach (Species species in gameManager.GetSpeciesBank().speciesBank) {
             for (int i = 0; i < saveData.customNames.Length; i++) {
-                if (customName == saveData.customNames[i]) speciesFound.Add(species);
+                if (customName == saveData.customNames[i] && saveData.defaultNames[i] == species.defaultName) speciesFound = species;
             }
         }
-        //level.specificSpecies = speciesFound.ToArray(); // Species != SpeciesObject
-        //level.ruleObjects = speciesFound[0].birthRule + speciesFound[0].deathRule + speciesFound[0].otherRules; // Rule != RulesObject ... and of course this is now how you concatenate an array
-        PlayLevel(level);
+
+        Random.InitState(gameManager.GetCurrentSeed());
+        gameManager.SetCurrentLevel(LevelEmpty);
+        gameManager.SpeciesFromCollection = speciesFound;
+        gameManager.LoadScene(SCENE.PLAY_SCREEN);
     }
 
     public void PlayRandomLevel()

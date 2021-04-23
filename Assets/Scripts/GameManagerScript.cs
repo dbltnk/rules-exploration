@@ -9,6 +9,7 @@ public enum SCENE
 
 public class GameManagerScript : MonoBehaviour
 {
+    public Species SpeciesFromCollection = null;
     Level currentLevel;
     [SerializeField] LevelBankScript levelBank = null;
     [SerializeField] SpeciesBank speciesBank = null;
