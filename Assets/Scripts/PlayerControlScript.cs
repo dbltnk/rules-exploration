@@ -276,10 +276,12 @@ public class PlayerControlScript : MonoBehaviour
     public void BackToMenu()
     {
         gameManager.LoadScene(SCENE.LEVEL_SETUP);
+        gameManager.SpeciesFromCollection = null;
     }
 
     public void GoToSpeciesCollection () {
         gameManager.LoadScene(SCENE.SPECIES_COLLECTION);
+        gameManager.SpeciesFromCollection = null;
     }
 
     public void NewExperiment()
