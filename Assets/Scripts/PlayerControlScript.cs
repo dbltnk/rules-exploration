@@ -278,6 +278,10 @@ public class PlayerControlScript : MonoBehaviour
         gameManager.LoadScene(SCENE.LEVEL_SETUP);
     }
 
+    public void GoToSpeciesCollection () {
+        gameManager.LoadScene(SCENE.SPECIES_COLLECTION);
+    }
+
     public void NewExperiment()
     {
         Random.InitState(gameManager.GetCurrentSeed());

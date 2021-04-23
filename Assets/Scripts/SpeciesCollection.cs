@@ -7,15 +7,11 @@ public class SpeciesCollection : MonoBehaviour
 {
     [SerializeField] TMP_Dropdown levelSelectDropdown = null;
 
-    LevelBankScript levelBank = null;
-
     [SerializeField] GameObject gameManagerPrefab = null;
 
     [SerializeField] TMP_InputField seedInputField = null;
 
     [SerializeField] Toggle toggleHideUnknown = null;
-
-    Level[] levels;
 
     SaveData saveData;
 
@@ -35,10 +31,6 @@ public class SpeciesCollection : MonoBehaviour
         }
 
         seedInputField.text = gameManager.GetCurrentSeed().ToString();
-
-        levelBank = gameManager.GetComponent<LevelBankScript>();
-
-        levels = levelBank.GetLevels();
 
         saveData = SaveDataScript.LoadSaveData();
 
@@ -94,24 +86,6 @@ public class SpeciesCollection : MonoBehaviour
         Random.InitState(gameManager.GetCurrentSeed());
         gameManager.SetCurrentLevel(LevelEmpty);
         gameManager.SpeciesFromCollection = speciesFound;
-        gameManager.LoadScene(SCENE.PLAY_SCREEN);
-    }
-
-    public void PlayRandomLevel()
-    {
-        PlayLevel(Random.Range(0, levels.Length));
-    }
-
-    void PlayLevel(int levelIndex)
-    {
-        Random.InitState(gameManager.GetCurrentSeed());
-        gameManager.SetCurrentLevel(levelBank.GetLevelByIndex(levelIndex));
-        gameManager.LoadScene(SCENE.PLAY_SCREEN);
-    }
-
-    void PlayLevel (Level level) {
-        Random.InitState(gameManager.GetCurrentSeed());
-        gameManager.SetCurrentLevel(level);
         gameManager.LoadScene(SCENE.PLAY_SCREEN);
     }
 }

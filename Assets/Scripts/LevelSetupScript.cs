@@ -84,4 +84,8 @@ public class LevelSetupScript : MonoBehaviour
         gameManager.SetCurrentLevel(levelBank.GetLevelByIndex(levelIndex));
         gameManager.LoadScene(SCENE.PLAY_SCREEN);
     }
+
+    public void GoToSpeciesCollection() {
+        gameManager.LoadScene(SCENE.SPECIES_COLLECTION);
+    }
 }

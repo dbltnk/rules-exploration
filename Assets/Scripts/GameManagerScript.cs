@@ -5,6 +5,7 @@ public enum SCENE
 {
     LEVEL_SETUP = 0,//Values pulled from build settings.
     PLAY_SCREEN = 1,//Values pulled from build settings.
+    SPECIES_COLLECTION = 2,//Values pulled from build settings.
 }
 
 public class GameManagerScript : MonoBehaviour

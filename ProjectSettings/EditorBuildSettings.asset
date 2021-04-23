@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayScreen.unity
     guid: 26cfc10d9e6eeaa408e1537934ff402b
+  - enabled: 1
+    path: Assets/Scenes/SpeciesCollection.unity
+    guid: 543bc72d342a56e4ab496814277abbe3
   m_configObjects: {}
