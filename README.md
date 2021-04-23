@@ -2,68 +2,17 @@
 
 Build: https://dbltnk.itch.io/connie-weis-lab
 
-
-
-
-
-
-
-## Issues in New Version
-**P0-1**: Needs a fix by Tony
-
-* **P0** - Adding new Levels + Rules takes a lot of clicks since you have to manually add them to the Level/RuleBanks. Can the banks be auto-generated from the scriptable objects in certain folders? Or at the press of a button in the editor? The same goes for SpeciesGroups in the Conditions. Can we pre-populate the dropdown with the existing species?
-
-* **P0 -** Adding a new rule to the RuleBank triggers the following errors (maybe also connected to saving species? went away after I deleted the save data):
-  * IndexOutOfRangeException: Index was outside the bounds of the array.
-    SpeciesBank.DeserializeSpecies (System.String defaultName, System.Int32[] speciesGroups, System.Single[] color, System.Int32 startingPopulation, System.Int32 birthRuleIndex, System.Int32 deathRuleIndex) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:156)
-    SpeciesBank.InitializeSavedSpecies (SaveData saveData) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:55)
-    GameManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GameManagerScript.cs:39)
-    UnityEngine.Object:Instantiate(GameObject)
-    LevelSetupScript:Awake() (at Assets/Simple Attempt/Simple Scene Scripts/LevelSetupScript.cs:29)
-  * NullReferenceException: Object reference not set to an instance of an object
-    SpeciesBank.AddSpecies (Species[] speciesArray) (at Assets/Simple Attempt/Simple Scene Scripts/SpeciesBank.cs:187)
-    CellManagerScript.AssignLevel (Level level, GameManagerScript gameManager, SpeciesBank speciesBank) (at Assets/Simple Attempt/Simple Scene Scripts/CellManagerScript.cs:104)
-    GridManagerScript.AssignLevel (Level level) (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:69)
-    GridManagerScript.Awake () (at Assets/Simple Attempt/Simple Scene Scripts/GridManagerScript.cs:64)
-* **P0 -** Can no longer create species within a pre-defined range, ProcGen only picks from manually created species (can be fixed by adding birth/death rules that randomly pick between ComparyInts.X and .Y)
-* **P1 -** It is quite hard to define different neighborhoods (for example the Von-Neumann vs the Moor neighborhood) - see branch different_neighborhoods. Is there an easier way?
-
-
-
-**P2-3:** Alex will deal with this in the future (or just ignore it)
-
-* **P2 -** I need a "paint" mode, "drawing" cells is less comfortable now (but more flexible) 
-* **P2 -** Cannot use different sprites for species anymore (but can be added easily)
-* **P2 -** Inspect the rules of a species at runtime (in the playscreen )(-> show when a cell is selected in the grid?)
-* **P3 -** Modify the rules of a species at runtime (in the playscreen )(-> show when a cell is selected in the grid?)
-* **P3 -** Typing into the "Theory" text box still triggers hotkeys like "Fill Dish"
-
-
-
-
-## Refactoring
-
-* P1 focus on prototyping iteration speed over everything else
-* P1 make the ideas above easily accessible to a novice coder like me
-* P1 make it start up super fast (got a bit slower with the addition of the charts)
-* P1 remove unnecessary assets/code (less importing)
-* P1 a nicely editable and extendable data format for the species & level setups (level =  species config, initial game & potentially grid state)
-* P1 all code accessible from anywhere (cannot currently access new scripts from procgen toolkit files)
-* P1 most UI should always visible in edit mode, even when not playing
-* P2 support different grid sizes
-* P2 support zoom & camera movement (for interaction with larger grids)
-* P3 support drag & drop movement of tiles (https://ncase.me/polygons/)
-
-
-
 ## Immediate Next Steps / WiP
 
 * P1 List of known species (click them to load a scene with that species configuration, random grid)
+* Get all the cool species from the last version back
 * P2 "knowledge graph" (DAG) of levels that unlock one after another, clicking opens a scene with that species configuration, goal definition (& maybe grid state) 
   * P2 in addition to the "challenge" levels you also unlock "classification" levels where similar CA rules are being used but with a random config
 * P3 Cap for multi-digit random rule selection to not go beyond useful (Moor neigh. = max 4 etc)
 
+## Known Issues
 
+* **P3 -** Typing into the "Theory" text box still triggers hotkeys like "Fill Dish"
 
 ## P1 Game Modes
 
@@ -178,10 +127,13 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     * Hex
     * Triangle
 
+* **P3 -** Modify the rules of a species at runtime (in the playscreen )(-> show when a cell is selected in the grid?)
+
     
 
 ## Usability Improvements
 
+* **P2 -** I need a "paint-as-you-go" mode again, "drawing" cells is less comfortable now (but more flexible) 
 * Pattern stamps (1-9 blocks)
 * Visualize more cell properties in sprite (walls alive/dead)
 
