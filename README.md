@@ -4,6 +4,7 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## Immediate Next Steps / WiP
 
+* Bring back detective mode?
 * P1 List of known species (click them to load a scene with that species configuration, random grid)
 * Get all the cool species from the last version back
 * P2 "knowledge graph" (DAG) of levels that unlock one after another, clicking opens a scene with that species configuration, goal definition (& maybe grid state) 
@@ -108,8 +109,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
     * P2 Hash of species (rules config)
     * P3 Hash of state (species + seed + density + cells)
     
-* P2 Mouse wheel to magnify
-
 * P3 Nested layers (zoom into a cell to see another layer inside)
 
 * P3 moving creatures
