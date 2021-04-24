@@ -43,6 +43,7 @@ public class Rule
             Condition chosenCondition = unusedConditions[chosenConditionInt];
             if(ruleObject.randomizeCompareInts)
             {
+                Random.InitState((int)System.DateTime.Now.ToFileTimeUtc());
                 int minimum = Random.Range(ruleObject.compareIntsRandomMinRange[0], ruleObject.compareIntsRandomMinRange[1] + 1);
                 int maximum = Random.Range(ruleObject.compareIntsRandomMaxRange[0], ruleObject.compareIntsRandomMaxRange[1] + 1);
                 maximum = Mathf.Max(minimum, maximum);//In case the minimum rolls higher than the maximum, they will just be the same.
