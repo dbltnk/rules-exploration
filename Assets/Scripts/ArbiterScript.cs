@@ -78,6 +78,11 @@ public class Condition
     public Vector2Int compareInts;
     public List<SPECIES_GROUP> compareSpeciesGroups;
     public List<STATE> compareStates;
+
+    public Condition Copy()
+    {
+        return new Condition(source, conditionParameter, compareInts, compareSpeciesGroups, compareStates);
+    }
 }
 
 [System.Serializable]

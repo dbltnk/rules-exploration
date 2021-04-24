@@ -22,7 +22,7 @@ MonoBehaviour:
   - source: 0
     conditionParameter: 0
     compareInts: {x: 0, y: 0}
-    compareSpeciesGroups: 
+    compareSpeciesGroups: 0000000000000000
     compareStates: 
   possibleResults:
   - lifeEffect: 2

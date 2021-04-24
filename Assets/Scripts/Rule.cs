@@ -33,7 +33,13 @@ public class Rule
         int conditionCount = Random.Range(Mathf.Max(1, ruleObject.possibleConditionAmounts.x), Mathf.Max(2, ruleObject.possibleConditionAmounts.y + 1));//Adding one to the right because the max is exclusive.
         List<Condition> unusedConditions = new List<Condition>();
         List<Condition> finalConditionList = new List<Condition>();
-        unusedConditions.AddRange(ruleObject.possibleConditions);
+
+        Condition[] possibleConditions = ruleObject.possibleConditions;
+
+        for(int i = 0; i < possibleConditions.Length; i++)
+        {
+            unusedConditions.Add(possibleConditions[i].Copy());
+        }
 
         conditionCount = Mathf.Min(conditionCount, unusedConditions.Count);
 
