@@ -100,7 +100,7 @@ public class Species
                 }
             }
             if (!found) {
-                color = Random.ColorHSV(0f, 1f, 0f, 1f, 0f, 1f, 1f, 1f);
+                color = Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.5f, 1f, 1f, 1f);
             } else {
                 if (saveData != null) {
                     for (int i = 0; i < saveData.defaultNames.Length; i++) {
