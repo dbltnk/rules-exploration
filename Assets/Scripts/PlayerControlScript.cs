@@ -135,17 +135,8 @@ public class PlayerControlScript : MonoBehaviour
 
     public void ClearMouseMode()
     {
-        if(mouseMode == MOUSE_MODE.CELL_SELECTED ||
-                mouseMode == MOUSE_MODE.NONE)
-        {
-            DeselectCell();
-            mouseMode = MOUSE_MODE.NONE;
-        }
-        else
-        {
-            mouseMode = MOUSE_MODE.CELL_SELECTED;
-        }
-        
+        mouseMode = MOUSE_MODE.NONE;
+        DeselectCell();
         UpdateMouseModeReadout();
     }
 
