@@ -104,7 +104,7 @@ public class PlayerControlScript : MonoBehaviour
         }
 
 
-        mouseMode = MOUSE_MODE.CELL_SELECTED;
+        //mouseMode = MOUSE_MODE.CELL_SELECTED;
         UpdateMouseModeReadout();
     }
 
