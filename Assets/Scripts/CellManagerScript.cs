@@ -102,9 +102,10 @@ public class CellManagerScript : MonoBehaviour
 
         Species[] specificSpeciesConverted = new Species[specificSpecies.Length];
 
+
         for(int i = 0; i < specificSpecies.Length; i++)
         {
-            specificSpeciesConverted[i] = new Species(specificSpecies[i], rulesBank);
+            specificSpeciesConverted[i] = new Species(specificSpecies[i], rulesBank, gameManager.GetCurrentSaveData());
         }
 
         if (gameManager.SpeciesFromCollection != null) {

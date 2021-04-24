@@ -24,10 +24,9 @@ public class Species
         this.otherRules = otherRules;
     }
 
-    public Species(SpeciesObject speciesObject, RulesBank rulesBank)
+    public Species(SpeciesObject speciesObject, RulesBank rulesBank, SaveData saveData)
     {
         speciesGroups = speciesObject.speciesGroups;
-        color = speciesObject.color;
         startingPopulation = speciesObject.startingPopulation;
         initialState = speciesObject.initialState;
         if(speciesObject.ignoreBirthRule)
@@ -92,8 +91,31 @@ public class Species
             int dX = deathRule.conditions[0].compareInts.x;
             int dY = deathRule.conditions[0].compareInts.y;
             defaultName = speciesObject.defaultName + bX + bY + dX + dY;
+            bool found = false;
+            if (saveData != null) {
+                foreach (string name in saveData.defaultNames) {
+                    if (name  == defaultName) {
+                        found = true;
+                    }
+                }
+            }
+            if (!found) {
+                color = Random.ColorHSV(0f, 1f, 0f, 1f, 0f, 1f, 1f, 1f);
+            } else {
+                if (saveData != null) {
+                    for (int i = 0; i < saveData.defaultNames.Length; i++) {
+                        if (saveData.defaultNames[i] == defaultName) {
+                            color = new Color(saveData.speciesColors[i][0],
+                                              saveData.speciesColors[i][1],
+                                              saveData.speciesColors[i][2],
+                                              saveData.speciesColors[i][3]);
+                        }
+                    }
+                }
+            }
         } else {
             defaultName = speciesObject.defaultName;
+            color = speciesObject.color;
         }
     }
 
