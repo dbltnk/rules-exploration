@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cf00b354e3a6d84da3533db5426ad43, type: 3}
-  m_Name: rando-birth
+  m_Name: rando-4-death
   m_EditorClassIdentifier: 
   possibleConditionAmounts: {x: 0, y: 0}
   matchMySpeciesGroups: 0
   addRandomSpeciesGroups: 0
   randomizeCompareInts: 1
-  compareIntsRandomMinRange: {x: 0, y: 8}
-  compareIntsRandomMaxRange: {x: 0, y: 8}
+  compareIntsRandomMinRange: {x: 0, y: 4}
+  compareIntsRandomMaxRange: {x: 0, y: 4}
   possibleConditions:
   - source: 0
     conditionParameter: 0
-    compareInts: {x: 5, y: 8}
+    compareInts: {x: 0, y: 0}
     compareSpeciesGroups: 
     compareStates: 
   possibleResults:
-  - lifeEffect: 1
+  - lifeEffect: 2
     newState: 0
-  neighborStyle: 0
+  neighborStyle: 1
   wallsAreAlive: 0
-  classification: 1
+  classification: 2
