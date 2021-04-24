@@ -21,7 +21,7 @@ MonoBehaviour:
   possibleConditions:
   - source: 0
     conditionParameter: 0
-    compareInts: {x: 5, y: 8}
+    compareInts: {x: 0, y: 0}
     compareSpeciesGroups: 
     compareStates: 
   possibleResults:

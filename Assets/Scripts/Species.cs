@@ -87,10 +87,10 @@ public class Species
         }
 
         if (isProcGen) {
-            int bX = speciesObject.birthRuleObject.possibleConditions[0].compareInts.x;
-            int bY = speciesObject.birthRuleObject.possibleConditions[0].compareInts.y;
-            int dX = speciesObject.deathRuleObject.possibleConditions[0].compareInts.x;
-            int dY = speciesObject.deathRuleObject.possibleConditions[0].compareInts.y;
+            int bX = birthRule.conditions[0].compareInts.x;
+            int bY = birthRule.conditions[0].compareInts.y;
+            int dX = deathRule.conditions[0].compareInts.x;
+            int dY = deathRule.conditions[0].compareInts.y;
             defaultName = speciesObject.defaultName + bX + bY + dX + dY;
         } else {
             defaultName = speciesObject.defaultName;
