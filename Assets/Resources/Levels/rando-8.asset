@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cc3d6bf81c9912c4585d8f542aabec8d, type: 3}
-  m_Name: rando
+  m_Name: rando-8
   m_EditorClassIdentifier: 
   levelWidth: 12
   levelHeight: 12
   procgenSpeciesAmount: {x: 0, y: 0}
   specificSpecies:
-  - {fileID: 11400000, guid: b44342c5e0333e54d94304d00c83f2ec, type: 2}
+  - {fileID: 11400000, guid: 473d5d53d133e584eb8329d56643dfa2, type: 2}
   ruleObjects: []

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dc8ffc88d72eb14fa0359e5faee2571, type: 3}
-  m_Name: cgol
+  m_Name: rando-8
   m_EditorClassIdentifier: 
-  speciesGroups: 0200000003000000
-  color: {r: 1, g: 1, b: 1, a: 1}
+  speciesGroups: 0200000004000000
+  color: {r: 0.3102857, g: 1, b: 0.22075468, a: 1}
   startingPopulation: 4
   initialState: 0
   ignoreBirthRule: 0
-  birthRuleObject: {fileID: 11400000, guid: 51029519aeeb40441b51d2338b593d3b, type: 2}
+  birthRuleObject: {fileID: 11400000, guid: eb75c974c09b4004584ad6aa82a7b9c7, type: 2}
   ignoreDeathRule: 0
-  deathRuleObject: {fileID: 11400000, guid: 362663cba6da1854aa56d40855ff9b65, type: 2}
+  deathRuleObject: {fileID: 11400000, guid: e415104c2a3cf3a42be978a4552e4487, type: 2}
   randomOtherRulesAmountRange: {x: 0, y: 0}
   otherRules: []

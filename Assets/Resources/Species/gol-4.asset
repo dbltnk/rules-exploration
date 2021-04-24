@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8dc8ffc88d72eb14fa0359e5faee2571, type: 3}
-  m_Name: rando-y
+  m_Name: gol-4
   m_EditorClassIdentifier: 
-  speciesGroups: 0200000004000000
-  color: {r: 0.9734893, g: 1, b: 0, a: 1}
+  speciesGroups: 0100000003000000
+  color: {r: 0.2584905, g: 0.32843274, b: 1, a: 1}
   startingPopulation: 4
   initialState: 0
   ignoreBirthRule: 0
-  birthRuleObject: {fileID: 11400000, guid: eb75c974c09b4004584ad6aa82a7b9c7, type: 2}
+  birthRuleObject: {fileID: 11400000, guid: 19ff8edcceb25c8409f7a7491fe87f0d, type: 2}
   ignoreDeathRule: 0
-  deathRuleObject: {fileID: 11400000, guid: e415104c2a3cf3a42be978a4552e4487, type: 2}
+  deathRuleObject: {fileID: 11400000, guid: bee6c75356aa2854d940768d870b5d37, type: 2}
   randomOtherRulesAmountRange: {x: 0, y: 0}
   otherRules: []
