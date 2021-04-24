@@ -26,7 +26,6 @@ public class Species
 
     public Species(SpeciesObject speciesObject, RulesBank rulesBank)
     {
-        defaultName = speciesObject.defaultName;
         speciesGroups = speciesObject.speciesGroups;
         color = speciesObject.color;
         startingPopulation = speciesObject.startingPopulation;
@@ -55,8 +54,8 @@ public class Species
             if(speciesObject.deathRuleObject == null)
             {
                 deathRule = rulesBank.GetRandomDeathRule(speciesGroups);
-            }
-            else
+
+            } else
             {
                 deathRule = rulesBank.GetRuleFromRuleObjectAtRuntime(speciesObject.deathRuleObject, speciesGroups);
             }            
@@ -68,8 +67,7 @@ public class Species
         {
             int otherRuleAmount = Random.Range(speciesObject.randomOtherRulesAmountRange[0], speciesObject.randomOtherRulesAmountRange[1] + 1);
             otherRules = rulesBank.GetRandomOtherRules(speciesGroups, otherRuleAmount);
-        }
-        else
+        } else
         {
             otherRules = new Rule[otherRulesLength];
 
@@ -77,6 +75,26 @@ public class Species
             {
                 otherRules[i] = rulesBank.GetRuleFromRuleObjectAtRuntime(speciesObject.otherRules[i], speciesGroups);
             }
+        }
+
+        // This only includes very few of the procgen features for now.
+
+        bool isProcGen = false;
+
+        if (speciesObject.birthRuleObject.randomizeCompareInts ||
+            speciesObject.deathRuleObject.randomizeCompareInts ||
+            speciesObject.birthRuleObject.addRandomSpeciesGroups) {
+            isProcGen = true;
+        }
+
+        if (isProcGen) {
+            int bX = speciesObject.birthRuleObject.possibleConditions[0].compareInts.x;
+            int bY = speciesObject.birthRuleObject.possibleConditions[0].compareInts.y;
+            int dX = speciesObject.deathRuleObject.possibleConditions[0].compareInts.x;
+            int dY = speciesObject.deathRuleObject.possibleConditions[0].compareInts.y;
+            defaultName = speciesObject.defaultName + bX + bY + dX + dY;
+        } else {
+            defaultName = speciesObject.defaultName;
         }
     }
 
