@@ -82,8 +82,7 @@ public class Species
         bool isProcGen = false;
 
         if (speciesObject.birthRuleObject.randomizeCompareInts ||
-            speciesObject.deathRuleObject.randomizeCompareInts ||
-            speciesObject.birthRuleObject.addRandomSpeciesGroups) {
+            speciesObject.deathRuleObject.randomizeCompareInts) {
             isProcGen = true;
         }
 
