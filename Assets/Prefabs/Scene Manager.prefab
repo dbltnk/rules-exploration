@@ -123,11 +123,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: edd84a4e0d9b11b44a1e06361ad2a419, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -368,9 +368,11 @@ MonoBehaviour:
   A4: {fileID: 8300000, guid: d721a8cf5b60e0c46a0c7c93d60cdb16, type: 3}
   A8: {fileID: 8300000, guid: 9404d8d6f84eba04a954bd8917e30b35, type: 3}
   A16: {fileID: 8300000, guid: 64c2eb3afc37c6d419b8a3873eabd807, type: 3}
-  MXSynth: {fileID: 8300000, guid: b8cc5194693304f41a4e878e39231458, type: 3}
-  MXBeat: {fileID: 8300000, guid: 1ccc8762e910fe04ab697511e56a02f2, type: 3}
-  MXArp: {fileID: 8300000, guid: cf7f576fbd06a5e4fae87cdd676692cd, type: 3}
+  MXSynth: {fileID: 8300000, guid: 2736a8ddc8a222b4385e492fdc1731fb, type: 3}
+  MXBeat: {fileID: 8300000, guid: b4d58ef6d52929848ad856315c87f5b6, type: 3}
+  MXArp: {fileID: 8300000, guid: edd84a4e0d9b11b44a1e06361ad2a419, type: 3}
+  timeSinceLastTick: 0
+  fadeOutTime: 2
 --- !u!1 &2378207755876978220
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,11 +414,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 2736a8ddc8a222b4385e492fdc1731fb, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -539,11 +541,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: b4d58ef6d52929848ad856315c87f5b6, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

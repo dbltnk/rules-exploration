@@ -20,22 +20,18 @@ public class AudioManager : MonoBehaviour
     private int ticks = 0;
     public float timeSinceLastTick = 0f;
     public float fadeOutTime = 2f;
+    private float speed;
 
     // Start is called before the first frame update
     void Start()
     {
-        source1.loop = true;
-        source2.loop = true;
-        source3.loop = true;
     }
 
     public void Tick(float updateRate) {
-        if (!source1.isPlaying) source1.PlayOneShot(MXSynth);
-        if (!source2.isPlaying) source2.PlayOneShot(MXBeat);
-        if (!source3.isPlaying) source3.PlayOneShot(MXArp);
-
-        source2.mute = (updateRate < 1f) ? false : true;
-        source3.mute = (updateRate < 0.5f) ? false : true;
+        speed = updateRate;
+        if (!source1.isPlaying) source1.Play();
+        if (!source2.isPlaying) source2.Play();
+        if (!source3.isPlaying) source3.Play();
 
         //if (updateRate >= 0.5f) source.PlayOneShot(A2);
         //if (updateRate >= 0.25f) source.PlayOneShot(A4);
@@ -46,13 +42,16 @@ public class AudioManager : MonoBehaviour
     }
 
     public void Update () {
-        timeSinceLastTick += Time.deltaTime;
+        source2.mute = (speed < 1f) ? false : true;
+        source3.mute = (speed < 0.5f) ? false : true;
 
-        float volume = (fadeOutTime - Mathf.Min(fadeOutTime, timeSinceLastTick)) / fadeOutTime;
+        //timeSinceLastTick += Time.deltaTime;
 
-        source1.volume = volume;
-        source2.volume = volume;
-        source3.volume = volume;
+        //float volume = (fadeOutTime - Mathf.Min(fadeOutTime, timeSinceLastTick)) / fadeOutTime;
+
+        //source1.volume = volume;
+        //source2.volume = volume;
+        //source3.volume = volume;
     }
 
 }

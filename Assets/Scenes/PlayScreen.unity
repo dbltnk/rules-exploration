@@ -32618,6 +32618,16 @@ PrefabInstance:
       propertyPath: topThreeReadout.Array.data[2]
       value: 
       objectReference: {fileID: 1509989125}
+    - target: {fileID: 927936743330362516, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 927936743330362516, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2305390745902653400, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
       propertyPath: m_Name
@@ -32634,6 +32644,26 @@ PrefabInstance:
       propertyPath: sceneCamera
       value: 
       objectReference: {fileID: 925062356}
+    - target: {fileID: 4824546547943419164, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4824546547943419164, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932782025310515160, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: Loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5932782025310515160, guid: 708f6e958714bf74f855900b4db5051a,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7583248747352537095, guid: 708f6e958714bf74f855900b4db5051a,
         type: 3}
       propertyPath: m_RootOrder
