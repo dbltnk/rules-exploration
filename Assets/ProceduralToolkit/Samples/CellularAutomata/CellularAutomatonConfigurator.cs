@@ -234,10 +234,6 @@ namespace ProceduralToolkit.Samples
             });
             InstantiateControl<ButtonControl>(RightPanel).Initialize("Submit your theory", Answer);
             setupDone = true;
-
-            RawImage dish = GameObject.Find("Dish").GetComponent<RawImage>();
-            dish.texture = Resources.Load("dish-asleep") as Texture;
-            print("asdas");
         }
 
         private void Exit () {
