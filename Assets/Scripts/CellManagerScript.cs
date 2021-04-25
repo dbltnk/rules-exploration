@@ -733,8 +733,22 @@ public class CellManagerScript : MonoBehaviour
 
         // If we always treat walls as alive then we need to increase the living count by the number of walls.
         if (wallsAreAlive) {
-            // TODO(azacherl): Replace this 8 when we support more than the Moore neighborhood.
-            int numberOfWalls = 8 - validNeighbors.Count;
+            int wallsMax = 0;
+            switch (neighborStyle) {
+                case NEIGHBOR_STYLE.ALL:
+                    wallsMax = 8;
+                    break;
+                case NEIGHBOR_STYLE.CARDINAL_ONLY:
+                    wallsMax = 4;
+                    break;
+                case NEIGHBOR_STYLE.DIAGONAL_ONLY:
+                    wallsMax = 4;
+                    break;
+                default:
+                    wallsMax = 8;
+                    break;
+            }
+            int numberOfWalls = wallsMax - validNeighbors.Count;
             livingCount += numberOfWalls;
         }
 
