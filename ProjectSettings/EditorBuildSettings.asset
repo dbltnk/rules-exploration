@@ -6,45 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/KnowledgeGraph.unity
-    guid: 4e8b8766d34ca9f4b9e3681d48b18a9c
+    path: Assets/Scenes/LevelSetup.unity
+    guid: 0bf92396cae664247bf5a1f23f0542b9
   - enabled: 1
-    path: Assets/Scenes/ClassificationCustom8OneDigit.unity
-    guid: 4a728e79df93f914f85a9b559ac78792
+    path: Assets/Scenes/PlayScreen.unity
+    guid: 26cfc10d9e6eeaa408e1537934ff402b
   - enabled: 1
-    path: Assets/Scenes/FixedLifeAsleep.unity
-    guid: 504d4fa3d9cac9c49a87af23504a0286
-  - enabled: 1
-    path: Assets/Scenes/KnownSpeciesCollection.unity
-    guid: 03f2ecc567a71e549b708f278ce43cc6
-  - enabled: 1
-    path: Assets/Scenes/ClassificationCustom4OneDigit.unity
-    guid: 04a1933ebbaac134a9f68252f80fff3d
-  - enabled: 1
-    path: Assets/Scenes/ClassificationCustom4ThreeDigits.unity
-    guid: 423a0fd40d11a134891f656f538c91e7
-  - enabled: 1
-    path: Assets/Scenes/ClassificationCustom4TwoDigits.unity
-    guid: 9b5fe55fda39d3545925e6e623c1142d
-  - enabled: 1
-    path: Assets/Scenes/ClassificationCustom8ThreeDigits.unity
-    guid: 61cdc6455807cb24285326bd9e9d652d
-  - enabled: 1
-    path: Assets/Scenes/ClassificationCustom8TwoDigits.unity
-    guid: 9b68634f0610ef847bf0ae0f5055d4f7
-  - enabled: 1
-    path: Assets/Scenes/FixedAnnealAsleep.unity
-    guid: 682066ce1f52338469c65d785ac6a394
-  - enabled: 1
-    path: Assets/Scenes/FixedCoralAsleep.unity
-    guid: 0a534d2f18003e44090216683ae5e780
-  - enabled: 1
-    path: Assets/Scenes/FixedMajorityAwake.unity
-    guid: b22e3cff3b01d3249af02e53aa1e9909
-  - enabled: 1
-    path: Assets/Scenes/FixedMazectricAsleep.unity
-    guid: 007a84f4033d77f4783f7558b08106d6
-  - enabled: 1
-    path: Assets/Scenes/FixedWalledCitiesAsleep.unity
-    guid: ebc8ac0069926e24cb5aa9b2abbddc37
+    path: Assets/Scenes/SpeciesCollection.unity
+    guid: 543bc72d342a56e4ab496814277abbe3
   m_configObjects: {}

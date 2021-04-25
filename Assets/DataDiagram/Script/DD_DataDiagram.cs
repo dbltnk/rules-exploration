@@ -313,7 +313,7 @@ public class DD_DataDiagram : MonoBehaviour , IScrollHandler, IDragHandler {
         }
     }
 
-    public void SetLineColor(GameObject line, Color color) {
+    private void SetLineColor(GameObject line, Color color) {
 
         if (null == line) {
             //Debug.logger(this.ToString() + " SetLineColor error : null == line");
