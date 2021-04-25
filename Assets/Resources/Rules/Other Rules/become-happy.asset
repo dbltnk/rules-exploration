@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf00b354e3a6d84da3533db5426ad43, type: 3}
   m_Name: become-happy
   m_EditorClassIdentifier: 
-  possibleConditionAmounts: {x: 1, y: 1}
+  possibleConditionAmounts: {x: 2, y: 2}
   matchMySpeciesGroups: 0
   addRandomSpeciesGroups: 0
   randomizeCompareInts: 0
-  compareIntsRandomMinRange: {x: 0, y: 3}
-  compareIntsRandomMaxRange: {x: 3, y: 8}
+  compareIntsRandomMinRange: {x: 0, y: 0}
+  compareIntsRandomMaxRange: {x: 0, y: 0}
   possibleConditions:
   - source: 3
     conditionParameter: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: rps-normal
   m_EditorClassIdentifier: 
   speciesGroups: 0200000003000000
-  color: {r: 0.3066038, g: 0.3117885, b: 1, a: 1}
+  color: {r: 1, g: 0.6233566, b: 0.0603773, a: 1}
   startingPopulation: 6
   initialState: 1
   ignoreBirthRule: 1

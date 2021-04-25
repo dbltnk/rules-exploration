@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc3d6bf81c9912c4585d8f542aabec8d, type: 3}
   m_Name: exploration
   m_EditorClassIdentifier: 
-  levelWidth: 3
-  levelHeight: 3
+  levelWidth: 23
+  levelHeight: 23
   procgenSpeciesAmount: {x: 0, y: 0}
   specificSpecies:
   - {fileID: 11400000, guid: bb71cccf3b6664149b6dce73bb18f8c4, type: 2}
