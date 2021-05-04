@@ -20,22 +20,21 @@ Build: https://dbltnk.itch.io/connie-weis-lab
 
 ## P1 Game Modes
 
+* Mutation Mode?
+* Every N steps / rounds pick one of X features to evolve (tails, muscles etc)
+  * Try to get your species to survive/thrive
 * P1 CHALLENGE: create a state
-
-  * "Material Design Mode": Create a certain structure. / number of elements.
+* "Material Design Mode": Create a certain structure. / number of elements.
   * P1 fixed list of challenges / puzzles to pick from
   * P1 [maximize / minimize] number of cells for species [X] by only making [n] changes in [m] steps (how to prevent brute force solutions)?
   * minimize works w/ mazentric
   * P1 create [a specific / any] [stable / oscillating / moving / replcating] structures (https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns // https://conwaylife.com/wiki/Cellular_automaton)
   * P1 Make [N] mutations to a species to get to a specific result
     * https://codegolf.stackexchange.com/questions/221091/minimally-destroy-cgcc-in-game-of-life
-
   
-
 * P1 IDENTIFICATION
 
   * Mark a pattern (mouse selection) and store it under a name
-
 * P1 CLASSIFICATION: Class 1-4
 
   * Compare with known classifications from DB (?) or scripts (?)
@@ -46,7 +45,6 @@ Build: https://dbltnk.itch.io/connie-weis-lab
   * Class 4: Class 2+3 behaviours need to be shown?
   * Graphs useful here?
   * Major tool:  (AI-assisted) pattern matching, highlighted by player!
-
 * P1 DETECTIVE: what are the rules?
 
   * difficulty scaling: increase digits for rules
@@ -56,12 +54,10 @@ Build: https://dbltnk.itch.io/connie-weis-lab
   * Submit paper for peer review
   * If wrong, peer reviewers (or the doc) reveal one part of the solution
   * Score = fewer guesses
-
 * P2 tutorial / intro
 
   * explain birth/survive(death) basics	
   * start with Conway's life, the  introduce alternatives
-
 * P2 free play mode
 
   * just a chill experimentation mode where you set rules and see what you can get to emerge
