@@ -7,15 +7,9 @@ public class AudioManager : MonoBehaviour
     public AudioSource source1;
     public AudioSource source2;
     public AudioSource source3;
-
-    public AudioClip A1;
-    public AudioClip A2;
-    public AudioClip A4;
-    public AudioClip A8;
-    public AudioClip A16;
-    public AudioClip MXSynth;
-    public AudioClip MXBeat;
-    public AudioClip MXArp;
+    public AudioSource source4;
+    public AudioSource source5;
+    public AudioSource source6;
 
     private int ticks = 0;
     public float timeSinceLastTick = 0f;
@@ -32,26 +26,31 @@ public class AudioManager : MonoBehaviour
         if (!source1.isPlaying) source1.Play();
         if (!source2.isPlaying) source2.Play();
         if (!source3.isPlaying) source3.Play();
-
-        //if (updateRate >= 0.5f) source.PlayOneShot(A2);
-        //if (updateRate >= 0.25f) source.PlayOneShot(A4);
-        //if (updateRate >= 0.125f) source.PlayOneShot(A8);
-        //if (updateRate >= 0.06125f) source.PlayOneShot(A16);
+        if (!source4.isPlaying) source4.Play();
+        if (!source5.isPlaying) source5.Play();
+        if (!source6.isPlaying) source6.Play();
         ticks++;
         timeSinceLastTick = 0f;
     }
 
     public void Update () {
-        source2.mute = (speed < 1f) ? false : true;
-        source3.mute = (speed < 0.5f) ? false : true;
+        source1.mute = false;
+        source2.mute = false;
+        source3.mute = (speed < 1f) ? false : true;
+        source4.mute = (speed < 1f) ? false : true;
+        source5.mute = (speed < 0.5f) ? false : true;
+        source6.mute = (speed < 0.25f) ? false : true;
 
-        //timeSinceLastTick += Time.deltaTime;
+        timeSinceLastTick += Time.deltaTime;
 
-        //float volume = (fadeOutTime - Mathf.Min(fadeOutTime, timeSinceLastTick)) / fadeOutTime;
+        float volume = (fadeOutTime - Mathf.Min(fadeOutTime, timeSinceLastTick)) / fadeOutTime;
 
-        //source1.volume = volume;
-        //source2.volume = volume;
-        //source3.volume = volume;
+        source1.volume = volume;
+        source2.volume = volume;
+        source3.volume = volume;
+        source4.volume = volume;
+        source5.volume = volume;
+        source6.volume = volume;
     }
 
 }
