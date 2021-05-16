@@ -4,6 +4,92 @@
 		<WorkUnit Name="Default Work Unit" ID="{0827E803-49E8-4A69-AA68-E8D8106B574A}" PersistMode="Standalone">
 			<ChildrenList>
 				<Bus Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}">
+					<PropertyList>
+						<Property Name="BusVolume" Type="Real64">
+							<RTPCList>
+								<RTPC Name="" ID="{393C7EC1-D9DF-4121-8819-8CB070357072}" ShortID="1027218627">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="Speed" ID="{9FE90387-FBA5-44A7-9CAA-ACB0E3BDEC99}" WorkUnitID="{B0D7FB37-29A6-47F2-8D0E-6AE5B0EECD10}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{27AD42B0-CF6A-4C71-9228-C976692CDC2E}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="3"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>-200</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+						<Property Name="Highpass" Type="int16">
+							<RTPCList>
+								<RTPC Name="" ID="{CBCD4091-2D19-4F98-9EBA-D8A48382D145}" ShortID="153445612">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="NumCellsAlive" ID="{52D8AAC3-591B-4204-9813-2689367A0338}" WorkUnitID="{B0D7FB37-29A6-47F2-8D0E-6AE5B0EECD10}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{923641B4-B8C5-492C-A6A3-9BAA26345C09}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="65537"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>0</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+						<Property Name="Lowpass" Type="int16">
+							<RTPCList>
+								<RTPC Name="" ID="{9748C0DB-4AF5-4818-9BDC-6169DA122587}" ShortID="211462442">
+									<ReferenceList>
+										<Reference Name="ControlInput">
+											<ObjectRef Name="NumSpeciesAlive" ID="{26BBAC97-3708-469F-9365-715387D008B8}" WorkUnitID="{B0D7FB37-29A6-47F2-8D0E-6AE5B0EECD10}"/>
+										</Reference>
+									</ReferenceList>
+									<Curve Name="" ID="{F68F1BFA-EBAD-44C7-B22A-8E8D6A0B09C2}">
+										<PropertyList>
+											<Property Name="Flags" Type="int32" Value="65537"/>
+										</PropertyList>
+										<PointList>
+											<Point>
+												<XPos>0</XPos>
+												<YPos>0</YPos>
+												<Flags>5</Flags>
+											</Point>
+											<Point>
+												<XPos>100</XPos>
+												<YPos>0</YPos>
+												<Flags>37</Flags>
+											</Point>
+										</PointList>
+									</Curve>
+								</RTPC>
+							</RTPCList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="AudioDevice">
 							<ObjectRef Name="System" ID="{E13CF482-A31E-4798-9E3A-A144AD36C11E}" WorkUnitID="{1361E81D-AE09-4BF7-9EE8-27473698C3C4}"/>

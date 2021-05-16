@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{B0D7FB37-29A6-47F2-8D0E-6AE5B0EECD10}" SchemaVersion="103">
 	<GameParameters>
-		<WorkUnit Name="Default Work Unit" ID="{B0D7FB37-29A6-47F2-8D0E-6AE5B0EECD10}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{B0D7FB37-29A6-47F2-8D0E-6AE5B0EECD10}" PersistMode="Standalone">
+			<ChildrenList>
+				<GameParameter Name="Speed" ID="{9FE90387-FBA5-44A7-9CAA-ACB0E3BDEC99}"/>
+				<GameParameter Name="NumCellsAlive" ID="{52D8AAC3-591B-4204-9813-2689367A0338}"/>
+				<GameParameter Name="NumSpeciesAlive" ID="{26BBAC97-3708-469F-9365-715387D008B8}"/>
+			</ChildrenList>
+		</WorkUnit>
 	</GameParameters>
 </WwiseDocument>
