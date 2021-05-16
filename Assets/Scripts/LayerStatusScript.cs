@@ -81,4 +81,16 @@ public class LayerStatusScript : MonoBehaviour
     {
         return topThreePopulations[index].species;
     }
+
+    private void Update () {
+        int numCellsAlive = 0;
+        foreach (KeyValuePair<Species, int> entry in populationBySpecies) {
+            numCellsAlive += entry.Value;
+        }
+        AkSoundEngine.SetRTPCValue("NumCellsAlive", numCellsAlive, gameObject);
+
+        int numSpeciesAlive = populationBySpecies.Count;
+        AkSoundEngine.SetRTPCValue("NumSpeciesAlive", numSpeciesAlive, gameObject);
+
+    }
 }

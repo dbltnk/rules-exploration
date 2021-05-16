@@ -51,6 +51,8 @@ public class AudioManager : MonoBehaviour
         source4.volume = volume;
         source5.volume = volume;
         source6.volume = volume;
+
+        AkSoundEngine.SetRTPCValue("Speed", speed, gameObject);
     }
 
 }
